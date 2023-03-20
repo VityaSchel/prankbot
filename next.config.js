@@ -23,6 +23,9 @@ const nextConfig = {
 
     return config
   },
+  images: {
+    domains: ['picsum.photos']
+  },
   typescript: {
     ignoreBuildErrors: true
   },

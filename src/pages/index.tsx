@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import AppBar from '@/components/common/AppBar'
+import Hero from '@/components/homepage/Hero'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,6 +17,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppBar />
+      <main>
+        <Hero />
+      </main>
     </>
   )
 }
+
