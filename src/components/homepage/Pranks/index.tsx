@@ -1,5 +1,6 @@
-import { Tabs, Skeleton } from 'antd'
 import React from 'react'
+import styles from './styles.module.scss'
+import { Tabs, Skeleton } from 'antd'
 
 type Category = {
   id: number
@@ -41,7 +42,7 @@ export default function Pranks() {
   }, [])
 
   return (
-    <div>
+    <div className={styles.pranks}>
       {categories 
         ? (
           <Tabs 
