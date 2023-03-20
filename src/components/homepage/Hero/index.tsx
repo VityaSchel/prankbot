@@ -1,11 +1,19 @@
-import Image from 'next/image'
 import styles from './styles.module.scss'
+import Button from '@/components/common/Button'
+import Image from 'next/image'
+import { BsArrowDown } from 'react-icons/bs'
+import { Tabs } from 'antd'
 
 export default function Hero() {
   return (
     <div className={styles.hero}>
       <div className={styles.info}>
-        <h1>Разыграй своих друзей или коллег с помощью <span className={styles.highlight}>ПранкБота</span></h1>
+        <div className={styles.text}>
+          <h1>Разыграй своих друзей <wbr />или коллег с помощью <span className={styles.highlight}>ПранкБота</span></h1>
+          <h2>Получи выгодную месячную подписку и получи безлимит на розыгрыши</h2>
+        </div>
+        {/* <Button type="primary" size='large'>Выбрать розыгрыш</Button> */}
+        <Button>Выбрать розыгрыш <BsArrowDown /></Button>
       </div>
       <div className={styles.image}>
         <Image src={'https://picsum.photos/600/320'} alt='' fill />

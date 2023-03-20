@@ -1,9 +1,13 @@
+@use '@/styles/variables.scss' as variables;
+
 .hero {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 32px 0px;
   gap: 40px;
+  width: 100%;
+  max-width: var(--max-width);
 
   .info {
     display: flex;
@@ -12,9 +16,42 @@
     align-items: flex-start;
     padding: 0px;
     gap: 32px;
+    flex: 1488;
+
+    .text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px;
+      gap: 16px;
+
+      h1,h2 {
+        margin: 0;
+      }
+
+      h1 {
+        font-weight: 800;
+        font-size: 40px;
+        line-height: 120%;
+
+        .highlight {
+          color: variables.$accent;
+        }
+      }
+
+      h2 {
+        color: variables.$secondary;
+        font-weight: 400;
+        font-size: 15px;
+      }
+    }
   }
   
   .image {
     position: relative;
+    flex: 1488;
+    aspect-ratio: 600 / 320;
+    height: auto;
+    border-radius: 20px;
   }
 }
