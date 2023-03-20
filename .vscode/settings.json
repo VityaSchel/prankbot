@@ -1,0 +1,10 @@
+{
+  "i18n-ally.localesPaths": [
+    "data/locales"
+  ],
+  "i18n-ally.keystyle": "nested",
+  "editor.tabCompletion": "on",
+  "path-intellisense.mappings": {
+    "@/*": "./*"
+  }
+}
