@@ -5,6 +5,7 @@ import styles from '@/styles/Home.module.css'
 import AppBar from '@/components/common/AppBar'
 import Hero from '@/components/homepage/Hero'
 import Pranks from '@/components/homepage/Pranks'
+import Footer from '@/components/common/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +23,7 @@ export default function Home() {
         <Hero />
         <Pranks />
       </main>
+      <Footer />
     </>
   )
 }
