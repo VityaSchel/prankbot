@@ -4,7 +4,7 @@ import Input from '@/components/common/Input'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { apiURI } from '@/data/api'
-import { LoginBody } from '@/data/apiDefinitions'
+import { LoginBody, LoginResponse } from '@/data/apiDefinitions'
 
 export default function LoginForm() {
   return (
@@ -19,14 +19,29 @@ export default function LoginForm() {
             .required()
         })
       }
-      onSubmit={(values, { setSubmitting }) => {
-        fetch(apiURI + '/auth/login', {
-          method: 'POST',
-          body: JSON.stringify({
-            email: values.email,
-            password: values.password
-          } as LoginBody)
-        })
+      onSubmit={async (values, { setSubmitting }) => {
+        try {
+          const loginRequest = await fetch(apiURI + '/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: values.email,
+              password: values.password
+            } as LoginBody),
+            headers: { 'Content-Type': 'application/json' }
+          })
+          const loginResponse = await loginRequest.json() as LoginResponse
+          const token = loginResponse.token
+          if(token) {
+            alert(token)
+          } else {
+            alert('Ошибка во время входа')
+          }
+        } catch(e) {
+          console.error(e)
+          alert('Ошибка!')
+        } finally {
+          setSubmitting(false)
+        }
       }}
      >
        {({
@@ -65,7 +80,7 @@ export default function LoginForm() {
              value={values.password}
              error={errors.password}
            />
-           <Button type="submit" disabled={isSubmitting}>
+           <Button type="submit" disabled={!values.email || !values.password || isSubmitting}>
               Войти
            </Button>
          </form>

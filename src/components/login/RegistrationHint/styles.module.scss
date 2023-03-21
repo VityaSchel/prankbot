@@ -1,0 +1,9 @@
+@use '@/styles/variables.scss' as variables;
+
+.hint {
+  margin-top: 24px;
+
+  .highlight {
+    color: variables.$buttonDefault;
+  }
+}

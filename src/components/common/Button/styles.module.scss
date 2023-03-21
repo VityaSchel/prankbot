@@ -18,15 +18,20 @@
   transition: background-color 50ms ease-in-out;
 
   &.primary {
-    background-color: variables.$accent;
+    background-color: variables.$buttonDefault;
     color: #fff;
     
     &:hover {
-      background-color: color.scale(variables.$accent, $lightness: -15%);
+      background-color: color.scale(variables.$buttonDefault, $lightness: -15%);
     }
   
     &:active:hover {
-      background-color: color.scale(variables.$accent, $lightness: -25%);
+      background-color: color.scale(variables.$buttonDefault, $lightness: -25%);
+    }
+
+    &[disabled] {
+      pointer-events: none;
+      background-color: color.scale(variables.$buttonDefault, $saturation: -50%);
     }
   }
 
@@ -40,6 +45,11 @@
   
     &:active:hover {
       background-color: color.scale(variables.$buttonSecondary, $lightness: -25%);
+    }
+
+    &[disabled] {
+      pointer-events: none;
+      background-color: color.scale(variables.$buttonSecondary, $saturation: -50%);
     }
   }
 }

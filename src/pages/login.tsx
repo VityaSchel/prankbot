@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Login.module.scss'
 import AppBar from '@/components/common/AppBar'
 import LoginForm from '@/components/login/LoginForm'
+import RegistrationHint from '@/components/login/RegistrationHint'
 import Footer from '@/components/common/Footer'
 
 export default function Login() {
@@ -18,6 +19,7 @@ export default function Login() {
       <AppBar />
       <main className={styles.main}>
         <LoginForm />
+        <RegistrationHint />
       </main>
       <Footer />
     </>
