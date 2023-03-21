@@ -8,22 +8,38 @@
   align-items: center;
   padding: 20px 40px;
   gap: 6px;
-  background-color: variables.$buttonSecondary;
   border-radius: 12px;
   border: 0;
   font-family: 'Nunito';
   font-weight: 700;
   font-size: 15px;
   line-height: 100%;
-  color: variables.$accent;
   cursor: pointer;
   transition: background-color 50ms ease-in-out;
 
-  &:hover {
-    background-color: color.scale(variables.$buttonSecondary, $lightness: -15%);
+  &.primary {
+    background-color: variables.$accent;
+    color: #fff;
+    
+    &:hover {
+      background-color: color.scale(variables.$accent, $lightness: -15%);
+    }
+  
+    &:active:hover {
+      background-color: color.scale(variables.$accent, $lightness: -25%);
+    }
   }
 
-  &:active:hover {
-    background-color: color.scale(variables.$buttonSecondary, $lightness: -25%);
+  &.secondary {
+    background-color: variables.$buttonSecondary;
+    color: variables.$accent;
+    
+    &:hover {
+      background-color: color.scale(variables.$buttonSecondary, $lightness: -15%);
+    }
+  
+    &:active:hover {
+      background-color: color.scale(variables.$buttonSecondary, $lightness: -25%);
+    }
   }
 }

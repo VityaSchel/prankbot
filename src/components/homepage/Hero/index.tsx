@@ -13,7 +13,7 @@ export default function Hero() {
           <h2>Получи выгодную месячную подписку и получи безлимит на розыгрыши</h2>
         </div>
         {/* <Button type="primary" size='large'>Выбрать розыгрыш</Button> */}
-        <Button>Выбрать розыгрыш <BsArrowDown /></Button>
+        <Button variant='secondary'>Выбрать розыгрыш <BsArrowDown /></Button>
       </div>
       <div className={styles.image}>
         <Image src={'https://picsum.photos/600/320'} alt='' fill />

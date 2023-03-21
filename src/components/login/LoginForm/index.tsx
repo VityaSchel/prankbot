@@ -1,0 +1,75 @@
+import styles from './styles.module.scss'
+import Button from '@/components/common/Button'
+import Input from '@/components/common/Input'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+import { apiURI } from '@/data/api'
+import { LoginBody } from '@/data/apiDefinitions'
+
+export default function LoginForm() {
+  return (
+    <Formik
+      initialValues={{ email: '', password: '' }}
+      validationSchema={
+        Yup.object({
+          email: Yup.string()
+            .email()
+            .required(),
+          password: Yup.string()
+            .required()
+        })
+      }
+      onSubmit={(values, { setSubmitting }) => {
+        fetch(apiURI + '/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password
+          } as LoginBody)
+        })
+      }}
+     >
+       {({
+         values,
+         errors,
+         touched,
+         handleChange,
+         handleBlur,
+         handleSubmit,
+         isSubmitting
+       }) => (
+         <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.title}>
+            <h1>Вход</h1>
+            <h2>Получи выгодную месячную подписку и получи безлимит на розыгрыши</h2>
+          </div>
+           <Input
+              type="email"
+              name="email"
+              label='Введите e-mail'
+              placeholder='E-mail'
+              onChange={handleChange}
+              onEnter={() => handleSubmit()}
+              onBlur={handleBlur}
+              value={values.email}
+              error={errors.email}
+           />
+           <Input
+             type="password"
+             name="password"
+             label='Введите пароль'
+             placeholder='Пароль'
+             onChange={handleChange}
+             onEnter={() => handleSubmit()}
+             onBlur={handleBlur}
+             value={values.password}
+             error={errors.password}
+           />
+           <Button type="submit" disabled={isSubmitting}>
+              Войти
+           </Button>
+         </form>
+       )}
+     </Formik>
+  )
+}

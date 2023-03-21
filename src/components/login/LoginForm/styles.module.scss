@@ -1,0 +1,41 @@
+@use '@/styles/variables.scss' as variables;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 32px;
+  gap: 32px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 20px rgba(23, 25, 34, 0.02);
+  border-radius: 24px;
+  width: 400px + 32px*2;
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 12px;
+
+    h1,h2 {
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 800;
+      line-height: 120%;
+      text-align: center;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: variables.$primary;
+    }
+
+    h2 {
+      font-size: 15px;
+      font-weight: 400;
+      color: variables.$secondary;
+    }
+  }
+}
