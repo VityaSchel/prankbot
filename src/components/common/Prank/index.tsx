@@ -11,6 +11,7 @@ export type Prank = {
   id: string
   title: string
   statistics: number
+  previewAudioURL: string
 }
 
 export default function PrankPreview(props: { prank: Prank }) {
@@ -26,6 +27,7 @@ export default function PrankPreview(props: { prank: Prank }) {
     <div className={styles.prank}>
       <div className={styles.image}>
         <Image src={bg} fill alt='' />
+        <audio src={props.prank.previewAudioURL} />
       </div>
       <div className={styles.info}>
         <h3>{props.prank.title}</h3>

@@ -2,6 +2,8 @@ import React from 'react'
 import styles from './styles.module.scss'
 import { Tabs, Skeleton } from 'antd'
 import PrankPreview, { Prank } from '@/components/common/Prank'
+import { apiURI } from '@/data/api'
+import { CategoriesResponse, CategoryCallRecordsResponse } from '@/data/apiDefinitions'
 
 type Category = {
   id: number
@@ -21,35 +23,44 @@ export default function Pranks() {
     }))
   }
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      setCategories([
-        {
-          id: 0,
-          title: 'Test',
-          categoryItems: 91
-        },
-        {
-          id: 1,
-          title: 'Foo',
-          categoryItems: 37
-        },
-        {
-          id: 2,
-          title: 'Bar',
-          categoryItems: 11
-        },
-      ])
-    }, 1000)
-    setPranks(new Array(Math.floor(Math.random()*50)+10)
-      .fill(null)
-      .map(() => ({
-        id: String(Math.floor(Math.random()*Number.MAX_SAFE_INTEGER)),
-        title: 'Название розыгрыша',
-        statistics: Math.floor(Math.random()*300)
-      }))
+  React.useEffect(() => { fetchCategories() }, [])
+
+  const fetchCategories = async () => {
+    const apiCategoriesRequest = await fetch(apiURI + '/categories')
+    // some thoughts on how ts should work with api responses
+    // firstly I made namespace PranksAPI but swagger-typescript-api generates
+    // exported interfaces instead of types and I have no time until deadline
+    // to patch that (TODO:)
+    const apiCategoriesResponse = await apiCategoriesRequest.json() as CategoriesResponse
+    setCategories(
+      apiCategoriesResponse.categories
+        .map(c => ({
+          id: c.id,
+          title: c.name,
+          categoryItems: 0 //FIX:
+        }))
     )
-  }, [])
+    setActiveCategory(apiCategoriesResponse.categories[0].id)
+  }
+
+  React.useEffect(() => { fetchPranks() }, [activeCategory, categories])
+
+  const fetchPranks = async () => {
+    if(categories === null) return
+    const activeCategoryData = categories.find(c => c.id === activeCategory)
+    if(!activeCategoryData) return
+    const callRecordsRequest = await fetch(apiURI + '/categories/' + activeCategoryData.id + '/call_records')
+    const callRecordsResponse = await callRecordsRequest.json() as CategoryCallRecordsResponse
+    setPranks(
+      callRecordsResponse.callRecords
+        .map(cr => ({
+          id: String(cr.id),
+          title: cr.name,
+          statistics: cr.numberOrders,
+          previewAudioURL: cr.recordUrl
+        }))
+    )
+  }
 
   return (
     <div className={styles.pranks}>
@@ -72,6 +83,7 @@ export default function Pranks() {
               id: prank.id,
               title: prank.title,
               statistics: prank.statistics,
+              previewAudioURL: prank.previewAudioURL
             }}
           />
         ))}
