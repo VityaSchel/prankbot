@@ -1,4 +1,4 @@
-import '@/styles/globals.css'
+import '@/styles/globals.scss'
 import { ConfigProvider } from 'antd'
 import type { AppProps } from 'next/app'
 

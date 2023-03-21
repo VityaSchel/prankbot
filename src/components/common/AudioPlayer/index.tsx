@@ -29,7 +29,7 @@ export default function AudioPlayer(props: { src: string }) {
         {new Array(21).fill(null).map((_, i) => <span key={i} style={{ height: `${Math.floor(Math.random() * 95) + 5}%` }} />) /* TODO: generate actual waveform after MVP */}
       </div>
       <span className={styles.duration}>
-        {(audioPlayerRef.current && audioPlayerRef.current.readyState >= 1)
+        {(audioPlayerRef.current && (audioPlayerRef.current.readyState >= 1))
           ? formatDuration(audioPlayerRef.current.duration)
           : <div style={{ width: 20 }}><Skeleton paragraph={false} active /></div>
         }

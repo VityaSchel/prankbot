@@ -7,8 +7,6 @@ import Hero from '@/components/homepage/Hero'
 import Pranks from '@/components/homepage/Pranks'
 import Footer from '@/components/common/Footer'
 
-const inter = Inter({ subsets: ['latin'] })
-
 export default function Home() {
   return (
     <>

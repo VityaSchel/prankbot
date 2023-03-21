@@ -1,3 +1,5 @@
+@use '@/styles/variables.scss' as variables;
+
 .pranks {
   width: 100%;
   max-width: var(--max-width);
@@ -5,8 +7,14 @@
   .pranksPreviewsList {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 1;
+    grid-auto-rows: auto;
     grid-column-gap: 32px;
     grid-row-gap: 32px;
+
+    @media screen and (max-width: variables.$breakpointTablet) {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column-gap: 12px;
+      grid-row-gap: 12px;
+    }
   }
 }

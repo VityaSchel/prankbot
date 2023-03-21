@@ -9,6 +9,12 @@
   width: 100%;
   max-width: var(--max-width);
 
+  @media screen and (max-width: variables.$breakpointTablet) {
+    flex-direction: column-reverse;
+    gap: 24px;
+    padding: 16px 0;
+  }
+
   .info {
     display: flex;
     flex-direction: column;
@@ -34,6 +40,11 @@
         font-size: 40px;
         line-height: 120%;
 
+        // TODO: use mixins to save styles from figma
+        @media screen and (max-width: variables.$breakpointTablet) {
+          font-size: 28px;
+        }
+
         .highlight {
           color: variables.$accent;
         }
@@ -53,5 +64,11 @@
     aspect-ratio: 600 / 320;
     height: auto;
     border-radius: 20px;
+
+    @media screen and (max-width: variables.$breakpointTablet) {
+      aspect-ration: 343 / 320;
+      width: 100%;
+      height: auto;
+    }
   }
 }
