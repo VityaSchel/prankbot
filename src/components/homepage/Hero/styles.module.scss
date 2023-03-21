@@ -64,6 +64,7 @@
     aspect-ratio: 600 / 320;
     height: auto;
     border-radius: 20px;
+    overflow: hidden;
 
     @media screen and (max-width: variables.$breakpointTablet) {
       aspect-ration: 343 / 320;

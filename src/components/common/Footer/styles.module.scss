@@ -1,0 +1,14 @@
+@use '@/styles/variables.scss' as variables;
+
+.footer {
+  border-top: 1px solid variables.$stroke;
+  padding: 22.5px 0;
+  width: 100%;
+  max-width: var(--max-width);
+  margin-top: 56px + 16px;
+
+  @media screen and (max-width: variables.$breakpointTablet) {
+    padding: 23px 0;
+    margin-top: 16px;
+  }
+}

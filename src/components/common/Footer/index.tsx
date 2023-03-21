@@ -4,7 +4,7 @@ import SubscriptionManagement from './SubscriptionManagement'
 
 export default function Footer() {
   return (
-    <footer>
+    <footer className={styles.footer}>
       <SubscriptionManagement />
     </footer>
   )

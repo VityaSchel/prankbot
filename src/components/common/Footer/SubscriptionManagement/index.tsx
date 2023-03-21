@@ -8,9 +8,9 @@ export default function SubscriptionManagemnt() {
 
   return (
     <>
-      <button className={styles.link} onClick={() => setDialogVisible(true)}>
+      <Button type='text' className={styles.link} onClick={() => setDialogVisible(true)}>
         Управление подпиской
-      </button>
+      </Button>
       <Modal open={dialogVisible} footer={null} wrapClassName={styles.dialog} onCancel={() => setDialogVisible(false)}>
         <h2>Управляйте своей подпиской</h2>
         <div className={styles.subscriptionInfo}>
