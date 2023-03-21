@@ -83,7 +83,7 @@ export default function Pranks() {
               id: prank.id,
               title: prank.title,
               statistics: prank.statistics,
-              previewAudioURL: prank.previewAudioURL
+              previewAudioURL: prank.previewAudioURL === 'https://test.com' ? 'https://www.myinstants.com/media/sounds/auughhh.mp3' : prank.previewAudioURL
             }}
           />
         ))}

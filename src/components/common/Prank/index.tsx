@@ -6,6 +6,7 @@ import background4 from './assets/background4.png'
 import background5 from './assets/background5.png'
 import seedrandom from 'seedrandom'
 import Image from 'next/image'
+import AudioPlayer from '@/components/common/AudioPlayer'
 
 export type Prank = {
   id: string
@@ -27,7 +28,7 @@ export default function PrankPreview(props: { prank: Prank }) {
     <div className={styles.prank}>
       <div className={styles.image}>
         <Image src={bg} fill alt='' />
-        <audio src={props.prank.previewAudioURL} />
+        <AudioPlayer src={props.prank.previewAudioURL} />
       </div>
       <div className={styles.info}>
         <h3>{props.prank.title}</h3>

@@ -1,0 +1,50 @@
+@use '@/styles/variables.scss' as variables;
+
+.audio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px;
+  gap: 12px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 20px rgba(23, 25, 34, 0.02);
+  border-radius: 16px;
+  
+  .playpauseButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    gap: 10px;
+    background: rgba(46, 55, 85, 0.05);
+    border-radius: 20px;
+    border: 0;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .waveform {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    gap: 3px;
+    height: 32px;
+
+    span {
+      width: 3px;
+      background: rgba(49, 58, 90, 0.1);
+      border-radius: 2px;
+    }
+  }
+
+  .duration {
+    font-family: 'Nunito';
+    font-weight: 400;
+    font-size: 12px;
+    color: variables.$tertiary;
+  }
+}
