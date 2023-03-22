@@ -4,7 +4,7 @@ import TextField, { TextFieldProps } from '@mui/material/TextField'
 import { FormHelperText } from '@mui/material'
 
 export default function Input(props: Omit<TextFieldProps, 'error'> & { error?: string, onEnter: (e: React.KeyboardEvent<HTMLDivElement>) => any }) {
-  const { error, ...textFieldProps } = props
+  const { error, onEnter, ...textFieldProps } = props
 
   return (
     <div className={styles.input}>
@@ -15,7 +15,7 @@ export default function Input(props: Omit<TextFieldProps, 'error'> & { error?: s
         error={Boolean(error)}
         onKeyDown={e => {
           if(e.key === 'Enter') {
-            props.onEnter?.(e)
+            onEnter?.(e)
           }
         }}
         {...textFieldProps}

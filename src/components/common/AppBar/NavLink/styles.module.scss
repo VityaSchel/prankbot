@@ -5,8 +5,9 @@
 
   &.active {
     // TODO: ask designer for state
-    @media screen and (max-width: variables.$breakpointTablet) {
-      display: none;
-    }
+  }
+  
+  @media screen and (max-width: variables.$breakpointTablet) {
+    display: none;
   }
 }

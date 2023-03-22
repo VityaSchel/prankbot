@@ -1,6 +1,10 @@
 import '@/styles/globals.scss'
 import { ConfigProvider } from 'antd'
 import type { AppProps } from 'next/app'
+import { ru as ruYupLocale } from 'yup-locales'
+import { setLocale as setYupLocale } from 'yup'
+
+setYupLocale(ruYupLocale)
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
