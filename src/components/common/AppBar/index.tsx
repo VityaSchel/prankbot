@@ -9,7 +9,9 @@ export default function AppBar() {
   return (
     <nav className={styles.nav}>
       <div className={styles.left}>
-        <LogoComponent />
+        <Link href='/'>
+          <LogoComponent />
+        </Link>
         <NavLink href='/'>Список розыгрышей</NavLink>
       </div>
       <div className={styles.right}>

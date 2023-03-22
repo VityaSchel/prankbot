@@ -31,7 +31,7 @@
 
     &[disabled] {
       pointer-events: none;
-      background-color: color.scale(variables.$buttonDefault, $saturation: -50%);
+      background-color: color.scale(variables.$buttonDefault, $saturation: -50%, $alpha: -50%);
     }
   }
 

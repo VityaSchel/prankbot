@@ -1,3 +1,4 @@
+import React from 'react'
 import styles from './styles.module.scss'
 import background1 from './assets/background1.png'
 import background2 from './assets/background2.png'
@@ -7,6 +8,7 @@ import background5 from './assets/background5.png'
 import seedrandom from 'seedrandom'
 import Image from 'next/image'
 import AudioPlayer from '@/components/common/AudioPlayer'
+import OrderPrankModal from '@/components/homepage/OrderPrankModal'
 
 export type Prank = {
   id: string
@@ -16,6 +18,8 @@ export type Prank = {
 }
 
 export default function PrankPreview(props: { prank: Prank }) {
+  const [orderModalVisible, setOrderModalVisible] = React.useState(false)
+
   const bg = [
     background1,
     background2,
@@ -25,15 +29,22 @@ export default function PrankPreview(props: { prank: Prank }) {
   ][Math.floor(seedrandom(props.prank.id)() * 5)]
 
   return (
-    <div className={styles.prank}>
-      <div className={styles.image}>
-        <Image src={bg} fill alt='' />
-        <AudioPlayer src={props.prank.previewAudioURL} />
+    <>
+      <div className={styles.prank} onClick={() => setOrderModalVisible(true)}>
+        <div className={styles.image}>
+          <Image src={bg} fill alt='' />
+          <AudioPlayer src={props.prank.previewAudioURL} />
+        </div>
+        <div className={styles.info}>
+          <h3>{props.prank.title}</h3>
+          <span>{props.prank.statistics} розыгрышей</span>
+        </div>
       </div>
-      <div className={styles.info}>
-        <h3>{props.prank.title}</h3>
-        <span>{props.prank.statistics} розыгрышей</span>
-      </div>
-    </div>
+      <OrderPrankModal
+        prank={props.prank}
+        open={orderModalVisible}
+        onClose={() => setOrderModalVisible(false)}
+      />
+    </>
   )
 }

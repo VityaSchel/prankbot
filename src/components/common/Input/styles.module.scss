@@ -1,3 +1,5 @@
+@use '@/styles/variables.scss' as variables;
+
 .input {
   display: flex;
   flex-direction: column;
@@ -5,10 +7,14 @@
   .textField {
     border-radius: 16px;
     font-size: 18px;
+
+    * {
+      font-family: 'Nunito';
+    }
     
     [class~=MuiFilledInput-root] {
       border: 1px solid rgba(157, 136, 123, 0.25);
-      background: rgba(157, 136, 123, 0.05);
+      background: #fff;
 
       &:before,
       &:after {
@@ -30,10 +36,10 @@
       left: 7px;
       top: 11px;
       font-size: 18px;
-      color: var(--primary-text-color);
+      color: variables.$secondary;
 
       &[class~=Mui-focused] {
-        color: var(--primary-text-color);
+        color: variables.$secondary;
       }
     }
   }

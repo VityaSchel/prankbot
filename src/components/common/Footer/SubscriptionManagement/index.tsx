@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import { Modal } from 'antd'
 import { Button } from 'antd'
+import Modal from '@/components/common/Modal'
 
 export default function SubscriptionManagemnt() {
   const [dialogVisible, setDialogVisible] = React.useState(false)
@@ -11,8 +11,8 @@ export default function SubscriptionManagemnt() {
       <Button type='text' className={styles.link} onClick={() => setDialogVisible(true)}>
         Управление подпиской
       </Button>
-      <Modal open={dialogVisible} footer={null} wrapClassName={styles.dialog} onCancel={() => setDialogVisible(false)}>
-        <h2>Управляйте своей подпиской</h2>
+      <Modal open={dialogVisible} onClose={() => setDialogVisible(false)}>
+        <h2 className={styles.title}>Управляйте своей подпиской</h2>
         <div className={styles.subscriptionInfo}>
           <span className={styles.price}>29 рублей</span>
           <span className={styles.label}>Стоимость подписки</span>
