@@ -8,7 +8,8 @@ export default function AudioPlayer(props: { src: string }) {
   const [isLoaded, setIsLoaded] = React.useState(false)
   const [waveform, setWaveform] = React.useState<number[]>([])
 
-  const handlePlayPause = () => {
+  const handlePlayPause = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
     if(!audioPlayerRef.current) return
     if(audioPlayerRef.current.paused) {
       audioPlayerRef.current.play()
