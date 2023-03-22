@@ -1,16 +1,59 @@
+import React from 'react'
 import styles from './styles.module.scss'
 import Modal from '@/components/common/Modal'
-import Checkout from '@x5io/checkout'
-import { Formik } from 'formik'
+import Checkout, { CheckoutRefProperties } from '@x5io/checkout'
+import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import Input from '@/components/common/Input'
 import Button from '@/components/common/Button'
 import type { Prank } from '@/components/common/Prank'
+import { CloudpaymentsPaymentResponse, MakeCallBody, MakeCallResponse, PayCloudpaymentsBody, PayCloudpaymentsResponse, PaymentRequired } from '@/data/ApiDefinitions'
+import { apiURI } from '@/data/api'
+import { makeRedirect } from '@/utils'
 
 export default function OrderPrankModal(props: { prank: Prank, open: boolean, onClose: () => any }) {
-  const handlePaymentRequest = async (cryptoram: string) => {
-    return true
+  const checkoutRef = React.useRef<CheckoutRefProperties>()
+  const [checkoutProps, setCheckoutProps] = React.useState<null | { publicID: string, amount: number }>(null)
+  const formikRef = React.useRef<FormikProps<{ phone: string, email: string }>>()
+
+  const handlePaymentRequest = async (cryptogram: string) => {
+    try {
+      const payRequest = await fetch(apiURI + `/payments/${checkoutProps!.publicID}/cloudpayments/pay`, {
+        method: 'POST',
+        body: JSON.stringify({
+          cryptogram
+        } as PayCloudpaymentsBody),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      const payResponse = await payRequest.json() as PayCloudpaymentsResponse
+      if(payResponse.redirectParams) {
+        makeRedirect(
+          payResponse.redirectUrl, Object.fromEntries(
+            payResponse.redirectParams.map(({ key, value }) => [key, value])
+          ), payResponse.redirectMethod
+        )
+      } else {
+        window.location.href = payResponse.redirectUrl
+      }
+      return payRequest.status === 201
+    } catch(e) {
+      console.error(e)
+      return false
+    }
   }
+
+  React.useEffect(() => {
+    if(!checkoutRef.current) return
+    checkoutRef.current.initialize({
+      email: formikRef.current!.values.email
+    })
+  }, [checkoutRef.current])
+
+  React.useEffect(() => {
+    if(!props.open) setCheckoutProps(null)
+  }, [props.open])
+
+  console.log(checkoutProps, checkoutRef)
 
   return (
     <Modal open={props.open} onClose={props.onClose} className={styles.modal}>
@@ -27,8 +70,39 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
           })
         }
         onSubmit={async (values, { setSubmitting }) => {
-          
+          try {
+            const callsMakeRequest = await fetch(apiURI + '/calls/make', {
+              method: 'POST',
+              body: JSON.stringify({
+                callRecordId: Number(props.prank.id),
+                phone: values.phone
+              } as MakeCallBody),
+              headers: { 'Content-Type': 'application/json' }
+            })
+            if(callsMakeRequest.status !== 402) throw new Error('Exepected status code to be 402')
+            const callsMakeResponse = await callsMakeRequest.json() as PaymentRequired
+            
+            const paymentRequest = await fetch(apiURI + `/payments/${callsMakeResponse.paymentId}/cloudpayments`)
+            const paymentResponse = await paymentRequest.json() as CloudpaymentsPaymentResponse
+            await fetch(apiURI + `/payments/${callsMakeResponse.paymentId}/set-email`, {
+              method: 'POST',
+              body: JSON.stringify({
+                email: values.email
+              }),
+              headers: {'Content-Type': 'application/json'}
+            })
+            setCheckoutProps({
+              publicID: paymentResponse.cloudpaymentsPublicId,
+              amount: paymentResponse.amount
+            })
+          } catch(e) {
+            console.error(e)
+            alert('Ошибка!')
+          } finally {
+            setSubmitting(false)
+          }
         }}
+        innerRef={formikRef as any}
       >
         {({
           values,
@@ -55,6 +129,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 onBlur={handleBlur}
                 value={values.phone}
                 error={errors.phone}
+                disabled={isSubmitting}
               />
               <Input
                 type="email"
@@ -66,6 +141,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 onBlur={handleBlur}
                 value={values.email}
                 error={errors.email}
+                disabled={isSubmitting}
               />
             </div>
             <div className={styles.subscription}>
@@ -80,14 +156,15 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
           </form>
         )}
       </Formik>
-      <Checkout
+      {checkoutProps && <Checkout
         subject={{
-          publicID: '0',
+          publicID: checkoutProps.publicID,
           name: 'Оплата подписки',
-          price: '0₽'
+          price: checkoutProps.amount + '₽'
         }}
         onRequest={handlePaymentRequest}
-      />
+        ref={checkoutRef}
+      />}
     </Modal>
   )
 }
