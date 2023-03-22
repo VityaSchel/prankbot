@@ -46,3 +46,9 @@ a {
 [data-lastpass-icon-root="true"] {
   display: none;
 }
+
+// .ant-fade + div .ant-modal-close {
+.ant-zoom .ant-modal-close {
+  // display: none !important;
+  opacity: 0 !important;
+}
