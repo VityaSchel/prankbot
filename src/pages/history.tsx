@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import styles from '@/styles/Login.module.scss'
+import styles from '@/styles/History.module.scss'
 import AppBar from '@/components/common/AppBar'
 import CallsHistory from '@/components/history/CallsHistory'
 import Footer from '@/components/common/Footer'

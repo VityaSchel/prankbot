@@ -2,6 +2,7 @@ import { User } from '@/store/definitions/User'
 import type { RootState } from '@/store/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { HYDRATE } from 'next-redux-wrapper'
+import Cookie from 'js-cookie'
 
 type AuthStateSliceState = /*{
   loggedIn: true

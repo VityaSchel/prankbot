@@ -7,6 +7,7 @@ import { apiURI } from '@/data/api'
 import { LoginBody, LoginResponse } from '@/data/ApiDefinitions'
 import { store, useAppDispatch } from '@/store/store'
 import { handleLogin } from '@/store/slices/authState'
+import Cookies from 'js-cookie'
 
 export default function LoginForm() {
   const dispatch = useAppDispatch()
@@ -36,8 +37,8 @@ export default function LoginForm() {
           const loginResponse = await loginRequest.json() as LoginResponse
           const token = loginResponse.token
           if(token) {
-            alert(token)
-            store.dispatch(handleLogin({ _no_data: true }))
+            Cookies.set('prankbot_session', token, { expires: 365, path: '' })
+            dispatch(handleLogin({ _no_data: true }))
           } else {
             alert('Ошибка во время входа')
           }
@@ -85,10 +86,7 @@ export default function LoginForm() {
              value={values.password}
              error={errors.password}
            />
-           <Button type="submit" disabled={!values.email || !values.password || isSubmitting} onClick={() => {
-
-        dispatch(handleLogin({ _no_data: true })) //TODO: remove
-           }}>
+           <Button type="submit" disabled={!values.email || !values.password || isSubmitting}>
               Войти
            </Button>
          </form>

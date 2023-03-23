@@ -3,6 +3,7 @@ import styles from './styles.module.scss'
 import { UserCallsResponse } from '@/data/ApiDefinitions'
 import { useOnScreen } from '@/utils'
 import { Skeleton } from 'antd'
+import { apiURI } from '@/data/api'
 
 export default function CallsHistory() {
   const [orders, setOrders] = React.useState<null | UserCallsResponse>(null)
@@ -10,7 +11,7 @@ export default function CallsHistory() {
   React.useEffect(() => { fetchOrders() }, [])
 
   const fetchOrders = async () => {
-    const calls = await fetch('/users/calls')
+    const calls = await fetch(apiURI + '/users/calls')
   }
 
   return (
