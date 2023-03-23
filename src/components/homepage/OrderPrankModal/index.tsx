@@ -43,14 +43,24 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
   }
 
   React.useEffect(() => {
-    if(!checkoutRef.current) return
-    checkoutRef.current.initialize({
-      email: formikRef.current!.values.email
-    })
-  }, [checkoutRef.current])
+    const inter = setInterval(() => {
+      if(!checkoutRef.current) return
+      clearInterval(inter)
+      console.log('call to')
+      checkoutRef.current.initialize({
+        email: formikRef.current!.values.email
+      })
+    }, 10)
+    return () => {
+      clearInterval(inter)
+    }
+  }, [checkoutProps])
 
   React.useEffect(() => {
-    if(!props.open) setCheckoutProps(null)
+    if(!props.open) {
+      checkoutRef.current = undefined
+      setCheckoutProps(null)
+    }
   }, [props.open])
 
   console.log(checkoutProps, checkoutRef)

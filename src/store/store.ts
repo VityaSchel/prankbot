@@ -17,6 +17,7 @@ const makeStore = () => {
 }
 
 export const wrapper = createWrapper(makeStore)
+export type RootState = ReturnType<typeof store['getState']>
 
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch: () => AppDispatch = useDispatch
