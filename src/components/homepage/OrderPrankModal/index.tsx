@@ -63,8 +63,6 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
     }
   }, [props.open])
 
-  console.log(checkoutProps, checkoutRef)
-
   return (
     <Modal open={props.open} onClose={props.onClose} className={styles.modal}>
       <Formik
