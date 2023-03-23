@@ -4,9 +4,13 @@ import Input from '@/components/common/Input'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { apiURI } from '@/data/api'
-import { LoginBody, LoginResponse } from '@/data/apiDefinitions'
+import { LoginBody, LoginResponse } from '@/data/ApiDefinitions'
+import { store, useAppDispatch } from '@/store/store'
+import { handleLogin } from '@/store/slices/authState'
 
 export default function LoginForm() {
+  const dispatch = useAppDispatch()
+
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
@@ -33,6 +37,7 @@ export default function LoginForm() {
           const token = loginResponse.token
           if(token) {
             alert(token)
+            store.dispatch(handleLogin({ _no_data: true }))
           } else {
             alert('Ошибка во время входа')
           }
@@ -80,7 +85,10 @@ export default function LoginForm() {
              value={values.password}
              error={errors.password}
            />
-           <Button type="submit" disabled={!values.email || !values.password || isSubmitting}>
+           <Button type="submit" disabled={!values.email || !values.password || isSubmitting} onClick={() => {
+
+        dispatch(handleLogin({ _no_data: true })) //TODO: remove
+           }}>
               Войти
            </Button>
          </form>
