@@ -26,7 +26,7 @@ export default function App({ Component, ...rest }: AppProps) {
 
   return (
     <ReduxProvider store={store}>
-      <SessionSuspense>
+      {/* <SessionSuspense> */}
         <ConfigProvider
           // theme={{
           //   token: {
@@ -37,11 +37,12 @@ export default function App({ Component, ...rest }: AppProps) {
         >
           <Component {...pageProps} />
         </ConfigProvider>
-      </SessionSuspense>  
+      {/* </SessionSuspense>   */}
     </ReduxProvider>
   )
 }
 
+// literally kills SSR omg
 function SessionSuspense(props: { children: React.ReactNode }) {
   const authState = useSelector(selectAuthState)
 

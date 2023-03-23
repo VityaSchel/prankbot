@@ -13,7 +13,7 @@ export default function History() {
   const router = useRouter()
 
   React.useEffect(() => {
-    if(!authState.loggedIn) {
+    if(authState.sessionRestored && !authState.loggedIn) {
       router.replace('/login')
     }
   }, [authState])
@@ -27,19 +27,23 @@ export default function History() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppBar />
-      <main className={styles.main}>
-        {!authState.loggedIn
-          ? (
-            <>
-              <h2>Вы не вошли в аккаунт</h2>
-              <h3>Перенаправление...</h3>
-            </>
-          ) : (
-            <CallsHistory />
-          )
-        }
-      </main>
-      <Footer />
+      {authState.sessionRestored && (
+        <>
+          <main className={styles.main}>
+            {!authState.loggedIn
+              ? (
+                <>
+                  <h2>Вы не вошли в аккаунт</h2>
+                  <h3>Перенаправление...</h3>
+                </>
+              ) : (
+                <CallsHistory />
+              )
+            }
+          </main>
+          <Footer />
+        </>
+      )}
     </>
   )
 }

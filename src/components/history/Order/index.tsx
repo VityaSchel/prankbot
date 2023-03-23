@@ -8,15 +8,15 @@ import CallingIcon from './assets/statuses/calling.svg'
 import CouldntCallIcon from './assets/statuses/couldntCall.svg'
 import ErrorIcon from './assets/statuses/error.svg'
 
-type OrderStatus = 'startingCall' | 'calling' | 'callEnded' | 'error' | 'couldntCall'
-export type Order = {
+export type OrderStatus = 'startingCall' | 'calling' | 'callEnded' | 'error' | 'couldntCall'
+export type OrderData = {
   title: string
   phone: string
   date: Date
   status: OrderStatus
 }
 
-export default function Order(props: { order: Order }) {
+export default function Order(props: { order: OrderData }) {
   return (
     <div className={styles.order}>
       <div className={styles.leftStandalone}>

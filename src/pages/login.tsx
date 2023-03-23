@@ -16,7 +16,7 @@ export default function Login() {
   const router = useRouter()
 
   React.useEffect(() => {
-    if(authState.loggedIn) {
+    if(authState.sessionRestored && authState.loggedIn) {
       router.replace('/')
     }
   }, [authState])
@@ -30,22 +30,26 @@ export default function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppBar />
-      <main className={styles.main}>
-        {!authState.loggedIn
-          ? (
-            <>
-              <LoginForm />
-              <RegistrationHint />
-            </>
-          ) : (
-            <>
-              <h2>Вход выполнен</h2>
-              <h3>Перенаправление...</h3>
-            </>
-          )
-        }
-      </main>
-      <Footer />
+      {authState.sessionRestored && (
+        <>
+          <main className={styles.main}>
+            {!authState.loggedIn
+              ? (
+                <>
+                  <LoginForm />
+                  <RegistrationHint />
+                </>
+              ) : (
+                <>
+                  <h2>Вход выполнен</h2>
+                  <h3>Перенаправление...</h3>
+                </>
+              )
+            }
+          </main>
+          <Footer />
+        </>
+      )}
     </>
   )
 }
