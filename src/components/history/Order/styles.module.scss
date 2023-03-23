@@ -1,0 +1,77 @@
+@use '@/styles/variables.scss' as variables;
+
+.order {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 20px rgba(23, 25, 34, 0.02);
+  border-radius: 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+
+  .title {
+    font-family: 'Nunito';
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 120%;
+    color: variables.$primary;
+  }
+
+  .date {
+    font-family: 'Nunito';
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 120%;
+    color: variables.$tertiary;
+  }
+
+  .leftStandalone {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 8px;
+    flex: 1; 
+  }
+
+  .phone,
+  .status {
+    width: 200px;
+  }
+
+  .phone {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 120%;
+    color: variables.$primary;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 120%;
+
+    &.startingCall,
+    &.calling {
+      color: #2CC633;
+    }
+
+    &.callEnded {
+      color: variables.$accent;
+    }
+
+    &.error,
+    &.couldntCall {
+      color: #FC3A3A;
+    }
+  }
+}

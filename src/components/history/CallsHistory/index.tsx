@@ -13,186 +13,188 @@ export default function CallsHistory() {
   React.useEffect(() => { fetchOrders() }, [])
 
   const fetchOrders = async () => {
-    const calls = await fetch(apiURI + '/users/calls', {
+    const callsRequest = await fetch(apiURI + '/users/calls', {
       headers: generateAuthorizationHeader()
     })
-    setOrders([
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'done'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        callRecord: 'https://test.com',
-        status: 'done',
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'done'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        callRecord: 'https://test.com',
-        status: 'done',
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'done'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        callRecord: 'https://test.com',
-        status: 'done',
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'done'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        callRecord: 'https://test.com',
-        status: 'done',
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'done'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        callRecord: 'https://test.com',
-        status: 'done',
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'done'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        callRecord: 'https://test.com',
-        status: 'done',
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'in_process'
-      },
-      {
-        callId: 0,
-        status: 'done'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        status: 'error'
-      },
-      {
-        callId: 0,
-        callRecord: 'https://test.com',
-        status: 'done',
-      },
-    ])
+    const callsResponse = await callsRequest.json() as { calls: UserCallsResponse | null, count:number }
+    setOrders(callsResponse.calls ?? [])
+    // setOrders([
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'done'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     callRecord: 'https://test.com',
+    //     status: 'done',
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'done'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     callRecord: 'https://test.com',
+    //     status: 'done',
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'done'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     callRecord: 'https://test.com',
+    //     status: 'done',
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'done'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     callRecord: 'https://test.com',
+    //     status: 'done',
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'done'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     callRecord: 'https://test.com',
+    //     status: 'done',
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'done'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     callRecord: 'https://test.com',
+    //     status: 'done',
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'in_process'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'done'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     status: 'error'
+    //   },
+    //   {
+    //     callId: 0,
+    //     callRecord: 'https://test.com',
+    //     status: 'done',
+    //   },
+    // ])
   }
 
   return (
@@ -201,16 +203,20 @@ export default function CallsHistory() {
       {orders
         ? (
           <>
-            <h3>Активные</h3>
-            {orders
-              .filter(call => ['in_process', 'in_queue'].includes(call.status))
-              .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
-            }
-            <h3>Завершенные</h3>
-            {orders
-              .filter(call => ['done', 'error',/*, 'couldnt_call'*/].includes(call.status))
-              .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
-            }
+            <div className={styles.group}>
+              <h3>Активные</h3>
+              {orders
+                .filter(call => ['in_process', 'in_queue'].includes(call.status))
+                .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
+              }
+            </div>
+            <div className={styles.group}>
+              <h3>Завершенные</h3>
+              {orders
+                .filter(call => ['done', 'error',/*, 'couldnt_call'*/].includes(call.status))
+                .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
+              }
+            </div>
           </>
         ) : <Skeleton />
       }

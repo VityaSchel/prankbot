@@ -56,11 +56,11 @@ const PrankStatus = (props: { status: OrderStatus }) => {
       )}
     >
       {{
-        'startingCall': StartingCallIcon,
-        'calling': CallingIcon,
-        'callEnded': CallEndedIcon,
-        'error': ErrorIcon,
-        'couldntCall': CouldntCallIcon,
+        'startingCall': <StartingCallIcon />,
+        'calling': <CallingIcon />,
+        'callEnded': <CallEndedIcon />,
+        'error': <ErrorIcon />,
+        'couldntCall': <CouldntCallIcon />,
       }[props.status]}
       {{
         'startingCall': 'Начинаем звонок',
