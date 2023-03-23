@@ -14,13 +14,15 @@ type AuthStateSliceState = /*{
   value: {
     loggedIn: boolean
     user: User | null
+    sessionRestored: boolean
   }
 }
 
 const initialState: AuthStateSliceState = {
   value: {
     loggedIn: false,
-    user: null
+    user: null,
+    sessionRestored: false
   }
 }
 
@@ -29,15 +31,21 @@ export const authStateSlice = createSlice({
   initialState,
   reducers: {
     handleLogin: (state, action: PayloadAction<{ user: User }>) => {
-      state.value = {
-        loggedIn: true,
-        user: action.payload.user
-      }
+      state.value.loggedIn = true
+      state.value.user = action.payload.user
     },
     handleLogout: (state) => {
-      state.value = {
-        loggedIn: false,
-        user: null
+      state.value.loggedIn = false
+      state.value.user = null
+    },
+    handleRestoreSession: (state, action: PayloadAction<{ user: User | null }>) => {
+      state.value.sessionRestored = true
+      if(action.payload.user) {
+        state.value.loggedIn = true
+        state.value.user = action.payload.user
+      } else {
+        state.value.loggedIn = false
+        state.value.user = null
       }
     },
 
@@ -52,6 +60,6 @@ export const authStateSlice = createSlice({
   }
 })
 
-export const { handleLogin, handleLogout } = authStateSlice.actions
+export const { handleLogin, handleLogout, handleRestoreSession } = authStateSlice.actions
 export const selectAuthState = (state: RootState) => state.authState.value
 export default authStateSlice.reducer

@@ -18,12 +18,14 @@ export default function LoginForm() {
       validationSchema={
         Yup.object({
           email: Yup.string()
-            .email()
-            .required(),
+            .email('Некорректный формат')
+            .required('Заполните это поле'),
           password: Yup.string()
-            .required()
+            .required('Заполните это поле')
         })
       }
+      validateOnChange={false}
+      validateOnBlur={false}
       onSubmit={async (values, { setSubmitting }) => {
         try {
           const loginRequest = await fetch(apiURI + '/auth/login', {
@@ -38,7 +40,7 @@ export default function LoginForm() {
           const token = loginResponse.token
           if(token) {
             Cookies.set('prankbot_session', token, { expires: 365, path: '' })
-            dispatch(handleLogin({ _no_data: true }))
+            dispatch(handleLogin({ user: { _no_data: true } }))
           } else {
             alert('Ошибка во время входа')
           }
@@ -50,47 +52,47 @@ export default function LoginForm() {
         }
       }}
      >
-       {({
-         values,
-         errors,
-         touched,
-         handleChange,
-         handleBlur,
-         handleSubmit,
-         isSubmitting
-       }) => (
-         <form onSubmit={handleSubmit} className={styles.form}>
+      {({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        isSubmitting
+      }) => (
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.title}>
             <h1>Вход</h1>
             <h2>Получи выгодную месячную подписку и получи безлимит на розыгрыши</h2>
           </div>
-           <Input
-              type="email"
-              name="email"
-              label='Введите e-mail'
-              placeholder='E-mail'
-              onChange={handleChange}
-              onEnter={() => handleSubmit()}
-              onBlur={handleBlur}
-              value={values.email}
-              error={errors.email}
-           />
-           <Input
-             type="password"
-             name="password"
-             label='Введите пароль'
-             placeholder='Пароль'
-             onChange={handleChange}
-             onEnter={() => handleSubmit()}
-             onBlur={handleBlur}
-             value={values.password}
-             error={errors.password}
-           />
-           <Button type="submit" disabled={!values.email || !values.password || isSubmitting}>
-              Войти
-           </Button>
-         </form>
-       )}
+          <Input
+            type="email"
+            name="email"
+            label='Введите e-mail'
+            placeholder='E-mail'
+            onChange={handleChange}
+            onEnter={() => handleSubmit()}
+            onBlur={handleBlur}
+            value={values.email}
+            error={errors.email}
+          />
+          <Input
+            type="password"
+            name="password"
+            label='Введите пароль'
+            placeholder='Пароль'
+            onChange={handleChange}
+            onEnter={() => handleSubmit()}
+            onBlur={handleBlur}
+            value={values.password}
+            error={errors.password}
+          />
+          <Button type="submit" disabled={!values.email || !values.password || isSubmitting}>
+            Войти
+          </Button>
+        </form>
+      )}
      </Formik>
   )
 }

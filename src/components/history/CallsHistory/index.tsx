@@ -1,9 +1,10 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import { UserCallsResponse } from '@/data/ApiDefinitions'
-import { useOnScreen } from '@/utils'
+import { useOnScreen } from '@/utils/hooks'
 import { Skeleton } from 'antd'
 import { apiURI } from '@/data/api'
+import { generateAuthorizationHeader } from '@/utils'
 
 export default function CallsHistory() {
   const [orders, setOrders] = React.useState<null | UserCallsResponse>(null)
@@ -11,7 +12,9 @@ export default function CallsHistory() {
   React.useEffect(() => { fetchOrders() }, [])
 
   const fetchOrders = async () => {
-    const calls = await fetch(apiURI + '/users/calls')
+    const calls = await fetch(apiURI + '/users/calls', {
+      headers: generateAuthorizationHeader()
+    })
   }
 
   return (

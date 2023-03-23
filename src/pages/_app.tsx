@@ -6,7 +6,8 @@ import { wrapper } from '@/store/store'
 import type { AppProps } from 'next/app'
 import { ru as ruYupLocale } from 'yup-locales'
 import Cookie from 'js-cookie'
-import { handleLogin } from '@/store/slices/authState'
+import { handleRestoreSession, selectAuthState } from '@/store/slices/authState'
+import { useSelector } from 'react-redux'
 
 import { setLocale as setYupLocale } from 'yup'
 setYupLocale(ruYupLocale)
@@ -17,22 +18,34 @@ export default function App({ Component, ...rest }: AppProps) {
 
   React.useEffect(() => {
     if(Cookie.get('prankbot_session')) {
-      store.dispatch(handleLogin({ _no_data: true }))
+      store.dispatch(handleRestoreSession({ user: { _no_data: true } }))
+    } else {
+      store.dispatch(handleRestoreSession({ user: null }))
     }
   }, [])
 
   return (
     <ReduxProvider store={store}>
-      <ConfigProvider
-        // theme={{
-        //   token: {
-        //     colorPrimary: 'rgb(237, 234, 255)',
-        //     colorTextLightSolid: 'rgb(75, 46, 255)'
-        //   },
-        // }}
-      >
-        <Component {...pageProps} />
-      </ConfigProvider>
+      <SessionSuspense>
+        <ConfigProvider
+          // theme={{
+          //   token: {
+          //     colorPrimary: 'rgb(237, 234, 255)',
+          //     colorTextLightSolid: 'rgb(75, 46, 255)'
+          //   },
+          // }}
+        >
+          <Component {...pageProps} />
+        </ConfigProvider>
+      </SessionSuspense>  
     </ReduxProvider>
+  )
+}
+
+function SessionSuspense(props: { children: React.ReactNode }) {
+  const authState = useSelector(selectAuthState)
+
+  return (
+    <>{authState.sessionRestored && props.children}</>
   )
 }
