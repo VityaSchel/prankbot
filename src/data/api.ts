@@ -12,13 +12,16 @@ export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [ke
     method,
     ...(method !== 'GET' && {
       body: body as any,
-      headers: {
-        ...generateAuthorizationHeader(),
+    }),
+    headers: {
+      ...generateAuthorizationHeader(),
+      ...(method !== 'GET' && {
         'Content-Type': 'application/json'
-      }
-    })
+      })
+    }
   })
   if(request.status === 403 || request.status === 401) {
+    console.log('Logging out')
     store.dispatch(handleLogout({}))
     Cookie.remove('prankbot_session')
     return {}

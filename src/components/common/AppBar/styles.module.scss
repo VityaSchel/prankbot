@@ -1,3 +1,5 @@
+@use '@/styles/variables.scss' as variables;
+
 .nav {
   display: flex;
   flex-direction: row;
@@ -14,5 +16,37 @@
     align-items: center;
     padding: 0px;
     gap: 40px;
+  }
+
+  .right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 8px;
+
+    @media screen and (min-width: #{variables.$breakpointTablet+1px}) {
+      .standalone {
+        display: block;
+      }
+      .mobile {
+        display: none;
+      }
+    }
+    @media screen and (max-width: variables.$breakpointTablet) {
+      .standalone {
+        display: none;
+      }
+      .mobile {
+        display: block;
+      }
+    }
+  }
+
+  .login,
+  .logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
