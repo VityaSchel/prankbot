@@ -3,6 +3,7 @@ import Button from '@/components/common/Button'
 import Image from 'next/image'
 import { BsArrowDown } from 'react-icons/bs'
 import { Tabs } from 'antd'
+import HeroImage from './assets/Hero.png'
 
 export default function Hero() {
   return (
@@ -16,7 +17,7 @@ export default function Hero() {
         <Button variant='secondary'>Выбрать розыгрыш <BsArrowDown /></Button>
       </div>
       <div className={styles.image}>
-        <Image src={'https://picsum.photos/600/320'} alt='' fill />
+        <Image src={HeroImage} alt='' fill quality={100} priority />
       </div>
     </div>
   )

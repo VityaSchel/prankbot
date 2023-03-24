@@ -1,14 +1,15 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import background1 from './assets/background1.png'
-import background2 from './assets/background2.png'
-import background3 from './assets/background3.png'
-import background4 from './assets/background4.png'
-import background5 from './assets/background5.png'
 import seedrandom from 'seedrandom'
 import Image from 'next/image'
 import AudioPlayer from '@/components/common/AudioPlayer'
 import OrderPrankModal from '@/components/homepage/OrderPrankModal'
+
+import miscellaneousBackground from './assets/miscellaneous.png'
+import deliveryBackground from './assets/delivery.png'
+import policeBackground from './assets/police.png'
+import studyBackground from './assets/study.png'
+import threatsBackground from './assets/threats.png'
 
 export type Prank = {
   id: string
@@ -21,11 +22,11 @@ export default function PrankPreview(props: { prank: Prank }) {
   const [orderModalVisible, setOrderModalVisible] = React.useState(false)
 
   const bg = [
-    background1,
-    background2,
-    background3,
-    background4,
-    background5
+    miscellaneousBackground,
+    deliveryBackground,
+    policeBackground,
+    studyBackground,
+    threatsBackground
   ][Math.floor(seedrandom(props.prank.id)() * 5)]
 
   return (

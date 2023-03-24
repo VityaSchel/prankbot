@@ -47,7 +47,7 @@ export default function LoginForm() {
             const response = loginResponse as ErrorResponse
             if(response.message === 'user not found') {
               formikRef.current!.setErrors({
-                email: 'Неправильный пользователь'
+                email: 'E-mail не зарегистрирован'
               })
             } else if(response.message === 'wrong email or password') {
               formikRef.current!.setErrors({
