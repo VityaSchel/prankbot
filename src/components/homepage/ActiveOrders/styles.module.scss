@@ -1,3 +1,5 @@
+@use '@/styles/variables.scss' as variables;
+
 .activeOrders {
   display: flex;
   flex-direction: column;
@@ -7,6 +9,22 @@
   gap: 32px;
   width: 100%;
   max-width: var(--max-width);
+
+  @media screen and (max-width: variables.$breakpointTablet) {
+    gap: 24px;
+  }
+
+  h1 {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 120%;
+
+    @media screen and (max-width: variables.$breakpointTablet) {
+      font-size: 24px;
+    }
+  }
 
   .ordersList {
     display: flex;

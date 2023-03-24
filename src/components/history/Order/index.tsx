@@ -1,12 +1,18 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import cx from 'classnames'
+import { Divider } from 'antd'
+import Image from 'next/image'
 
 import StartingCallIcon from './assets/statuses/startingCall.svg'
 import CallEndedIcon from './assets/statuses/callEnded.svg'
 import CallingIcon from './assets/statuses/calling.svg'
 import CouldntCallIcon from './assets/statuses/couldntCall.svg'
 import ErrorIcon from './assets/statuses/error.svg'
+import AudioIcon from './assets/audio.svg'
+// import LoadingIcon from './assets/loading.svg'
+import LoadingIcon from './assets/loading.png'
+import UploadIcon from './assets/upload.svg'
 
 export type OrderStatus = 'startingCall' | 'calling' | 'callEnded' | 'error' | 'couldntCall'
 export type OrderData = {
@@ -14,6 +20,7 @@ export type OrderData = {
   phone: string
   date: Date
   status: OrderStatus
+  recordURI?: string
 }
 
 export default function Order(props: { order: OrderData }) {
@@ -25,6 +32,10 @@ export default function Order(props: { order: OrderData }) {
       </div>
       <PrankPhone>{props.order.phone}</PrankPhone>
       <PrankStatus status={props.order.status} />
+      <div className={styles.rightStandalone}>
+        <Divider type='vertical' />
+        <PrankAction status={props.order.status} recordURI={props.order.recordURI} />
+      </div>
     </div>
   )
 }
@@ -70,5 +81,45 @@ const PrankStatus = (props: { status: OrderStatus }) => {
         'couldntCall': 'Недозвон',
       }[props.status]}
     </span>
+  )
+}
+const PrankAction = (props: { status: OrderStatus, recordURI?: string }) => {
+  const handleAction = () => {
+    
+  }
+
+  return (
+    <button 
+      disabled={!props.recordURI} 
+      onClick={handleAction}
+      className={cx(styles.action, {
+        [styles.grayedOut]: ['startingCall', 'calling', 'error', 'couldntCall'].includes(props.status)
+      })}
+    >
+      {{
+        'startingCall': <span>Аудиозапись</span>,
+        'calling': <span>Аудиозапись</span>,
+        'callEnded': props.recordURI ? <span>Аудиозапись</span> : <span className={styles.accent}>Ожидание</span>,
+        'error': <span>Недоступно</span>,
+        'couldntCall': <span>Недоступно</span>,
+      }[props.status]}
+      {['startingCall', 'calling', 'error', 'couldntCall'].includes(props.status) && (
+        <div className={styles.adornmentButton}>
+          <AudioIcon />
+        </div>
+      )}
+      {props.status === 'callEnded' && (
+        props.recordURI 
+          ? (
+            <div className={styles.adornmentButton}>
+              <UploadIcon />
+            </div>
+          ) : (
+            <div className={styles.loading}>
+              <Image src={LoadingIcon} alt='Loading...' />
+            </div>
+          )
+      )}
+    </button>
   )
 }

@@ -7,6 +7,7 @@ import { apiURI, fetchAPI } from '@/data/api'
 import { generateAuthorizationHeader } from '@/utils'
 import Order, { OrderData, OrderStatus } from '@/components/history/Order'
 import { getOrderDetails } from '@/utils/api'
+import { mockUserCalls } from '@/data/mockData'
 
 export default function CallsHistory() {
   const [orders, setOrders] = React.useState<null | UserCallsResponse['calls']>(null)
@@ -15,7 +16,10 @@ export default function CallsHistory() {
 
   const fetchOrders = async () => {
     const callsResponse = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
-    setOrders(callsResponse.calls)
+    setOrders(
+      mockUserCalls.calls
+      // callsResponse.calls
+    )
   }
 
   return (

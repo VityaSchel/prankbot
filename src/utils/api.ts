@@ -12,6 +12,7 @@ export function getOrderDetails(userCall: UserCallsResponse['calls'][number]): O
       'in_process': 'calling',
       'error': 'error',
       'done': 'callEnded'
-    }[userCall.status] as OrderStatus
+    }[userCall.status] as OrderStatus,
+    recordURI: userCall.callRecord
   }
 }
