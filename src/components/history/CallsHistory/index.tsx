@@ -13,8 +13,8 @@ export default function CallsHistory() {
   React.useEffect(() => { fetchOrders() }, [])
 
   const fetchOrders = async () => {
-    const callsResponse = await fetchAPI<{ calls: UserCallsResponse | null, count:number }>('/users/calls', 'GET')
-    setOrders(callsResponse.calls ?? [])
+    const callsResponse = await fetchAPI<{ calls: UserCallsResponse, count: number }>('/users/calls', 'GET')
+    setOrders(callsResponse.calls)
     // setOrders([
     //   {
     //     callId: 0,
@@ -234,7 +234,6 @@ function LazyCallLoadingWrapper(props: { i: number, userCall: UserCallsResponse[
 
   React.useEffect(() => {
     if(!isLoading) return
-    console.log('Yes im here!', props.i, props.userCall)
     setOrderDetails({
       title: 'Test',
       phone: '+7123456789',

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "swagger-typescript-api -p https://prank-call-api.x5.money/swagger.json -o ./src/data/ApiDefinitions.ts"
   },
   "dependencies": {
     "@mui/material": "^5.11.14",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",
     "@types/js-cookie": "^3.0.3",
-    "@types/seedrandom": "^3.0.5"
+    "@types/seedrandom": "^3.0.5",
+    "swagger-typescript-api": "^12.0.4"
   }
 }

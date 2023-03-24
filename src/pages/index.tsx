@@ -6,8 +6,12 @@ import AppBar from '@/components/common/AppBar'
 import Hero from '@/components/homepage/Hero'
 import Pranks from '@/components/homepage/Pranks'
 import Footer from '@/components/common/Footer'
+import { selectAuthState } from '@/store/slices/authState'
+import { useSelector } from 'react-redux'
 
 export default function Home() {
+  const authState = useSelector(selectAuthState)
+
   return (
     <>
       <Head>
@@ -18,7 +22,10 @@ export default function Home() {
       </Head>
       <AppBar />
       <main className={styles.main}>
-        <Hero />
+        {authState.sessionRestored && authState.loggedIn
+          ? <ActiveOrders />
+          : <Hero />
+        }
         <Pranks />
       </main>
       <Footer />
