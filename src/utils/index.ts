@@ -20,8 +20,9 @@ export function makeRedirect(path: string, params: { [key: string]: any }, metho
   form.submit()
 }
 
-export function generateAuthorizationHeader() {
-  return {
-    Authorization: Cookies.get('prankbot_session') as string
-  }
+export function generateAuthorizationHeader(): { Authorization: string } | {} {
+  const session = Cookies.get('prankbot_session')
+  return session ? {
+    Authorization: session as string
+  } : {}
 }
