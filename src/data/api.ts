@@ -6,7 +6,7 @@ import Cookie from 'js-cookie'
 export const apiURI = 'https://prank-call-api.x5.money'
 
 export async function fetchAPI<T>(endpoint: string, method: 'GET'): Promise<T>
-export async function fetchAPI<T>(endpoint: string, method: 'POST', body: { [key: string]: any }): Promise<T>
+export async function fetchAPI<T>(endpoint: string, method: string, body: { [key: string]: any }): Promise<T>
 export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [key: string]: any }): Promise<T> {
   const request = await fetch(apiURI + endpoint, {
     method,
@@ -18,7 +18,7 @@ export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [ke
       }
     })
   })
-  if(request.status === 403) {
+  if(request.status === 403 || request.status === 401) {
     store.dispatch(handleLogout({}))
     Cookie.remove('prankbot_session')
     return {}

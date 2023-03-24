@@ -13,7 +13,7 @@ export default function CallsHistory() {
   React.useEffect(() => { fetchOrders() }, [])
 
   const fetchOrders = async () => {
-    const callsResponse = await fetchAPI<{ calls: UserCallsResponse | null, count:number }>('/users/calls')
+    const callsResponse = await fetchAPI<{ calls: UserCallsResponse | null, count:number }>('/users/calls', 'GET')
     setOrders(callsResponse.calls ?? [])
     // setOrders([
     //   {
