@@ -80,7 +80,9 @@ export interface ErrorResponse {
 }
 
 export interface LoginBody {
+  /** @example "test@test.com" */
   email: string;
+  /** @example "password" */
   password: string;
 }
 
@@ -130,11 +132,15 @@ export interface SubscriptionUnsubscribeBody {
   lastNumbers: string;
 }
 
-export type UserCallsResponse = {
-  callId: number;
-  callRecord?: string;
-  status: "in_process" | "error" | "done";
-}[];
+export interface UserCallsResponse {
+  calls: {
+    callId: number;
+    callRecord?: string;
+    phone: string;
+    status: "in_queue" | "in_process" | "error" | "done";
+  }[];
+  count: number;
+}
 
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;

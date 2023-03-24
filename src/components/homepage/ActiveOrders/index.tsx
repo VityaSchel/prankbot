@@ -1,34 +1,40 @@
-import { OrderData } from '@/components/history/Order'
+import Order, { OrderData } from '@/components/history/Order'
 import { fetchAPI } from '@/data/api'
 import { CategoryCallRecordsResponse, UserCallsResponse } from '@/data/ApiDefinitions'
+import { mockUserCalls } from '@/data/mockData'
+import { getOrderDetails } from '@/utils/api'
 import React from 'react'
 import styles from './styles.module.scss'
 
 export default function ActiveOrders() {
-  const [orders, setOrders] = React.useState<null | OrderData[]>()
+  const [orders, setOrders] = React.useState<null | OrderData[]>(null)
 
   React.useEffect(() => { fetchActiveOrders() }, [])
 
   const fetchActiveOrders = async () => {
-    const userCalls = await fetchAPI<UserCallsResponse>('/users/call', 'GET')
+    const userCalls = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
     setOrders(
-      userCalls.callRecords
-        .map(cr => ({
-          id: String(cr.id),
-          title: cr.name,
-          statistics: cr.numberOrders,
-          previewAudioURL: cr.recordUrl
-        }))
+      await Promise.all<OrderData[]>(
+        // userCalls.calls
+        mockUserCalls.calls
+          .map(call => getOrderDetails(call))
+      )
     )
   }
 
   return (
-    <div className={styles.activeOrders}>
-      <h1>Активные розыгрыши</h1>
-      {orders
-        .filter(call => call.status === 'in_process')
-        .map((call, i) => <Order order={call} />)
-      }
-    </div>
+    <>
+      {orders !== null && (
+        <div className={styles.activeOrders}>
+          <h1>Активные розыгрыши</h1>
+          <div className={styles.ordersList}>
+            {orders
+              .filter(call => ['calling', 'startingCall'].includes(call.status))
+              .map((call, i) => <Order order={call} key={i} />)
+            }
+          </div>
+        </div>
+      )}
+    </>
   )
 }

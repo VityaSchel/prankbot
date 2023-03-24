@@ -6,192 +6,16 @@ import { Skeleton } from 'antd'
 import { apiURI, fetchAPI } from '@/data/api'
 import { generateAuthorizationHeader } from '@/utils'
 import Order, { OrderData, OrderStatus } from '@/components/history/Order'
+import { getOrderDetails } from '@/utils/api'
 
 export default function CallsHistory() {
-  const [orders, setOrders] = React.useState<null | UserCallsResponse>(null)
+  const [orders, setOrders] = React.useState<null | UserCallsResponse['calls']>(null)
 
   React.useEffect(() => { fetchOrders() }, [])
 
   const fetchOrders = async () => {
-    const callsResponse = await fetchAPI<{ calls: UserCallsResponse, count: number }>('/users/calls', 'GET')
+    const callsResponse = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
     setOrders(callsResponse.calls)
-    // setOrders([
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'done'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     callRecord: 'https://test.com',
-    //     status: 'done',
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'done'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     callRecord: 'https://test.com',
-    //     status: 'done',
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'done'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     callRecord: 'https://test.com',
-    //     status: 'done',
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'done'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     callRecord: 'https://test.com',
-    //     status: 'done',
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'done'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     callRecord: 'https://test.com',
-    //     status: 'done',
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'done'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     callRecord: 'https://test.com',
-    //     status: 'done',
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'in_process'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'done'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     status: 'error'
-    //   },
-    //   {
-    //     callId: 0,
-    //     callRecord: 'https://test.com',
-    //     status: 'done',
-    //   },
-    // ])
   }
 
   return (
@@ -222,7 +46,7 @@ export default function CallsHistory() {
 }
 
 // The idea is to load only these callIDs that are rendered on screen
-function LazyCallLoadingWrapper(props: { i: number, userCall: UserCallsResponse[number] }) {
+function LazyCallLoadingWrapper(props: { i: number, userCall: UserCallsResponse['calls'][number] }) {
   const wrapperRef: any = React.useRef<HTMLDivElement>()
   const [isLoading, setIsLoading] = React.useState(false)
   const onScreen: boolean = useOnScreen<HTMLDivElement>(wrapperRef, "0px")
@@ -234,17 +58,12 @@ function LazyCallLoadingWrapper(props: { i: number, userCall: UserCallsResponse[
 
   React.useEffect(() => {
     if(!isLoading) return
-    setOrderDetails({
-      title: 'Test',
-      phone: '+7123456789',
-      date: new Date(),
-      status: {
-        'in_process': 'startingCall',
-        'error': 'error',
-        'done': 'callEnded'
-      }[props.userCall.status] as OrderStatus
-    })
+    fetchOrderDetails()
   }, [isLoading])
+
+  const fetchOrderDetails = async () => {
+    setOrderDetails(await getOrderDetails(props.userCall))
+  }
 
   return (
     <div ref={wrapperRef} className={styles.orderSkeleton}>

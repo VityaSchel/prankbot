@@ -8,6 +8,7 @@ import Pranks from '@/components/homepage/Pranks'
 import Footer from '@/components/common/Footer'
 import { selectAuthState } from '@/store/slices/authState'
 import { useSelector } from 'react-redux'
+import ActiveOrders from '@/components/homepage/ActiveOrders'
 
 export default function Home() {
   const authState = useSelector(selectAuthState)
