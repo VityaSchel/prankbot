@@ -1,16 +1,18 @@
+import React from 'react'
 import styles from './styles.module.scss'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Input'
-import { Formik } from 'formik'
+import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { apiURI } from '@/data/api'
-import { LoginBody, LoginResponse } from '@/data/ApiDefinitions'
+import { ErrorResponse, LoginBody, LoginResponse } from '@/data/ApiDefinitions'
 import { store, useAppDispatch } from '@/store/store'
 import { handleLogin } from '@/store/slices/authState'
 import Cookies from 'js-cookie'
 
 export default function LoginForm() {
   const dispatch = useAppDispatch()
+  const formikRef = React.useRef<FormikProps<{ email: string, password: string }>>()
 
   return (
     <Formik
@@ -36,21 +38,34 @@ export default function LoginForm() {
             } as LoginBody),
             headers: { 'Content-Type': 'application/json' }
           })
-          const loginResponse = await loginRequest.json() as LoginResponse
-          const token = loginResponse.token
-          if(token) {
-            Cookies.set('prankbot_session', token, { expires: 365, path: '' })
+          const loginResponse = await loginRequest.json()
+          if(loginRequest.status === 200) {
+            const response = loginResponse as LoginResponse
+            Cookies.set('prankbot_session', response.token, { expires: 365, path: '' })
             dispatch(handleLogin({ user: { _no_data: true } }))
           } else {
-            alert('Ошибка во время входа')
+            const response = loginResponse as ErrorResponse
+            if(response.message === 'user not found') {
+              formikRef.current!.setErrors({
+                email: 'Неправильный пользователь'
+              })
+            } else if(response.message === 'wrong email or password') {
+              formikRef.current!.setErrors({
+                password: 'Неправильный пароль'
+              })
+            } else {
+              console.error(response)
+              alert('Ошибка во время входа')
+            }
           }
-        } catch(e) {
+        } catch(e) { 
           console.error(e)
           alert('Ошибка!')
         } finally {
           setSubmitting(false)
         }
       }}
+      innerRef={formikRef as any}
      >
       {({
         values,
