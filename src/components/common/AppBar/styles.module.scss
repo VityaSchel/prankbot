@@ -50,3 +50,46 @@
     align-items: center;
   }
 }
+
+.logoutModal {
+
+  @media screen and (max-width: variables.$breakpointTablet) {
+    padding: 20px;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 16px 0px 0px;
+    gap: 8px;
+
+    h1, h2 {
+      color: variables.$primary;
+    }
+
+    h1 {
+      font-family: 'Nunito';
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 120%;
+    }
+
+    h2 {
+      font-family: 'Nunito';
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 140%;
+      text-align: center;
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 20px;
+  }
+}

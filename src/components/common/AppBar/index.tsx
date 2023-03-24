@@ -1,19 +1,16 @@
+import React from 'react'
 import styles from './styles.module.scss'
 import LogoComponent from '@/components/common/Logo'
 import NavLink from '@/components/common/AppBar/NavLink'
 import { Button } from 'antd'
 import { MdLogin, MdLogout } from 'react-icons/md'
 import Link from 'next/link'
-import { useDispatch, useSelector } from 'react-redux'
-import { handleLogout, selectAuthState } from '@/store/slices/authState'
+import { useSelector } from 'react-redux'
+import { selectAuthState } from '@/store/slices/authState'
+import LogoutButton from '@/components/common/AppBar/LogoutButton'
 
 export default function AppBar() {
   const authState = useSelector(selectAuthState)
-  const dispatch = useDispatch()
-
-  const handleLogoutClick = () => {
-    dispatch(handleLogout({}))
-  }
 
   return (
     <nav className={styles.nav}>
@@ -32,7 +29,7 @@ export default function AppBar() {
         )}
         {authState.loggedIn
           ? (
-            <Button icon={<MdLogout />} type='text' className={styles.logout} onClick={handleLogoutClick} />
+            <LogoutButton />
           ) : (
             <Link href='/login'>
               <Button icon={<MdLogin />} type='text' className={styles.login} />
