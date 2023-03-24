@@ -15,8 +15,8 @@ export default function ActiveOrders() {
     const userCalls = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
     setOrders(
       await Promise.all<OrderData[]>(
-        // userCalls.calls
-        mockUserCalls.calls
+        userCalls.calls
+        // mockUserCalls.calls
           .map(call => getOrderDetails(call))
       )
     )

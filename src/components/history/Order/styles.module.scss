@@ -14,6 +14,7 @@
   justify-content: space-between;
 
   @media screen and (max-width: variables.$breakpointTablet) {
+    position: relative;
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
@@ -92,16 +93,31 @@
       font-size: 14px;
       margin-top: 12px - 8px;
     }
+
+    & > svg {
+      width: 18px;
+      min-width: 18px;
+      height: 18px;
+    }
   }
 
   .rightStandalone {
-    height: 36px;
+    min-height: 36px;
     display: flex;
     align-items: stretch;
     gap: 20px;
 
     & > div {
-      height: 100%;
+      height: inherit;
+
+      @media screen and (max-width: variables.$breakpointTablet) {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: variables.$breakpointTablet) {
+      position: absolute;
+      right: 20px;
     }
   }
 
@@ -157,6 +173,14 @@
       @keyframes rotate {
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
+      }
+    }
+
+    @media screen and (max-width: variables.$breakpointTablet) {
+      width: auto;
+
+      & > span {
+        display: none;
       }
     }
   }

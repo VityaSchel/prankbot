@@ -3,6 +3,7 @@ import styles from './styles.module.scss'
 import cx from 'classnames'
 import { Divider } from 'antd'
 import Image from 'next/image'
+import saveAs from 'save-as'
 
 import StartingCallIcon from './assets/statuses/startingCall.svg'
 import CallEndedIcon from './assets/statuses/callEnded.svg'
@@ -85,7 +86,9 @@ const PrankStatus = (props: { status: OrderStatus }) => {
 }
 const PrankAction = (props: { status: OrderStatus, recordURI?: string }) => {
   const handleAction = () => {
-    
+    if(props.status === 'callEnded' && props.recordURI) {
+      saveAs(props.recordURI)
+    }
   }
 
   return (

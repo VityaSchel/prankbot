@@ -32,6 +32,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.2",
     "sass": "^1.59.3",
+    "save-as": "^0.1.8",
     "seedrandom": "^3.0.5",
     "typescript": "5.0.2",
     "yup": "^1.0.2",
