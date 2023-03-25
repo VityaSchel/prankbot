@@ -22,7 +22,7 @@ export default function Pranks() {
   const mapItems = (categories: Category[]) => {
     return categories.map(category => ({
       key: String(category.id),
-      label: category.title
+      label: <span>{category.title} <span className={styles.counter}>{category.categoryItems}</span></span>
     }))
   }
 
@@ -68,12 +68,13 @@ export default function Pranks() {
   return (
     <div className={styles.pranks}>
       {authState.sessionRestored && authState.loggedIn && <h1 className={styles.chooseNewPrank}>Выбери новый розыгрыш</h1>}
-      {categories 
+      {categories
         ? (
-          <Tabs 
+          <Tabs
             defaultActiveKey={String(categories[0].id)}
             items={mapItems(categories)}
             onChange={(activeKey: string) => setActiveCategory(Number(activeKey))}
+            className={styles.tabs}
           />
         ) : (
           <Skeleton />

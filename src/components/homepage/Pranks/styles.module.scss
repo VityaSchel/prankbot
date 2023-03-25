@@ -27,4 +27,36 @@
       grid-row-gap: 12px;
     }
   }
+
+  .tabs {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 120%;
+
+    [class~=ant-tabs-ink-bar] {
+      background: variables.$accent;
+      border-radius: 2px 2px 0px 0px;
+      height: 3px;
+    }
+
+    [class~=ant-tabs-tab] {
+      color: variables.$secondary;
+
+      &[class~=ant-tabs-tab-active] [class~=ant-tabs-tab-btn] {
+        color: variables.$primary;
+      }
+    }
+    
+    [class~=ant-tabs-tab-btn]:focus:not(:focus-visible) {
+      color: variables.$secondary;
+    }
+
+    .counter {
+      text-shadow: none;
+      color: variables.$tertiary;
+      margin-left: 4px;
+    }
+  }
 }
