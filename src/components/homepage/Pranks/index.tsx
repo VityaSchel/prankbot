@@ -40,7 +40,7 @@ export default function Pranks() {
         .map(c => ({
           id: c.id,
           title: c.name,
-          categoryItems: 0 //FIX:
+          categoryItems: c.numberCallRecords
         }))
     )
     setActiveCategory(apiCategoriesResponse.categories[0].id)

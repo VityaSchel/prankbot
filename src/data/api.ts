@@ -5,13 +5,17 @@ import Cookies from 'js-cookie'
 
 export const apiURI = 'https://api.prank.sale'
 
-export async function fetchAPI<T>(endpoint: string, method: 'GET'): Promise<T>
-export async function fetchAPI<T>(endpoint: string, method: string, body: { [key: string]: any }): Promise<T>
-export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [key: string]: any }): Promise<T> {
+type FetchAPIOptions = {
+  parseBody: boolean
+}
+
+export async function fetchAPI<T>(endpoint: string, method: 'GET', body: undefined, options: FetchAPIOptions): Promise<T>
+export async function fetchAPI<T>(endpoint: string, method: string, body?: { [key: string]: any }, options?: FetchAPIOptions): Promise<T>
+export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [key: string]: any }, options?: FetchAPIOptions): Promise<T> {
   const request = await fetch(apiURI + endpoint, {
     method,
     ...(method !== 'GET' && {
-      body: body as any,
+      body: JSON.stringify(body),
     }),
     headers: {
       ...generateAuthorizationHeader(),
@@ -26,7 +30,11 @@ export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [ke
     store.dispatch(handleLogout({}))
     return {}
   } else {
-    const response = await request.json()
-    return response
+    if(options?.parseBody) {
+      const response = await request.json()
+      return response
+    } else {
+      return {}
+    }
   }
 }

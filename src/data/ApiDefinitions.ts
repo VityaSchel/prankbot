@@ -30,6 +30,7 @@ export interface CategoriesResponse {
   categories: {
     id: number;
     name: string;
+    numberCallRecords: number;
   }[];
   count: number;
 }
@@ -678,6 +679,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/users/calls`,
         method: "GET",
         query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags subscription
+     * @name SubscriptionsUnsubscribeCreate
+     * @request POST:/users/subscriptions/unsubscribe
+     * @secure
+     */
+    subscriptionsUnsubscribeCreate: (params: RequestParams = {}) =>
+      this.request<void, ErrorResponse>({
+        path: `/users/subscriptions/unsubscribe`,
+        method: "POST",
         secure: true,
         ...params,
       }),

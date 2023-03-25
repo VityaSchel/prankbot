@@ -164,6 +164,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                   Создать розыгрыш
                 </Button>
               )}
+              
             </div>
             {!authState.loggedIn && (
               <div className={styles.subscription}>

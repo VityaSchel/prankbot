@@ -3,6 +3,7 @@ import styles from './styles.module.scss'
 import Modal from '@/components/common/Modal'
 import { Button as AntdButton } from 'antd'
 import Button from '@/components/common/Button'
+import { fetchAPI } from '@/data/api'
 
 export default function SubscriptionManagemnt() {
   const [screen, setScreen] = React.useState<'info' | 'prompt'>('info')
@@ -12,8 +13,9 @@ export default function SubscriptionManagemnt() {
     if(!dialogVisible) setScreen('info')
   }, [dialogVisible])
 
-  const handleUnsubscribe = () => {
-    alert('¯\\_(ツ)_/¯')
+  const handleUnsubscribe = async () => {
+    await fetchAPI('/users/subscriptions/unsubscribe', 'POST', {}, { parseBody: false })
+    setDialogVisible(false)
   }
 
   return (
