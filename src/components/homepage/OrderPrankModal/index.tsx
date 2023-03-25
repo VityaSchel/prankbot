@@ -10,11 +10,14 @@ import type { Prank } from '@/components/common/Prank'
 import { CloudpaymentsPaymentResponse, MakeCallBody, MakeCallResponse, PayCloudpaymentsBody, PayCloudpaymentsResponse, PaymentRequired } from '@/data/ApiDefinitions'
 import { apiURI } from '@/data/api'
 import { makeRedirect } from '@/utils'
+import { useSelector } from 'react-redux'
+import { selectAuthState } from '@/store/slices/authState'
 
 export default function OrderPrankModal(props: { prank: Prank, open: boolean, onClose: () => any }) {
   const checkoutRef = React.useRef<CheckoutRefProperties>()
   const [checkoutProps, setCheckoutProps] = React.useState<null | { publicID: string, amount: number }>(null)
   const formikRef = React.useRef<FormikProps<{ phone: string, email: string }>>()
+  const authState = useSelector(selectAuthState)
 
   const handlePaymentRequest = async (cryptogram: string) => {
     try {
@@ -46,7 +49,6 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
     const inter = setInterval(() => {
       if(!checkoutRef.current) return
       clearInterval(inter)
-      console.log('call to')
       checkoutRef.current.initialize({
         email: formikRef.current!.values.email
       })
@@ -125,7 +127,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
             <div className={styles.formInputs}>
               <div className={styles.title}>
                 <h1>{props.prank.title}</h1>
-                <h3>Укажите номер телефона человека, которого хотите разыграть. Также укажите свой e-mail для регистрации.</h3>
+                <h3>Укажите номер телефона человека, которого хотите разыграть. {!authState.loggedIn && 'Также укажите свой e-mail для регистрации.'}</h3>
               </div>
               <Input
                 type="text"
@@ -139,7 +141,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 error={errors.phone}
                 disabled={isSubmitting}
               />
-              <Input
+              {!authState.loggedIn && <Input
                 type="email"
                 name="email"
                 label='E-mail для регистрации'
@@ -150,7 +152,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 value={values.email}
                 error={errors.email}
                 disabled={isSubmitting}
-              />
+              />}
             </div>
             <div className={styles.subscription}>
               <div className={styles.price}>
