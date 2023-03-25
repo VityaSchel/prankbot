@@ -11,7 +11,7 @@ type FetchAPIOptions = {
 
 export async function fetchAPI<T>(endpoint: string, method: 'GET', body: undefined, options: FetchAPIOptions): Promise<T>
 export async function fetchAPI<T>(endpoint: string, method: string, body?: { [key: string]: any }, options?: FetchAPIOptions): Promise<T>
-export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [key: string]: any }, options?: FetchAPIOptions): Promise<T> {
+export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [key: string]: any }, options = { parseBody: true }): Promise<T> {
   const request = await fetch(apiURI + endpoint, {
     method,
     ...(method !== 'GET' && {
