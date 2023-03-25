@@ -4,6 +4,8 @@ import { Tabs, Skeleton } from 'antd'
 import PrankPreview, { Prank } from '@/components/common/Prank'
 import { apiURI } from '@/data/api'
 import { CategoriesResponse, CategoryCallRecordsResponse } from '@/data/apiDefinitions'
+import { useSelector } from 'react-redux'
+import { selectAuthState } from '@/store/slices/authState'
 
 type Category = {
   id: number
@@ -15,6 +17,7 @@ export default function Pranks() {
   const [categories, setCategories] = React.useState<null | Category[]>(null)
   const [activeCategory, setActiveCategory] = React.useState(0)
   const [pranks, setPranks] = React.useState<null | Prank[]>(null)
+  const authState = useSelector(selectAuthState)
 
   const mapItems = (categories: Category[]) => {
     return categories.map(category => ({
@@ -64,6 +67,7 @@ export default function Pranks() {
 
   return (
     <div className={styles.pranks}>
+      {authState.sessionRestored && authState.loggedIn && <h1 className={styles.chooseNewPrank}>Выбери новый розыгрыш</h1>}
       {categories 
         ? (
           <Tabs 

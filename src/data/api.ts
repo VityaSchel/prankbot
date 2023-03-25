@@ -3,7 +3,7 @@ import { store } from '@/store/store'
 import { handleLogout } from "@/store/slices/authState"
 import Cookie from 'js-cookie'
 
-export const apiURI = 'https://prank-call-api.x5.money'
+export const apiURI = 'https://api.prank.sale'
 
 export async function fetchAPI<T>(endpoint: string, method: 'GET'): Promise<T>
 export async function fetchAPI<T>(endpoint: string, method: string, body: { [key: string]: any }): Promise<T>

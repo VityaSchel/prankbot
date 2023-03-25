@@ -4,6 +4,16 @@
   width: 100%;
   max-width: var(--max-width);
 
+  h1.chooseNewPrank {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 120%;
+    color: variables.$primary;
+    margin: 32px 0;
+  }
+
   .pranksPreviewsList {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

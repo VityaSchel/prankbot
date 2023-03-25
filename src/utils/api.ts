@@ -1,10 +1,11 @@
 import { OrderData, OrderStatus } from '@/components/history/Order'
-import { UserCallsResponse } from '@/data/ApiDefinitions'
+import { fetchAPI } from '@/data/api'
+import { UserCallsResponse, CallResponse } from '@/data/ApiDefinitions'
 
-export function getOrderDetails(userCall: UserCallsResponse['calls'][number]): OrderData {
-  // await fetchAPI('/') TODO: fetch info about prank
+export async function getOrderDetails(userCall: UserCallsResponse['calls'][number]): OrderData {
+  const call = await fetchAPI<CallResponse>('/calls/' + userCall.callId, 'GET')
   return {
-    title: 'TODO: fetch info about prank',
+    title: call.callRecordName,
     phone: userCall.phone,
     date: new Date(),
     status: {

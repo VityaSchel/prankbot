@@ -18,6 +18,14 @@ export interface AdvertisingCompanyResponse {
   status: string;
 }
 
+export interface CallResponse {
+  callId: number;
+  callRecord?: string;
+  callRecordName: string;
+  phone: string;
+  status: "in_queue" | "in_process" | "error" | "done";
+}
+
 export interface CategoriesResponse {
   categories: {
     id: number;
@@ -136,6 +144,7 @@ export interface UserCallsResponse {
   calls: {
     callId: number;
     callRecord?: string;
+    callRecordName: string;
     phone: string;
     status: "in_queue" | "in_process" | "error" | "done";
   }[];
@@ -423,6 +432,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         type: ContentType.Json,
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags call
+     * @name CallsDetail
+     * @request GET:/calls/{id}
+     * @secure
+     */
+    callsDetail: (id: number, params: RequestParams = {}) =>
+      this.request<CallResponse, ErrorResponse>({
+        path: `/calls/${id}`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
   };
   categories = {
     /**
@@ -637,15 +662,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags user_call
+     * @tags user_calls
      * @name CallsList
      * @request GET:/users/calls
      * @secure
      */
-    callsList: (params: RequestParams = {}) =>
+    callsList: (
+      query?: {
+        /** calls filter */
+        "filter[status]"?: ("in_queue" | "in_process" | "error" | "done")[];
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<UserCallsResponse, ErrorResponse>({
         path: `/users/calls`,
         method: "GET",
+        query: query,
         secure: true,
         ...params,
       }),

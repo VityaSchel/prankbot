@@ -13,7 +13,8 @@ import ErrorIcon from './assets/statuses/error.svg'
 import AudioIcon from './assets/audio.svg'
 // import LoadingIcon from './assets/loading.svg'
 import LoadingIcon from './assets/loading.png'
-import UploadIcon from './assets/upload.svg'
+// import UploadIcon from './assets/upload.svg'
+import DownloadIcon from './assets/download.svg'
 
 export type OrderStatus = 'startingCall' | 'calling' | 'callEnded' | 'error' | 'couldntCall'
 export type OrderData = {
@@ -115,7 +116,8 @@ const PrankAction = (props: { status: OrderStatus, recordURI?: string }) => {
         props.recordURI 
           ? (
             <div className={styles.adornmentButton}>
-              <UploadIcon />
+              {/* <UploadIcon /> */}
+              <DownloadIcon />
             </div>
           ) : (
             <div className={styles.loading}>

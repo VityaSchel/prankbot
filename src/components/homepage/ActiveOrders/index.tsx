@@ -12,7 +12,7 @@ export default function ActiveOrders() {
   React.useEffect(() => { fetchActiveOrders() }, [])
 
   const fetchActiveOrders = async () => {
-    const userCalls = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
+    const userCalls = await fetchAPI<UserCallsResponse>('/users/calls?filter%5Bstatus%5D=in_queue&filter%5Bstatus%5D=in_process', 'GET')
     setOrders(
       await Promise.all<OrderData[]>(
         userCalls.calls
@@ -24,7 +24,7 @@ export default function ActiveOrders() {
 
   return (
     <>
-      {orders !== null && (
+      {orders !== null && Boolean(orders.length) && (
         <div className={styles.activeOrders}>
           <h1>Активные розыгрыши</h1>
           <div className={styles.ordersList}>

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "swagger-typescript-api -p https://prank-call-api.x5.money/swagger.json -o ./src/data/ -n ApiDefinitions.ts"
+    "codegen": "swagger-typescript-api -p https://api.prank.sale/swagger.json -o ./src/data/ -n ApiDefinitions.ts"
   },
   "dependencies": {
     "@mui/material": "^5.11.14",
