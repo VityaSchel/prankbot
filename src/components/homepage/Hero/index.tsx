@@ -3,7 +3,7 @@ import Button from '@/components/common/Button'
 import Image from 'next/image'
 import { BsArrowDown } from 'react-icons/bs'
 import { Tabs } from 'antd'
-import HeroImage from './assets/Hero.png'
+import HeroImage from './assets/hero.png'
 
 export default function Hero() {
   const handleScroll = () => {
