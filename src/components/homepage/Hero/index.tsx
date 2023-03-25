@@ -6,6 +6,10 @@ import { Tabs } from 'antd'
 import HeroImage from './assets/Hero.png'
 
 export default function Hero() {
+  const handleScroll = () => {
+    document.querySelector('#pranks')!.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <div className={styles.hero}>
       <div className={styles.info}>
@@ -14,7 +18,7 @@ export default function Hero() {
           <h2>Получи выгодную месячную подписку и получи безлимит на розыгрыши</h2>
         </div>
         {/* <Button type="primary" size='large'>Выбрать розыгрыш</Button> */}
-        <Button variant='secondary'>Выбрать розыгрыш <BsArrowDown /></Button>
+        <Button variant='secondary' onClick={handleScroll}>Выбрать розыгрыш <BsArrowDown /></Button>
       </div>
       <div className={styles.image}>
         <Image src={HeroImage} alt='' fill quality={100} priority />

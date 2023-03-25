@@ -67,6 +67,7 @@ export default function Pranks() {
 
   return (
     <div className={styles.pranks}>
+      <a href="#pranks" id='pranks' style={{ height: 0 }} />
       {authState.sessionRestored && authState.loggedIn && <h1 className={styles.chooseNewPrank}>Выбери новый розыгрыш</h1>}
       {categories
         ? (
