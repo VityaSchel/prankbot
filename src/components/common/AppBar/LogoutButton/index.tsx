@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { handleLogout, selectAuthState } from '@/store/slices/authState'
 import Modal from '@/components/common/Modal'
 import Button from '@/components/common/Button'
+import Cookies from 'js-cookie'
 
 export default function LogoutButton() {
   const authState = useSelector(selectAuthState)

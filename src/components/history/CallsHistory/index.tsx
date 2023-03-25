@@ -30,16 +30,20 @@ export default function CallsHistory() {
           <>
             <div className={styles.group}>
               <h3>Активные</h3>
-              {orders
+              {orders.length
+                ? orders
                 .filter(call => ['in_process', 'in_queue'].includes(call.status))
                 .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
+                : <EmptyCallsList />
               }
             </div>
             <div className={styles.group}>
               <h3>Завершенные</h3>
-              {orders
+              {orders.length
+                ? orders
                 .filter(call => ['done', 'error',/*, 'couldnt_call'*/].includes(call.status))
                 .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
+                : <EmptyCallsList />
               }
             </div>
           </>
@@ -76,5 +80,11 @@ function LazyCallLoadingWrapper(props: { i: number, userCall: UserCallsResponse[
         : <Skeleton active width={'100%'} paragraph={false} />
       }
     </div>
+  )
+}
+
+function EmptyCallsList() {
+  return (
+    <span className={styles.emptyListLabel}>Список пуст</span>
   )
 }

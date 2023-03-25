@@ -15,13 +15,13 @@ import { selectAuthState } from '@/store/slices/authState'
 
 export default function OrderPrankModal(props: { prank: Prank, open: boolean, onClose: () => any }) {
   const checkoutRef = React.useRef<CheckoutRefProperties>()
-  const [checkoutProps, setCheckoutProps] = React.useState<null | { publicID: string, amount: number }>(null)
+  const [checkoutProps, setCheckoutProps] = React.useState<null | { paymentID: string, publicID: string, amount: number }>(null)
   const formikRef = React.useRef<FormikProps<{ phone: string, email: string }>>()
   const authState = useSelector(selectAuthState)
 
   const handlePaymentRequest = async (cryptogram: string) => {
     try {
-      const payRequest = await fetch(apiURI + `/payments/${checkoutProps!.publicID}/cloudpayments/pay`, {
+      const payRequest = await fetch(apiURI + `/payments/${checkoutProps!.paymentID}/cloudpayments/pay`, {
         method: 'POST',
         body: JSON.stringify({
           cryptogram
@@ -29,16 +29,19 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
         headers: { 'Content-Type': 'application/json' }
       })
       const payResponse = await payRequest.json() as PayCloudpaymentsResponse
-      if(payResponse.redirectParams) {
-        makeRedirect(
-          payResponse.redirectUrl, Object.fromEntries(
-            payResponse.redirectParams.map(({ key, value }) => [key, value])
-          ), payResponse.redirectMethod
-        )
-      } else {
-        window.location.href = payResponse.redirectUrl
+      const isSuccess = payRequest.status === 201
+      if(isSuccess) {
+        if(payResponse.redirectParams) {
+          makeRedirect(
+            payResponse.redirectUrl, Object.fromEntries(
+              payResponse.redirectParams.map(({ key, value }) => [key, value])
+            ), payResponse.redirectMethod
+          )
+        } else {
+          window.location.href = payResponse.redirectUrl
+        }
       }
-      return payRequest.status === 201
+      return isSuccess
     } catch(e) {
       console.error(e)
       return false
@@ -74,9 +77,11 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
             phone: Yup.string()
               .matches(/^((8|\+7|7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{8,10}$/, 'Некорректный формат')
               .required(),
-            email: Yup.string()
-              .email()
-              .required(),
+            ...(!authState.loggedIn && ({
+              email: Yup.string()
+                  .email()
+                  .required()
+            }))
           })
         }
         onSubmit={async (values, { setSubmitting }) => {
@@ -102,6 +107,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
               headers: {'Content-Type': 'application/json'}
             })
             setCheckoutProps({
+              paymentID: callsMakeResponse.paymentId,
               publicID: paymentResponse.cloudpaymentsPublicId,
               amount: paymentResponse.amount
             })
@@ -153,16 +159,23 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 error={errors.email}
                 disabled={isSubmitting}
               />}
+              {authState.loggedIn && authState.sessionRestored && (
+                <Button type="submit" disabled={!values.phone || isSubmitting}>
+                  Создать розыгрыш
+                </Button>
+              )}
             </div>
-            <div className={styles.subscription}>
-              <div className={styles.price}>
-                <h2>29 рублей</h2>
-                <h4>Стоимость первого месяца подписки</h4>
+            {!authState.loggedIn && (
+              <div className={styles.subscription}>
+                <div className={styles.price}>
+                  <h2>29 рублей</h2>
+                  <h4>Стоимость первого месяца подписки</h4>
+                </div>
+                <Button type="submit" disabled={!values.email || !values.phone || isSubmitting}>
+                  Подписаться
+                </Button>
               </div>
-              <Button type="submit" disabled={!values.email || !values.phone || isSubmitting}>
-                Подписаться
-              </Button>
-            </div>
+            )}
           </form>
         )}
       </Formik>
