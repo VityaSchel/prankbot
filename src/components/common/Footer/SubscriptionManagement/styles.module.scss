@@ -17,6 +17,7 @@ h2.title {
   background: #F6F7FA;
   border-radius: 20px;
   align-self: stretch;
+  width: 416px;
 
   .price {
     font-family: 'Nunito';
@@ -34,4 +35,20 @@ h2.title {
     line-height: 120%;
     color: variables.$secondary;
   }
+}
+
+.topBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 24px;
 }
