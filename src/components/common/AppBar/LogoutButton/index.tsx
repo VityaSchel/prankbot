@@ -13,6 +13,7 @@ export default function LogoutButton() {
   const [isPromptingLogout, setIsPromptingLogout] = React.useState(false)
 
   const handleLogoutClick = () => {
+    Cookies.remove('prankbot_session')
     dispatch(handleLogout({}))
   }
 
