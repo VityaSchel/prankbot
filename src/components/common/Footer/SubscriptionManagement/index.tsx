@@ -4,19 +4,16 @@ import Modal from '@/components/common/Modal'
 import { Button as AntdButton } from 'antd'
 import Button from '@/components/common/Button'
 import { fetchAPI } from '@/data/api'
-import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { selectAuthState } from '@/store/slices/authState'
 import PaymentSystems from '@/components/common/PaymentSystems'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import Input from '@/components/common/Input'
-import { BsInputCursorText } from 'react-icons/bs'
 
 export default function SubscriptionManagemnt() {
   const [screen, setScreen] = React.useState<'info' | 'prompt' | 'form'>('info')
   const [dialogVisible, setDialogVisible] = React.useState(false)
-  const router = useRouter()
   const authState = useSelector(selectAuthState)
 
   React.useEffect(() => {
@@ -25,7 +22,7 @@ export default function SubscriptionManagemnt() {
 
   return (
     <>
-      <AntdButton type='text' className={styles.link} onClick={authState.loggedIn ? () => setDialogVisible(true) : () => router.push('/login')}>
+      <AntdButton type='text' className={styles.link} onClick={() => setDialogVisible(true)}>
         Управление подпиской
       </AntdButton>
       <Modal open={dialogVisible} onClose={() => setDialogVisible(false)}>

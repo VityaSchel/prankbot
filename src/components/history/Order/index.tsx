@@ -15,6 +15,7 @@ import AudioIcon from './assets/audio.svg'
 import LoadingIcon from './assets/loading.png'
 // import UploadIcon from './assets/upload.svg'
 import DownloadIcon from './assets/download.svg'
+import UnavailableIcon from './assets/unavailable.svg'
 
 export type OrderStatus = 'startingCall' | 'calling' | 'callEnded' | 'error' | 'couldntCall'
 export type OrderData = {
@@ -107,9 +108,14 @@ const PrankAction = (props: { status: OrderStatus, recordURI?: string }) => {
         'error': <span>Недоступно</span>,
         'couldntCall': <span>Недоступно</span>,
       }[props.status]}
-      {['startingCall', 'calling', 'error', 'couldntCall'].includes(props.status) && (
+      {['startingCall', 'calling'].includes(props.status) && (
         <div className={styles.adornmentButton}>
           <AudioIcon />
+        </div>
+      )}
+      {['error', 'couldntCall'].includes(props.status) && (
+        <div className={styles.adornmentButton}>
+          <UnavailableIcon />
         </div>
       )}
       {props.status === 'callEnded' && (

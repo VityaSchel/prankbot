@@ -1,35 +1,16 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import PlayButton from './playButton.svg'
 import { Skeleton } from 'antd'
+import PlayButton from '@/components/common/AudioPlayer/PlayButton'
 
 export default function AudioPlayer(props: { src: string }) {
   const audioPlayerRef = React.useRef<null | HTMLAudioElement>(null)
   const [isLoaded, setIsLoaded] = React.useState(false)
   const [waveform, setWaveform] = React.useState<number[]>([])
 
-  const handlePlayPause = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    if(!audioPlayerRef.current) return
-    if(audioPlayerRef.current.paused) {
-      audioPlayerRef.current.play()
-    } else {
-      audioPlayerRef.current.pause()
-    }
-  }
-
   const formatDuration = (duration: number) => {
     return `${Math.floor(duration / 60)}:${('0' + Math.floor(duration % 60)).slice(-2)}`
   }
-
-  React.useEffect(() => {
-    if(!audioPlayerRef.current) return
-    const onLoad = () => setIsLoaded(true)
-    audioPlayerRef.current.addEventListener('loadedmetadata', onLoad)
-    return () => {
-      audioPlayerRef.current?.removeEventListener('loadedmetadata', onLoad)
-    }
-  }, [audioPlayerRef])
 
   React.useEffect(() => {
     if(!audioPlayerRef) return
@@ -40,14 +21,7 @@ export default function AudioPlayer(props: { src: string }) {
 
   return (
     <div className={styles.audio}>
-      <audio src={props.src} ref={audioPlayerRef} />
-      <button 
-        className={styles.playpauseButton} 
-        onClick={handlePlayPause} 
-        disabled={Boolean(audioPlayerRef.current && isLoaded)}
-      >
-        <PlayButton />
-      </button>
+      <PlayButton src={props.src} onLoaded={() => setIsLoaded(true)} audioPlayerRef={audioPlayerRef} />
       <div className={styles.waveform}>
         {waveform.map((peakHeight, i) => <span key={i} style={{ height: `${peakHeight}%` }} />)}
       </div>
