@@ -41,7 +41,11 @@ export default function AudioPlayer(props: { src: string }) {
   return (
     <div className={styles.audio}>
       <audio src={props.src} ref={audioPlayerRef} />
-      <button className={styles.playpauseButton} onClick={handlePlayPause}>
+      <button 
+        className={styles.playpauseButton} 
+        onClick={handlePlayPause} 
+        disabled={Boolean(audioPlayerRef.current && isLoaded)}
+      >
         <PlayButton />
       </button>
       <div className={styles.waveform}>
