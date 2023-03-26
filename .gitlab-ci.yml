@@ -101,56 +101,56 @@ install:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 
-.build_development_template:
-  stage: build
-  services:
-    - name: docker:${DOCKER_VERSION}-dind
-      command: ["--registry-mirror", "https://registry-proxy.x5.money"]
-  cache:
-    - key:
-        files:
-          - yarn.lock
-      paths:
-        - node_modules
-      policy: pull
-    - key: next-cache-${PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
-      paths:
-        - .next/cache
-      policy: pull-push
-  before_script:
-    - !reference [.docker_init_template]
-  script:
-    - mkdir -p .next/cache
-
-    - >
-      docker build
-      --file docker/node/Dockerfile
-      --build-arg BUILDKIT_INLINE_CACHE=1
-      --cache-from $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-      --target builder
-      --tag $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-      --build-arg NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
-      --build-arg NEXT_PUBLIC_DATA_POLICY=$NEXT_PUBLIC_DATA_POLICY
-      --build-arg NEXT_PUBLIC_TARIFFS=$NEXT_PUBLIC_TARIFFS
-      --build-arg NEXT_PUBLIC_USER_AGREEMENT=$NEXT_PUBLIC_USER_AGREEMENT
-      --build-arg NEXT_PUBLIC_CONTACT_EMAIL=$NEXT_PUBLIC_CONTACT_EMAIL
-      --build-arg NEXT_PUBLIC_BOT_LINK=$NEXT_PUBLIC_BOT_LINK
-      --build-arg NEXT_PUBLIC_TEXT_SECOND_CHECKBOX="$NEXT_PUBLIC_TEXT_SECOND_CHECKBOX"
-      --build-arg NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES="$NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES"
-      --build-arg NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES="$NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES"
-      --build-arg NEXT_PUBLIC_COMPANY_NAME="$NEXT_PUBLIC_COMPANY_NAME"
-      --build-arg NEXT_PUBLIC_COMPANY_INN=$NEXT_PUBLIC_COMPANY_INN
-      --build-arg NEXT_PUBLIC_COMPANY_OGRNIP=$NEXT_PUBLIC_COMPANY_OGRNIP
-      .
-
-    - rm -rf .next/cache
-
-    - docker create --name main_page $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-    - docker cp main_page:/app/.next/cache $CI_PROJECT_DIR/.next/cache
-
-    - docker push $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+#.build_development_template:
+#  stage: build
+#  services:
+#    - name: docker:${DOCKER_VERSION}-dind
+#      command: ["--registry-mirror", "https://registry-proxy.x5.money"]
+#  cache:
+#    - key:
+#        files:
+#          - yarn.lock
+#      paths:
+#        - node_modules
+#      policy: pull
+#    - key: next-cache-${PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
+#      paths:
+#        - .next/cache
+#      policy: pull-push
+#  before_script:
+#    - !reference [.docker_init_template]
+#  script:
+#    - mkdir -p .next/cache
+#
+#    - >
+#      docker build
+#      --file docker/node/Dockerfile
+#      --build-arg BUILDKIT_INLINE_CACHE=1
+#      --cache-from $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
+#      --target builder
+#      --tag $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
+##      --build-arg NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+##      --build-arg NEXT_PUBLIC_DATA_POLICY=$NEXT_PUBLIC_DATA_POLICY
+##      --build-arg NEXT_PUBLIC_TARIFFS=$NEXT_PUBLIC_TARIFFS
+##      --build-arg NEXT_PUBLIC_USER_AGREEMENT=$NEXT_PUBLIC_USER_AGREEMENT
+##      --build-arg NEXT_PUBLIC_CONTACT_EMAIL=$NEXT_PUBLIC_CONTACT_EMAIL
+##      --build-arg NEXT_PUBLIC_BOT_LINK=$NEXT_PUBLIC_BOT_LINK
+##      --build-arg NEXT_PUBLIC_TEXT_SECOND_CHECKBOX="$NEXT_PUBLIC_TEXT_SECOND_CHECKBOX"
+##      --build-arg NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES="$NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES"
+##      --build-arg NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES="$NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES"
+##      --build-arg NEXT_PUBLIC_COMPANY_NAME="$NEXT_PUBLIC_COMPANY_NAME"
+##      --build-arg NEXT_PUBLIC_COMPANY_INN=$NEXT_PUBLIC_COMPANY_INN
+##      --build-arg NEXT_PUBLIC_COMPANY_OGRNIP=$NEXT_PUBLIC_COMPANY_OGRNIP
+#      .
+#
+#    - rm -rf .next/cache
+#
+#    - docker create --name main_page $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
+#    - docker cp main_page:/app/.next/cache $CI_PROJECT_DIR/.next/cache
+#
+#    - docker push $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "dev"
 
 .deploy_production_template:
   stage: deploy
@@ -170,23 +170,23 @@ install:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 
-.deploy_development_template:
-  stage: deploy
-  environment:
-    name: production-${PROJECT_NAME}
-  variables:
-    COMPOSE_PROJECT_NAME: ${PROJECT_NAME}_main_page
-    LANDING_IMAGE: $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-    DOCKER_HOST: $DEPLOY_PROD_DOCKER_HOST
-  before_script:
-    - !reference [.ssh_init_template]
-    - !reference [.docker_init_template]
-  script:
-    - docker compose pull main_page
-
-    - docker compose up -d --wait
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+#.deploy_development_template:
+#  stage: deploy
+#  environment:
+#    name: production-${PROJECT_NAME}
+#  variables:
+#    COMPOSE_PROJECT_NAME: ${PROJECT_NAME}_main_page
+#    LANDING_IMAGE: $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
+#    DOCKER_HOST: $DEPLOY_PROD_DOCKER_HOST
+#  before_script:
+#    - !reference [.ssh_init_template]
+#    - !reference [.docker_init_template]
+#  script:
+#    - docker compose pull main_page
+#
+#    - docker compose up -d --wait
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "dev"
 
 build_pranksale:
   extends: .build_production_template
