@@ -20,9 +20,19 @@
     grid-auto-rows: auto;
     grid-column-gap: 32px;
     grid-row-gap: 32px;
+    // min resizable width of each prank is about 268 px
+    $prankWidth: 268px;
+    $prankGap: 32px;
+
+    @media screen and (max-width: calc(#{$prankWidth*4 + $prankGap*3} + 10px)) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media screen and (max-width: calc(#{$prankWidth*3 + $prankGap*2} + 10px)) {
+      grid-template-columns: repeat(2, 1fr);
+    }
 
     @media screen and (max-width: variables.$breakpointTablet) {
-      grid-template-columns: repeat(2, 1fr);
       grid-column-gap: 12px;
       grid-row-gap: 12px;
     }

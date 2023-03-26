@@ -9,9 +9,9 @@ type FetchAPIOptions = {
   parseBody: boolean
 }
 
-export async function fetchAPI<T>(endpoint: string, method: 'GET', body: undefined, options: FetchAPIOptions): Promise<T>
-export async function fetchAPI<T>(endpoint: string, method: string, body?: { [key: string]: any }, options?: FetchAPIOptions): Promise<T>
-export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [key: string]: any }, options = { parseBody: true }): Promise<T> {
+export async function fetchAPI<T>(endpoint: string, method: 'GET', body: undefined, options: FetchAPIOptions): Promise<T & { _: Response } >
+export async function fetchAPI<T>(endpoint: string, method: string, body?: { [key: string]: any }, options?: FetchAPIOptions): Promise<T & { _: Response } >
+export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [key: string]: any }, options = { parseBody: true }): Promise<T & { _: Response } > {
   const request = await fetch(apiURI + endpoint, {
     method,
     ...(method !== 'GET' && {
@@ -28,13 +28,15 @@ export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [ke
     console.log('Logging out')
     Cookies.remove('prankbot_session')
     store.dispatch(handleLogout({}))
-    return {}
+    // @ts-ignore
+    return { _: request }
   } else {
     if(options?.parseBody) {
       const response = await request.json()
-      return response
+      return { ...response, _: request }
     } else {
-      return {}
+      // @ts-ignore
+      return { _: request }
     }
   }
 }
