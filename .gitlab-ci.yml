@@ -188,10 +188,10 @@ install:
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
 
-build_prankbotinfo:
+build_pranksale:
   extends: .build_production_template
   variables:
-    PROJECT_NAME: prankbotinfo
+    PROJECT_NAME: pranksale
     NEXT_PUBLIC_BACKEND_URL: https://api.prankerbot.xyz
     NEXT_PUBLIC_DATA_POLICY: https://docs.google.com/document/d/11ntwB7fqvLM1RYB1-W0y4046AkH3e8qhNb3qyWWETo8/edit?usp=sharing
     NEXT_PUBLIC_TARIFFS: https://docs.google.com/document/d/1xQCmWj0NS75XtY2Tyto2f99_SLW6MQm9661toM0j-GY/edit?usp=sharing
@@ -205,8 +205,8 @@ build_prankbotinfo:
     NEXT_PUBLIC_COMPANY_INN: 780535623621
     NEXT_PUBLIC_COMPANY_OGRNIP: 322784700279882
 
-deploy_production_prankbotinfo:
+deploy_production_pranksale:
   extends: .deploy_production_template
   variables:
-    PROJECT_NAME: prankbotinfo
-    VIRTUAL_HOST: prankbot.info
+    PROJECT_NAME: pranksale
+    VIRTUAL_HOST: prank.sale
