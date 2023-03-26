@@ -7,7 +7,7 @@ export async function getOrderDetails(userCall: UserCallsResponse['calls'][numbe
   return {
     title: call.callRecordName,
     phone: userCall.phone,
-    date: new Date(),
+    date: new Date(userCall.createdAt),
     status: {
       'in_queue': 'startingCall',
       'in_process': 'calling',

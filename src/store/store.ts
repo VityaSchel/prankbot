@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { createWrapper } from 'next-redux-wrapper'
 import { authStateSlice } from '@/store/slices/authState'
+import { audioPlayerStateSlice } from '@/store/slices/audioPlayerState'
 import { useDispatch } from 'react-redux'
 
 const configureReduxStore = () => configureStore({
   reducer: {
-    [authStateSlice.name]: authStateSlice.reducer
+    [authStateSlice.name]: authStateSlice.reducer,
+    [audioPlayerStateSlice.name]: audioPlayerStateSlice.reducer
   },
   devTools: true,
 })
