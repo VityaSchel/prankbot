@@ -13,7 +13,7 @@ COPY yarn.lock yarn.lock
 RUN yarn install --check-files
 RUN rm -r .npmrc
 
-FROM node:16.13.0-alpine as build
+FROM node:16.13.0-alpine as builder
 
 #ARG NEXT_PUBLIC_BACKEND_URL
 #ARG NEXT_PUBLIC_DATA_POLICY
