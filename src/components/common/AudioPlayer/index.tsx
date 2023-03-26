@@ -7,6 +7,7 @@ export default function AudioPlayer(props: { src: string }) {
   const audioPlayerRef = React.useRef<null | HTMLAudioElement>(null)
   const [isLoaded, setIsLoaded] = React.useState(false)
   const [waveform, setWaveform] = React.useState<number[]>([])
+  const [activeWaveformPeaks, setActiveWaveformPeaks] = React.useState<boolean[]>([])
 
   const formatDuration = (duration: number) => {
     return `${Math.floor(duration / 60)}:${('0' + Math.floor(duration % 60)).slice(-2)}`
@@ -19,11 +20,34 @@ export default function AudioPlayer(props: { src: string }) {
     )
   }, [audioPlayerRef])
 
+  const handlePositionChange = () => {
+    setActiveWaveformPeaks(
+      waveform.map((_, i) => (
+        audioPlayerRef.current!.currentTime > (audioPlayerRef.current!.duration / waveform.length * i)
+      ))
+    )
+  }
+
   return (
     <div className={styles.audio}>
-      <PlayButton src={props.src} onLoaded={() => setIsLoaded(true)} audioPlayerRef={audioPlayerRef} />
+      <PlayButton 
+        src={props.src} 
+        onLoaded={() => setIsLoaded(true)} 
+        audioPlayerRef={audioPlayerRef} 
+        audioPlayerProps={{
+          onTimeUpdate: handlePositionChange
+        }}
+      />
       <div className={styles.waveform}>
-        {waveform.map((peakHeight, i) => <span key={i} style={{ height: `${peakHeight}%` }} />)}
+        {(audioPlayerRef.current && isLoaded)
+          ? (
+            waveform.map((peakHeight, i) => (
+              <Peak key={i} height={peakHeight} active={activeWaveformPeaks[i]} />
+            ))
+          ) : (
+            <Skeleton paragraph={false} width={'123px'} />
+          )
+        }
       </div>
       <span className={styles.duration}>
         {(audioPlayerRef.current && isLoaded)
@@ -32,5 +56,11 @@ export default function AudioPlayer(props: { src: string }) {
         }
       </span>
     </div>
+  )
+}
+
+function Peak(props: { height: number, active: boolean }) {
+  return (
+    <span style={{ height: `${props.height}%`, backgroundColor: props.active ? '#4B2EFF' : undefined }} />
   )
 }

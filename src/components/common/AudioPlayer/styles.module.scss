@@ -37,8 +37,9 @@
 
     span {
       width: 3px;
-      background: rgba(49, 58, 90, 0.1);
+      background-color: rgba(49, 58, 90, 0.1);
       border-radius: 2px;
+      transition: background-color 200ms ease-out;
 
       @media screen and (max-width: variables.$breakpointTablet) {
         width: 2px;
