@@ -18,6 +18,16 @@ export interface AdvertisingCompanyResponse {
   status: string;
 }
 
+export interface CallRecordsResponse {
+  callRecords: {
+    cardBackground: string;
+    id: number;
+    name: string;
+    numberOrders: number;
+    recordUrl: string;
+  }[];
+}
+
 export interface CallResponse {
   callId: number;
   callRecord?: string;
@@ -37,6 +47,7 @@ export interface CategoriesResponse {
 
 export interface CategoryCallRecordsResponse {
   callRecords: {
+    cardBackground: string;
     id: number;
     name: string;
     numberOrders: number;
@@ -146,6 +157,7 @@ export interface UserCallsResponse {
     callId: number;
     callRecord?: string;
     callRecordName: string;
+    createdAt: string;
     phone: string;
     status: "in_queue" | "in_process" | "error" | "done";
   }[];
@@ -412,6 +424,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "POST",
         body: auth_login,
         type: ContentType.Json,
+        ...params,
+      }),
+  };
+  callRecords = {
+    /**
+     * No description
+     *
+     * @tags call_records
+     * @name CallRecordsList
+     * @request GET:/call_records
+     * @secure
+     */
+    callRecordsList: (params: RequestParams = {}) =>
+      this.request<CallRecordsResponse, ErrorResponse>({
+        path: `/call_records`,
+        method: "GET",
+        secure: true,
         ...params,
       }),
   };

@@ -24,7 +24,7 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['picsum.photos']
+    domains: ['picsum.photos', 'cdn-pranks.x5.money']
   },
   typescript: {
     ignoreBuildErrors: true

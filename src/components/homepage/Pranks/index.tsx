@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './styles.module.scss'
 import { Tabs, Skeleton } from 'antd'
 import PrankPreview, { Prank } from '@/components/common/Prank'
-import { apiURI } from '@/data/api'
+import { apiURI, fetchAPI } from '@/data/api'
 import { CategoriesResponse, CategoryCallRecordsResponse } from '@/data/apiDefinitions'
 import { useSelector } from 'react-redux'
 import { selectAuthState } from '@/store/slices/authState'
@@ -52,15 +52,15 @@ export default function Pranks() {
     if(categories === null) return
     const activeCategoryData = categories.find(c => c.id === activeCategory)
     if(!activeCategoryData) return
-    const callRecordsRequest = await fetch(apiURI + '/categories/' + activeCategoryData.id + '/call_records')
-    const callRecordsResponse = await callRecordsRequest.json() as CategoryCallRecordsResponse
+    const callRecordsResponse = await fetchAPI<CategoryCallRecordsResponse>('/categories/' + activeCategoryData.id + '/call_records', 'GET')
     setPranks(
       callRecordsResponse.callRecords
         .map(cr => ({
           id: String(cr.id),
           title: cr.name,
           statistics: cr.numberOrders,
-          previewAudioURL: cr.recordUrl
+          previewAudioURL: cr.recordUrl,
+          cardBackground: cr.cardBackground
         }))
     )
   }
@@ -89,7 +89,8 @@ export default function Pranks() {
               id: prank.id,
               title: prank.title,
               statistics: prank.statistics,
-              previewAudioURL: prank.previewAudioURL === 'https://test.com' ? 'https://www.myinstants.com/media/sounds/auughhh.mp3' : prank.previewAudioURL
+              previewAudioURL: prank.previewAudioURL === 'https://test.com' ? 'https://www.myinstants.com/media/sounds/auughhh.mp3' : prank.previewAudioURL,
+              cardBackground: prank.cardBackground
             }}
           />
         ))}

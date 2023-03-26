@@ -16,24 +16,25 @@ export type Prank = {
   title: string
   statistics: number
   previewAudioURL: string
+  cardBackground: string
 }
 
 export default function PrankPreview(props: { prank: Prank }) {
   const [orderModalVisible, setOrderModalVisible] = React.useState(false)
 
-  const bg = [
-    miscellaneousBackground,
-    deliveryBackground,
-    policeBackground,
-    studyBackground,
-    threatsBackground
-  ][Math.floor(seedrandom(props.prank.id)() * 5)]
+  // const bg = [
+  //   miscellaneousBackground,
+  //   deliveryBackground,
+  //   policeBackground,
+  //   studyBackground,
+  //   threatsBackground
+  // ][Math.floor(seedrandom(props.prank.id)() * 5)]
 
   return (
     <>
       <div className={styles.prank} onClick={() => setOrderModalVisible(true)}>
         <div className={styles.image}>
-          <Image src={bg} fill alt='' />
+          <Image src={props.prank.cardBackground} fill alt='' />
           <AudioPlayer src={props.prank.previewAudioURL} />
         </div>
         <div className={styles.info}>
