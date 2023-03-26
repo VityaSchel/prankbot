@@ -8,7 +8,7 @@ WORKDIR /app
 #COPY node_modules node_modules
 COPY .npmrc .npmrc
 COPY package.json package.json
-COPY yarn.lock yarn.lock
+#COPY yarn.lock yarn.lock
 
 RUN yarn install --check-files
 RUN rm -r .npmrc
