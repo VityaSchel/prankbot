@@ -10,7 +10,8 @@ COPY .npmrc .npmrc
 COPY package.json package.json
 #COPY yarn.lock yarn.lock
 
-RUN yarn install --check-files
+#RUN yarn install --check-files
+RUN npm install
 RUN rm -r .npmrc
 
 FROM node:16.13.0-alpine as builder
@@ -46,4 +47,4 @@ RUN echo NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL >> .env.local && \
 
 RUN yarn build
 
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
