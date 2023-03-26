@@ -45,7 +45,7 @@ export default function AudioPlayer(props: { src: string }) {
               <Peak key={i} height={peakHeight} active={activeWaveformPeaks[i]} />
             ))
           ) : (
-            <Skeleton paragraph={false} width={'123px'} />
+            <span className={styles.loadingWaveform} />
           )
         }
       </div>
@@ -61,6 +61,6 @@ export default function AudioPlayer(props: { src: string }) {
 
 function Peak(props: { height: number, active: boolean }) {
   return (
-    <span style={{ height: `${props.height}%`, backgroundColor: props.active ? '#4B2EFF' : undefined }} />
+    <span className={styles.peak} style={{ height: `${props.height}%`, backgroundColor: props.active ? '#4B2EFF' : undefined }} />
   )
 }

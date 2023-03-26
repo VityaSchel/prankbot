@@ -35,7 +35,19 @@
       gap: 1.78px;
     }
 
-    span {
+    .loadingWaveform {
+      width: 123px;
+      height: 32px;
+      background-color: #eee;
+      border-radius: 3px;
+
+      @media screen and (max-width: variables.$breakpointTablet) {
+        width: 77.47px;
+        height: 27.2px;
+      }
+    }
+
+    .peak {
       width: 3px;
       background-color: rgba(49, 58, 90, 0.1);
       border-radius: 2px;
