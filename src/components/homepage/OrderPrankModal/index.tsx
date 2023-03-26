@@ -108,7 +108,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 api.info({
                   message: 'Розыгрыш создан',
                   // description: <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>,
-                  'bottomRight',
+                  placement: 'bottomRight'
                 })
               } else if(callsMake._.status === 402 && !('id' in callsMake)) {
                 const paymentRequest = await fetch(apiURI + `/payments/${callsMake.paymentId}/cloudpayments`)
@@ -125,7 +125,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 api.info({
                   message: 'Что-то пошло не такцццц',
                   // description: <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>,
-                  'bottomRight',
+                  placement: 'bottomRight'
                 })
                 throw new Error('Exepected status code to be 402')
               }
