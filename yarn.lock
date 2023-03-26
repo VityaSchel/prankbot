@@ -1736,10 +1736,10 @@
     "react-imask" "^6.4.3"
     "yup" "^1.0.0"
 
-"@x5io/flat-uikit@^1.0.1":
-  "integrity" "sha512-hRqF9cV0gi9OMjM8p7fasqEt0nkeCkFkSs6LMbDrbAHerqMmusBGq3+vFL7Q3wFpvHV0EfNZ1HhbDYCvGt3XDw=="
-  "resolved" "https://registry.npmjs.org/@x5io/flat-uikit/-/flat-uikit-1.0.1.tgz"
-  "version" "1.0.1"
+"@x5io/flat-uikit@^1.0.2":
+  "integrity" "sha512-yBRgbqvDp3vPtPJAVMIcIfke1N9WV3Sfjj/SP6Y2phxy+FF5jb+5L3Gdd+HwrU16GNhVWo7ax9NAR0nUgMdR6w=="
+  "resolved" "https://registry.npmjs.org/@x5io/flat-uikit/-/flat-uikit-1.0.2.tgz"
+  "version" "1.0.2"
   dependencies:
     "@emotion/react" "^11.10.6"
     "@emotion/styled" "^11.10.6"

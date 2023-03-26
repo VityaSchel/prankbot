@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux'
 import { selectAuthState } from '@/store/slices/authState'
 import Checkbox from '@x5io/flat-uikit/dist/Checkbox'
 import { notification } from 'antd'
+import { useRouter } from 'next/router'
 
 const Context = React.createContext({ name: 'Default' });
 
@@ -24,6 +25,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
   const authState = useSelector(selectAuthState)
   const [api, contextHolder] = notification.useNotification()
   const contextValue = React.useMemo(() => ({ name: 'Ant Design' }), [])
+  const router = useRouter()
 
   const handlePaymentRequest = async (cryptogram: string) => {
     try {
@@ -83,6 +85,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
           validationSchema={
             Yup.object({
               phone: Yup.string()
+                .notOneOf(['+79019404698'], 'Этот номер забронирован 💀')
                 .matches(/^((8|\+7|7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{8,10}$/, 'Некорректный формат')
                 .required(),
               ...(!authState.loggedIn && ({
@@ -110,12 +113,13 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                   // description: <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>,
                   placement: 'bottomRight'
                 })
+                props.onClose()
+                router.push('/history')
               } else if(callsMake._.status === 402 && !('id' in callsMake)) {
-                const paymentRequest = await fetch(apiURI + `/payments/${callsMake.paymentId}/cloudpayments`)
-                const paymentResponse = await paymentRequest.json() as CloudpaymentsPaymentResponse
+                const paymentResponse = await fetchAPI<CloudpaymentsPaymentResponse>(`/payments/${callsMake.paymentId}/cloudpayments`, 'GET')
                 await fetchAPI(`/payments/${callsMake.paymentId}/set-email`, 'POST', {
                   email: values.email
-                })
+                }, { parseBody: false })
                 setCheckoutProps({
                   paymentID: callsMake.paymentId,
                   publicID: paymentResponse.cloudpaymentsPublicId,
@@ -123,15 +127,17 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 })
               } else {
                 api.info({
-                  message: 'Что-то пошло не такцццц',
-                  // description: <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>,
+                  message: 'Что-то пошло не так',
                   placement: 'bottomRight'
                 })
                 throw new Error('Exepected status code to be 402')
               }
             } catch(e) {
               console.error(e)
-              alert('Ошибка!')
+              api.info({
+                message: 'Что-то пошло не так',
+                placement: 'bottomRight'
+              })
             } finally {
               setSubmitting(false)
             }
