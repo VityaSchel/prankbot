@@ -202,7 +202,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                     onChange={handleChange}
                     error={errors.checkbox1}
                   >
-                    Нажимая кнопку “Подписаться” Вы даете согласие на обработку персональных данных, а также подтверждаете ознакомление с публичной офертой.
+                    {process.env.NEXT_PUBLIC_CHECKBOX1}
                   </Checkbox>
                   <Checkbox 
                     name='checkbox2'
@@ -210,7 +210,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                     onChange={handleChange}
                     error={errors.checkbox2}
                   >
-                    Нажимая кнопку “Подписаться” Вы подтверждаете ознакомление с автоматическими списаниями. Первое списание в размере 1₽ через 72 часа после подписки, и далее согласно тарифу раз в 7 дней 199₽ или 49₽ за день
+                    {process.env.NEXT_PUBLIC_CHECKBOX2}
                   </Checkbox>
                   <Button type="submit" disabled={!values.email || !values.phone || isSubmitting}>
                     Подписаться

@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <SubscriptionManagement />
       <p className={styles.law}>
-        {`ООО "ГТТ"\nИНН: 7839112438 ОГРН: 1197847020580\n+7 (495) 846-77-03`}
+        {process.env.NEXT_PUBLIC_FOOTER}
       </p>
     </footer>
   )
