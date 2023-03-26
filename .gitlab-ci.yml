@@ -54,7 +54,7 @@ install:
   stage: build
   services:
     - name: docker:${DOCKER_VERSION}-dind
-      command: ["--registry-mirror", "https://proxy-registry.skidstor.com"]
+      command: ["--registry-mirror", "https://registry-proxy.x5.money"]
   cache:
     - key:
         files:
@@ -105,7 +105,7 @@ install:
   stage: build
   services:
     - name: docker:${DOCKER_VERSION}-dind
-      command: ["--registry-mirror", "https://proxy-registry.skidstor.com"]
+      command: ["--registry-mirror", "https://registry-proxy.x5.money"]
   cache:
     - key:
         files:
