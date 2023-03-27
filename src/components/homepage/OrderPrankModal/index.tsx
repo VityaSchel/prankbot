@@ -90,11 +90,11 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 .required(),
               ...(!authState.loggedIn && ({
                 checkbox1: Yup.bool()
-                  .oneOf([true], 'Отметьте чекбокс')
-                  .required('Отметьте чекбокс'),
+                  .oneOf([true], ' ')
+                  .required(' '),
                 checkbox2: Yup.bool()
-                  .oneOf([true], 'Отметьте чекбокс')
-                  .required('Отметьте чекбокс'),
+                  .oneOf([true], ' ')
+                  .required(' '),
                 email: Yup.string()
                     .email()
                     .required()
