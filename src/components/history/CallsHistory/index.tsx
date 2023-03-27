@@ -22,6 +22,12 @@ export default function CallsHistory() {
     )
   }
 
+  const activeOrders = orders
+    ?.filter(call => ['in_process', 'in_queue'].includes(call.status))
+
+  const doneOrders = orders
+    ?.filter(call => ['done', 'error',/*, 'couldnt_call'*/].includes(call.status))
+
   return (
     <div className={styles.history}>
       <h1>История</h1>
@@ -30,19 +36,17 @@ export default function CallsHistory() {
           <>
             <div className={styles.group}>
               <h3>Активные</h3>
-              {orders.length
-                ? orders
-                .filter(call => ['in_process', 'in_queue'].includes(call.status))
-                .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
+              {activeOrders?.length
+                ? activeOrders
+                  .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
                 : <EmptyCallsList />
               }
             </div>
             <div className={styles.group}>
               <h3>Завершенные</h3>
-              {orders.length
-                ? orders
-                .filter(call => ['done', 'error',/*, 'couldnt_call'*/].includes(call.status))
-                .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
+              {doneOrders?.length
+                ? doneOrders
+                  .map((call, i) => <LazyCallLoadingWrapper userCall={call} i={i} key={i} />)
                 : <EmptyCallsList />
               }
             </div>

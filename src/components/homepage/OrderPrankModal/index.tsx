@@ -101,6 +101,8 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
               }))
             })
           }
+          validateOnChange={false}
+          validateOnBlur={false}
           onSubmit={async (values, { setSubmitting }) => {
             try {
               let callsMake = await fetchAPI<MakeCallResponse | PaymentRequired>('/calls/make', 'POST', {
@@ -110,7 +112,6 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
               if(callsMake._.status === 200 && 'id' in callsMake) {
                 api.info({
                   message: 'Розыгрыш создан',
-                  // description: <Context.Consumer>{({ name }) => `Hello, ${name}!`}</Context.Consumer>,
                   placement: 'bottomRight'
                 })
                 props.onClose()

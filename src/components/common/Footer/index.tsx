@@ -6,9 +6,9 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <SubscriptionManagement />
-      <p className={styles.law}>
-        {process.env.NEXT_PUBLIC_FOOTER}
-      </p>
+      <p className={styles.law} dangerouslySetInnerHTML={{
+        __html: process.env.NEXT_PUBLIC_FOOTER ?? ''
+      }} />
     </footer>
   )
 }
