@@ -197,7 +197,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                     <h2>29 рублей</h2>
                     <h4>Стоимость первого месяца подписки</h4>
                   </div>
-                  <Checkbox 
+                  <Checkbox
                     name='checkbox1'
                     value={values.checkbox1}
                     onChange={handleChange}
