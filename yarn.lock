@@ -1723,10 +1723,10 @@
     "@typescript-eslint/types" "5.55.0"
     "eslint-visitor-keys" "^3.3.0"
 
-"@x5io/checkout@^1.2.2":
-  "integrity" "sha512-ysxsD2/jFzhrLxPFNAvK59l9MHqTRk+XRxDCsHM01bSsrJmo6/7SxxgyLYtI9fI/wb+7RLUKBHy7NW3xwZxPgg=="
-  "resolved" "https://registry.npmjs.org/@x5io/checkout/-/checkout-1.2.2.tgz"
-  "version" "1.2.2"
+"@x5io/checkout@^1.2.5":
+  "integrity" "sha512-Rxw0dCYMqXpL3Iv/k5uufFf7UzbW/HTLHyZQx4iR9Je9wKSOjpkYUH/Iy89TLzDAib6/CSkF5Zo3h/DgFwVTaQ=="
+  "resolved" "https://registry.npmjs.org/@x5io/checkout/-/checkout-1.2.5.tgz"
+  "version" "1.2.5"
   dependencies:
     "@emotion/react" "^11.10.6"
     "@emotion/styled" "^11.10.6"
