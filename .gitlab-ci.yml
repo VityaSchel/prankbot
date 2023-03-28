@@ -78,20 +78,10 @@ install:
       --cache-from $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
       --target builder
       --tag $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
+      --build-arg NEXT_PUBLIC_FOOTER=$NEXT_PUBLIC_FOOTER
+      --build-arg NEXT_PUBLIC_CHECKBOX1=$NEXT_PUBLIC_CHECKBOX1
+      --build-arg NEXT_PUBLIC_CHECKBOX2=$NEXT_PUBLIC_CHECKBOX2
       .
-#      --build-arg NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
-#      --build-arg NEXT_PUBLIC_DATA_POLICY=$NEXT_PUBLIC_DATA_POLICY
-#      --build-arg NEXT_PUBLIC_TARIFFS=$NEXT_PUBLIC_TARIFFS
-#      --build-arg NEXT_PUBLIC_USER_AGREEMENT=$NEXT_PUBLIC_USER_AGREEMENT
-#      --build-arg NEXT_PUBLIC_CONTACT_EMAIL=$NEXT_PUBLIC_CONTACT_EMAIL
-#      --build-arg NEXT_PUBLIC_BOT_LINK=$NEXT_PUBLIC_BOT_LINK
-#      --build-arg NEXT_PUBLIC_TEXT_SECOND_CHECKBOX="$NEXT_PUBLIC_TEXT_SECOND_CHECKBOX"
-#      --build-arg NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES="$NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES"
-#      --build-arg NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES="$NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES"
-#      --build-arg NEXT_PUBLIC_COMPANY_NAME="$NEXT_PUBLIC_COMPANY_NAME"
-#      --build-arg NEXT_PUBLIC_COMPANY_INN=$NEXT_PUBLIC_COMPANY_INN
-#      --build-arg NEXT_PUBLIC_COMPANY_OGRNIP=$NEXT_PUBLIC_COMPANY_OGRNIP
-#      .
 
     - rm -rf .next/cache
 
@@ -101,57 +91,6 @@ install:
     - docker push $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-
-#.build_development_template:
-#  stage: build
-#  services:
-#    - name: docker:${DOCKER_VERSION}-dind
-#      command: ["--registry-mirror", "https://registry-proxy.x5.money"]
-#  cache:
-#    - key:
-#        files:
-#          - yarn.lock
-#      paths:
-#        - node_modules
-#      policy: pull
-#    - key: next-cache-${PROJECT_NAME}-${CI_COMMIT_REF_SLUG}
-#      paths:
-#        - .next/cache
-#      policy: pull-push
-#  before_script:
-#    - !reference [.docker_init_template]
-#  script:
-#    - mkdir -p .next/cache
-#
-#    - >
-#      docker build
-#      --file docker/node/Dockerfile
-#      --build-arg BUILDKIT_INLINE_CACHE=1
-#      --cache-from $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-#      --target builder
-#      --tag $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-#      --build-arg NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
-#      --build-arg NEXT_PUBLIC_DATA_POLICY=$NEXT_PUBLIC_DATA_POLICY
-#      --build-arg NEXT_PUBLIC_TARIFFS=$NEXT_PUBLIC_TARIFFS
-#      --build-arg NEXT_PUBLIC_USER_AGREEMENT=$NEXT_PUBLIC_USER_AGREEMENT
-#      --build-arg NEXT_PUBLIC_CONTACT_EMAIL=$NEXT_PUBLIC_CONTACT_EMAIL
-#      --build-arg NEXT_PUBLIC_BOT_LINK=$NEXT_PUBLIC_BOT_LINK
-#      --build-arg NEXT_PUBLIC_TEXT_SECOND_CHECKBOX="$NEXT_PUBLIC_TEXT_SECOND_CHECKBOX"
-#      --build-arg NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES="$NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES"
-#      --build-arg NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES="$NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES"
-#      --build-arg NEXT_PUBLIC_COMPANY_NAME="$NEXT_PUBLIC_COMPANY_NAME"
-#      --build-arg NEXT_PUBLIC_COMPANY_INN=$NEXT_PUBLIC_COMPANY_INN
-#      --build-arg NEXT_PUBLIC_COMPANY_OGRNIP=$NEXT_PUBLIC_COMPANY_OGRNIP
-#      .
-#
-#    - rm -rf .next/cache
-#
-#    - docker create --name main_page $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-#    - docker cp main_page:/app/.next/cache $CI_PROJECT_DIR/.next/cache
-#
-#    - docker push $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "dev"
 
 .deploy_production_template:
   stage: deploy
@@ -171,40 +110,13 @@ install:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 
-#.deploy_development_template:
-#  stage: deploy
-#  environment:
-#    name: production-${PROJECT_NAME}
-#  variables:
-#    COMPOSE_PROJECT_NAME: ${PROJECT_NAME}_main_page
-#    LANDING_IMAGE: $DOCKER_REGISTRY_PATH:$CI_COMMIT_REF_NAME-$PROJECT_NAME
-#    DOCKER_HOST: $DEPLOY_PROD_DOCKER_HOST
-#  before_script:
-#    - !reference [.ssh_init_template]
-#    - !reference [.docker_init_template]
-#  script:
-#    - docker compose pull main_page
-#
-#    - docker compose up -d --wait
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "dev"
-
 build_pranksale:
   extends: .build_production_template
   variables:
     PROJECT_NAME: pranksale
-    NEXT_PUBLIC_BACKEND_URL: https://api.prankerbot.xyz
-    NEXT_PUBLIC_DATA_POLICY: https://docs.google.com/document/d/11ntwB7fqvLM1RYB1-W0y4046AkH3e8qhNb3qyWWETo8/edit?usp=sharing
-    NEXT_PUBLIC_TARIFFS: https://docs.google.com/document/d/1xQCmWj0NS75XtY2Tyto2f99_SLW6MQm9661toM0j-GY/edit?usp=sharing
-    NEXT_PUBLIC_USER_AGREEMENT: https://docs.google.com/document/d/1wUCaCHZGo42OHUtUZcL2e1y80lrDDIext-Qs7N5UFZw/edit?usp=sharing
-    NEXT_PUBLIC_CONTACT_EMAIL: promohelper@proton.me
-    NEXT_PUBLIC_BOT_LINK: t.me/prankach_bot
-    NEXT_PUBLIC_TEXT_SECOND_CHECKBOX: составит 1 рубль за получение пробного доступа. В дальнейшем, через 3 дня после получения пробного доступа, списывается 1784 рублей за каждые 14 дней использования сервиса. В случае нехватки средств, спустя 6 часа, мы переведем вас на тариф со списаниями по 896 рублей за каждые 7 дней или 583 рублей за каждые 4 дня или 194 рублей за каждый день доступа к сервису.
-    NEXT_PUBLIC_MAIN_PAGE_TEXT_SUBSCRIPTION_PRICES: Далее 1784 рублей за кажные 3 дня
-    NEXT_PUBLIC_PAY_PAGE_TEXT_SUBSCRIPTION_PRICES: Далее 1784 рублей за каждые 14 дней или 896 рублей за каждые 7 дней или 583 рублей за каждые 4 дня или 194 рублей за каждый день
-    NEXT_PUBLIC_COMPANY_NAME: ИП Круковский Андрей Николаевич
-    NEXT_PUBLIC_COMPANY_INN: 780535623621
-    NEXT_PUBLIC_COMPANY_OGRNIP: 322784700279882
+    NEXT_PUBLIC_FOOTER: "ИП Круковский Андрей Николаевич<br></br>ИНН: 780535623621 ОГРН: 322784700279882<br></br>EMAIL: promohelper@proton.me<br></br><a href="https://docs.google.com/document/d/1wUCaCHZGo42OHUtUZcL2e1y80lrDDIext-Qs7N5UFZw/edit?usp=sharing">Пользовательское соглашение</a><br></br><a href="https://docs.google.com/document/d/11ntwB7fqvLM1RYB1-W0y4046AkH3e8qhNb3qyWWETo8/edit?usp=sharing">Политика обработки данных</a><br></br><a href="https://cdn.stick.wtf/tariffs.pdf">Тарифы</a>"
+    NEXT_PUBLIC_CHECKBOX1: Нажимая кнопку “Подписаться” Вы даете согласие на обработку персональных данных, а также подтверждаете ознакомление с публичной офертой.
+    NEXT_PUBLIC_CHECKBOX2: Нажимая кнопку “Подписаться” Вы подтверждаете ознакомление с автоматическими списаниями. Первое списание в размере 1₽ через 72 часа после подписки, и далее согласно тарифу раз в 7 дней 199₽ или 49₽ за день
 
 deploy_production_pranksale:
   extends: .deploy_production_template
