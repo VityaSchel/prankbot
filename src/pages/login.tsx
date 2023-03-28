@@ -8,16 +8,32 @@ import LoginForm from '@/components/login/LoginForm'
 import RegistrationHint from '@/components/login/RegistrationHint'
 import Footer from '@/components/common/Footer'
 import { useSelector } from 'react-redux'
-import { selectAuthState } from '@/store/slices/authState'
+import { handleLogin, selectAuthState } from '@/store/slices/authState'
 import { useRouter } from 'next/router'
+import Cookies from 'js-cookie'
+import { useAppDispatch } from '@/store/store'
 
 export default function Login() {
+  const [loaded, setLoaded] = React.useState(false)
   const authState = useSelector(selectAuthState)
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   React.useEffect(() => {
-    if(authState.sessionRestored && authState.loggedIn) {
-      router.replace('/')
+    if(authState.sessionRestored) {
+      if(authState.loggedIn) {
+        router.replace('/')
+        setLoaded(true)
+      } else {
+        const token = router.query['userToken']
+        if(token && typeof token === 'string') {
+          Cookies.set('prankbot_session', token, { expires: 365, path: '' })
+          dispatch(handleLogin({ _no_data: true }))
+          router.replace('/history')
+        } else {
+          setLoaded(true)
+        }
+      }
     }
   }, [authState])
 
@@ -30,7 +46,7 @@ export default function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppBar />
-      {authState.sessionRestored && (
+      {loaded && (
         <>
           <main className={styles.main}>
             {!authState.loggedIn
