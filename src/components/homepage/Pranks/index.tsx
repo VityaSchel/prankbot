@@ -43,7 +43,7 @@ export default function Pranks() {
           categoryItems: c.numberCallRecords
         }))
     )
-    setActiveCategory(String(apiCategoriesResponse.categories[0].id))
+    // setActiveCategory(String(apiCategoriesResponse.categories[0].id))
   }
 
   React.useEffect(() => { fetchPranks() }, [activeCategory, categories])
