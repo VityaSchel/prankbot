@@ -1,6 +1,8 @@
 import Cookies from 'js-cookie'
 
 export function makeRedirect(path: string, params: { [key: string]: any }, method='post') {
+  console.log('Redirecting to', path, params, method)
+  
   const form = document.createElement('form')
   form.method = method
   form.action = path
