@@ -25,7 +25,7 @@ COPY . .
 
 RUN echo NEXT_PUBLIC_FOOTER=$NEXT_PUBLIC_FOOTER >> .env.local && \
     echo NEXT_PUBLIC_CHECKBOX1=$NEXT_PUBLIC_CHECKBOX1 >> .env.local && \
-    echo NEXT_PUBLIC_CHECKBOX2=$NEXT_PUBLIC_CHECKBOX2 >> .env.local &&
+    echo NEXT_PUBLIC_CHECKBOX2=$NEXT_PUBLIC_CHECKBOX2 >> .env.local
 
 RUN yarn build
 
