@@ -18,7 +18,9 @@ export function useOnScreen<T extends Element>(ref: React.MutableRefObject<T>, r
       observer.observe(ref.current);
     }
     return () => {
-      observer.unobserve(ref.current);
+      if(ref.current) {
+        observer.unobserve(ref.current);
+      }
     };
   }, []); // Empty array ensures that effect is only run on mount and unmount
   return isIntersecting
