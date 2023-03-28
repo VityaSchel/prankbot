@@ -15,7 +15,7 @@ export default function Hero() {
       <div className={styles.info}>
         <div className={styles.text}>
           <h1>Разыграй своих друзей <wbr />или коллег с помощью <span className={styles.highlight}>ПранкБота</span></h1>
-          <h2>Получи выгодную месячную подписку и получи безлимит на розыгрыши</h2>
+          <h2>Закажи розыгрыш по телефону и получи запись разговора</h2>
         </div>
         {/* <Button type="primary" size='large'>Выбрать розыгрыш</Button> */}
         <Button variant='secondary' onClick={handleScroll}>Выбрать розыгрыш <BsArrowDown /></Button>

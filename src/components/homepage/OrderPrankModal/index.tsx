@@ -214,7 +214,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                     {process.env.NEXT_PUBLIC_CHECKBOX2}
                   </Checkbox>
                   <Button type="submit" disabled={!values.email || !values.phone || isSubmitting}>
-                    Подписаться
+                    Оплатить
                   </Button>
                 </div>
               )}
