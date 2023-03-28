@@ -3,7 +3,7 @@ import styles from './styles.module.scss'
 import { Tabs, Skeleton } from 'antd'
 import PrankPreview, { Prank } from '@/components/common/Prank'
 import { apiURI, fetchAPI } from '@/data/api'
-import { CategoriesResponse, CategoryCallRecordsResponse } from '@/data/apiDefinitions'
+import { CallRecordsResponse, CategoriesResponse, CategoryCallRecordsResponse } from '@/data/ApiDefinitions'
 import { useSelector } from 'react-redux'
 import { selectAuthState } from '@/store/slices/authState'
 
@@ -15,7 +15,7 @@ type Category = {
 
 export default function Pranks() {
   const [categories, setCategories] = React.useState<null | Category[]>(null)
-  const [activeCategory, setActiveCategory] = React.useState(0)
+  const [activeCategory, setActiveCategory] = React.useState<string>('all')
   const [pranks, setPranks] = React.useState<null | Prank[]>(null)
   const authState = useSelector(selectAuthState)
 
@@ -43,16 +43,21 @@ export default function Pranks() {
           categoryItems: c.numberCallRecords
         }))
     )
-    setActiveCategory(apiCategoriesResponse.categories[0].id)
+    setActiveCategory(String(apiCategoriesResponse.categories[0].id))
   }
 
   React.useEffect(() => { fetchPranks() }, [activeCategory, categories])
 
   const fetchPranks = async () => {
     if(categories === null) return
-    const activeCategoryData = categories.find(c => c.id === activeCategory)
-    if(!activeCategoryData) return
-    const callRecordsResponse = await fetchAPI<CategoryCallRecordsResponse>('/categories/' + activeCategoryData.id + '/call_records', 'GET')
+    let callRecordsResponse: CallRecordsResponse | CategoryCallRecordsResponse
+    if(activeCategory === 'all') {
+      callRecordsResponse = await fetchAPI<CallRecordsResponse>('/call_records', 'GET')
+    } else {
+      const activeCategoryData = categories.find(c => String(c.id) === activeCategory)
+      if(!activeCategoryData) return
+      callRecordsResponse = await fetchAPI<CategoryCallRecordsResponse>('/categories/' + activeCategoryData.id + '/call_records', 'GET')
+    }
     setPranks(
       callRecordsResponse.callRecords
         .map(cr => ({
@@ -72,9 +77,9 @@ export default function Pranks() {
       {categories
         ? (
           <Tabs
-            defaultActiveKey={String(categories[0].id)}
-            items={mapItems(categories)}
-            onChange={(activeKey: string) => setActiveCategory(Number(activeKey))}
+            defaultActiveKey={'all'}
+            items={[{ key: 'all', label: 'Все категории' }, ...mapItems(categories)]}
+            onChange={(activeKey: string) => setActiveCategory(activeKey)}
             className={styles.tabs}
           />
         ) : (
