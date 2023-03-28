@@ -25,8 +25,8 @@ export default function Login() {
         router.replace('/')
         setLoaded(true)
       } else {
-        const token = router.query['userToken']
-        if(token && typeof token === 'string') {
+        const token = (new URLSearchParams(window.location.search)).get('userToken')
+        if(token) {
           Cookies.set('prankbot_session', token, { expires: 365, path: '' })
           dispatch(handleLogin({ _no_data: true }))
           router.replace('/history')
