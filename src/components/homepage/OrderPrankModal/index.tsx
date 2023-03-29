@@ -241,7 +241,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
           color='rgba(75, 46, 255, 1)'
           subject={{
             publicID: checkoutProps.publicID,
-            name: 'Оплата подписки',
+            name: 'Оплата',
             price: checkoutProps.amount + '₽'
           }}
           onRequest={handlePaymentRequest}
