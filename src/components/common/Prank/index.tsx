@@ -10,6 +10,7 @@ import deliveryBackground from './assets/delivery.png'
 import policeBackground from './assets/police.png'
 import studyBackground from './assets/study.png'
 import threatsBackground from './assets/threats.png'
+import Button from '@/components/common/Button'
 
 export type Prank = {
   id: string
@@ -40,6 +41,7 @@ export default function PrankPreview(props: { prank: Prank }) {
         <div className={styles.info}>
           <h3>{props.prank.title}</h3>
           <span>{props.prank.statistics} розыгрышей</span>
+          <Button shrink>Заказать<span className={styles.hideMobile}> розыгрыш</span></Button>
         </div>
       </div>
       <OrderPrankModal

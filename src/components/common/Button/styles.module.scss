@@ -52,4 +52,8 @@
       background-color: color.scale(variables.$buttonSecondary, $saturation: -50%);
     }
   }
+
+  &.shrink {
+    padding: 14px 20px;
+  }
 }
