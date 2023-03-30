@@ -48,13 +48,12 @@ export const authStateSlice = createSlice({
         state.value.user = null
       }
     },
-
-    extraReducers: {
-      [HYDRATE]: (state, action) => {
-        return {
-          ...state,
-          ...action.payload.authState,
-        }
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.authState,
       }
     }
   }

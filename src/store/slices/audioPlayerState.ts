@@ -28,13 +28,12 @@ export const audioPlayerStateSlice = createSlice({
     setAttachedPlayer: (state, action: PayloadAction<AudioPlayerState['value']['attachedPlayer']>) => {
       state.value.attachedPlayer = action.payload
     },
-
-    extraReducers: {
-      [HYDRATE]: (state, action) => {
-        return {
-          ...state,
-          ...action.payload.authState,
-        }
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.authState,
       }
     }
   }

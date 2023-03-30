@@ -15,7 +15,7 @@ import { selectAuthState } from '@/store/slices/authState'
 import Checkbox from '@x5io/flat-uikit/dist/Checkbox'
 import { notification } from 'antd'
 import { useRouter } from 'next/router'
-import { hasCheckboxes, resetVerificationStatus } from '@x5io/ads_parameter'
+import { selectShowCheckboxes } from '@/store/slices/companyAdsState'
 
 const Context = React.createContext({ name: 'Default' });
 
@@ -27,7 +27,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
   const [api, contextHolder] = notification.useNotification()
   const contextValue = React.useMemo(() => ({ name: 'Ant Design' }), [])
   const router = useRouter()
-  const [showCheckboxes, setShowCheckboxes] = React.useState(true)
+  const showCheckboxes = useSelector(selectShowCheckboxes).showCheckboxes
 
   const handlePaymentRequest = async (cryptogram: string) => {
     try {
@@ -75,16 +75,6 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
     if(!props.open) {
       checkoutRef.current = undefined
       setCheckoutProps(null)
-    } else {
-      const ads = (new URLSearchParams(window.location.search)).get('ads')
-      if(ads !== null) {
-        fetchAPI<AdvertisingCompanyResponse>('/advertising_companies/' + ads, 'GET')
-          .then(r => {
-            resetVerificationStatus()
-            setShowCheckboxes(hasCheckboxes(r.status === 'active'))
-          })
-          .catch(e => console.error(e))
-      }
     }
   }, [props.open])
 
@@ -220,7 +210,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                     >
                       {process.env.NEXT_PUBLIC_CHECKBOX1}
                     </Checkbox>
-                    <Checkbox 
+                    <Checkbox
                       name='checkbox2'
                       value={values.checkbox2}
                       onChange={handleChange}

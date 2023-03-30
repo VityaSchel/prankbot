@@ -10,6 +10,7 @@ import { handleRestoreSession, selectAuthState } from '@/store/slices/authState'
 import { useSelector } from 'react-redux'
 
 import { setLocale as setYupLocale } from 'yup'
+import { verifyCheckboxes } from '@/store/slices/companyAdsState'
 setYupLocale(ruYupLocale)
 
 export default function App({ Component, ...rest }: AppProps) {
@@ -22,6 +23,10 @@ export default function App({ Component, ...rest }: AppProps) {
     } else {
       store.dispatch(handleRestoreSession({ user: null }))
     }
+  }, [])
+  
+  React.useEffect(() => {
+    store.dispatch(verifyCheckboxes())
   }, [])
 
   return (
