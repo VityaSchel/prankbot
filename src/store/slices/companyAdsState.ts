@@ -27,6 +27,8 @@ export const verifyCheckboxes = createAsyncThunk(
       const r = await fetchAPI<AdvertisingCompanyResponse>('/advertising_companies/' + ads, 'GET')
       resetVerificationStatus()
       return hasCheckboxes(r.status === 'active')
+    } else {
+      return true
     }
   }
 )
