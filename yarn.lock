@@ -1730,10 +1730,10 @@
   dependencies:
     "js-cookie" "^3.0.1"
 
-"@x5io/checkout@^1.2.21":
-  "integrity" "sha512-xjp/40aVEJFdbyhWUgLOgM13RUno5BpWPh7w2SwoJYiLLd77g5QwlsrsoZUTf61kxX21/xRZ9yrFs9XS5nt5qQ=="
-  "resolved" "https://registry.npmjs.org/@x5io/checkout/-/checkout-1.2.21.tgz"
-  "version" "1.2.21"
+"@x5io/checkout@^1.2.22":
+  "integrity" "sha512-dKQ91cc/GuqvHkrdLsX/Ohb1vchpb5RdXikyOR8lCjpq8x8S9ILqPttL5N6C3b7hQS5X7JlhUkPngBWgPUNryg=="
+  "resolved" "https://registry.npmjs.org/@x5io/checkout/-/checkout-1.2.22.tgz"
+  "version" "1.2.22"
   dependencies:
     "@emotion/react" "^11.10.6"
     "@emotion/styled" "^11.10.6"
