@@ -17,6 +17,7 @@ import { notification } from 'antd'
 import { useRouter } from 'next/router'
 import { selectShowCheckboxes } from '@/store/slices/companyAdsState'
 import ReactInputMask from 'react-input-mask'
+import { openCheckout } from '@/shared/api/payment-handler'
 
 const Context = React.createContext({ name: 'Default' });
 
@@ -45,28 +46,13 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
         props.onClose()
         router.push('/history')
       } else if (callsMake._.status === 402 && !('id' in callsMake)) {
-        const paymentResponse = await fetchAPI<PaymentResponse>(`/payments/${callsMake.paymentId}`, 'GET')
         await fetchAPI(`/payments/${callsMake.paymentId}/set-email`, 'POST', {
           email: values.email
         }, { parseBody: false })
-        checkoutRef.current!.open({
-          paymentInfo: {
-            title: 'Оплата',
-            priceInRub: paymentResponse.amount,
-            priceString: paymentResponse.amount + '₽',
-          },
-          paymentProcessor: 
-            paymentResponse.merchantCode === 'cloudpayments'
-              ? {
-                name: 'cloudpayments',
-                publicId: paymentResponse.publicKey
-              } : {
-                name: 'payselection',
-                publickey: paymentResponse.publicKey
-              },
-          checkboxes: paymentResponse.checkboxes
-            .map(({ active, data }) => ({ defaultActive: active, htmlLabel: data })),
-        }, handlePaymentRequest(callsMake.paymentId, paymentResponse.merchantCode as 'cloudpayments' | 'payselection'))
+        await openCheckout(
+          callsMake.paymentId, 
+          checkoutRef.current!
+        )
       } else {
         // api.info({
         //   message: 'Что-то пошло не так',
@@ -82,35 +68,6 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
       })
     } finally {
       setSubmitting(false)
-    }
-  }
-
-  const handlePaymentRequest = (paymentID: string, merchantCode: 'cloudpayments' | 'payselection') => async (cryptogram: string) => {
-    try {
-      const payRequest = await fetch(apiURI + `/payments/${paymentID}/${merchantCode}/pay_with_cryptogram`, {
-        method: 'POST',
-        body: JSON.stringify({
-          cryptogram
-        } as PayRyptogramCloudpaymentsBody),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      const payResponse = await payRequest.json() as PayRyptogramCloudpaymentsResponse
-      const isSuccess = payRequest.status === 201
-      if(isSuccess) {
-        if(payResponse.redirectParams) {
-          makeRedirect(
-            payResponse.redirectUrl, Object.fromEntries(
-              payResponse.redirectParams.map(({ key, value }) => [key, value])
-            ), payResponse.redirectMethod
-          )
-        } else {
-          window.location.href = payResponse.redirectUrl
-        }
-      }
-      return isSuccess
-    } catch(e) {
-      console.error(e)
-      return false
     }
   }
 
