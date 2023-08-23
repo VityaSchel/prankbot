@@ -1,13 +1,13 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import Modal from '@/components/common/Modal'
-import Checkout, { CheckoutRefProperties } from '@x5io/checkout'
+import { CheckoutModal, CheckoutModalRef } from '@x5io/checkout-modal'
 import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import Input from '@/components/common/Input'
 import Button from '@/components/common/Button'
 import type { Prank } from '@/components/common/Prank'
-import { AdvertisingCompanyResponse, CloudpaymentsPaymentResponse, MakeCallBody, MakeCallResponse, PayCloudpaymentsBody, PayCloudpaymentsResponse, PaymentRequired } from '@/data/ApiDefinitions'
+import { AdvertisingCompanyResponse, MakeCallBody, MakeCallResponse, PayRyptogramCloudpaymentsBody, PayRyptogramCloudpaymentsResponse, PaymentRequired, PaymentResponse } from '@/data/ApiDefinitions'
 import { apiURI, fetchAPI } from '@/data/api'
 import { makeRedirect } from '@/utils'
 import { useSelector } from 'react-redux'
@@ -16,29 +16,85 @@ import Checkbox from '@x5io/flat-uikit/dist/Checkbox'
 import { notification } from 'antd'
 import { useRouter } from 'next/router'
 import { selectShowCheckboxes } from '@/store/slices/companyAdsState'
+import ReactInputMask from 'react-input-mask'
 
 const Context = React.createContext({ name: 'Default' });
 
+type FormValues = { phone: string, email: string }
+
 export default function OrderPrankModal(props: { prank: Prank, open: boolean, onClose: () => any }) {
-  const checkoutRef = React.useRef<CheckoutRefProperties>()
-  const [checkoutProps, setCheckoutProps] = React.useState<null | { paymentID: string, publicID: string, amount: number }>(null)
-  const formikRef = React.useRef<FormikProps<{ phone: string, email: string, checkbox1: boolean, checkbox2: boolean }>>()
+  const checkoutRef = React.useRef<CheckoutModalRef>()
+  const formikRef = React.useRef<FormikProps<FormValues>>()
   const authState = useSelector(selectAuthState)
   const [api, contextHolder] = notification.useNotification()
   const contextValue = React.useMemo(() => ({ name: 'Ant Design' }), [])
   const router = useRouter()
   const showCheckboxes = useSelector(selectShowCheckboxes).showCheckboxes
 
-  const handlePaymentRequest = async (cryptogram: string) => {
+  const onSubmit = async (values: FormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => any }) => {
     try {
-      const payRequest = await fetch(apiURI + `/payments/${checkoutProps!.paymentID}/cloudpayments/pay`, {
+      let callsMake = await fetchAPI<MakeCallResponse | PaymentRequired>('/calls/make', 'POST', {
+        callRecordId: Number(props.prank.id),
+        phone: values.phone
+      } as MakeCallBody)
+      if (callsMake._.status === 200 && 'id' in callsMake) {
+        api.info({
+          message: 'Розыгрыш создан',
+          placement: 'bottomRight'
+        })
+        props.onClose()
+        router.push('/history')
+      } else if (callsMake._.status === 402 && !('id' in callsMake)) {
+        const paymentResponse = await fetchAPI<PaymentResponse>(`/payments/${callsMake.paymentId}`, 'GET')
+        await fetchAPI(`/payments/${callsMake.paymentId}/set-email`, 'POST', {
+          email: values.email
+        }, { parseBody: false })
+        checkoutRef.current!.open({
+          paymentInfo: {
+            title: 'Оплата',
+            priceInRub: paymentResponse.amount,
+            priceString: paymentResponse.amount + '₽',
+          },
+          paymentProcessor: 
+            paymentResponse.merchantCode === 'cloudpayments'
+              ? {
+                name: 'cloudpayments',
+                publicId: paymentResponse.publicKey
+              } : {
+                name: 'payselection',
+                publickey: paymentResponse.publicKey
+              },
+          checkboxes: paymentResponse.checkboxes
+            .map(({ active, data }) => ({ defaultActive: active, htmlLabel: data })),
+        }, handlePaymentRequest(callsMake.paymentId, paymentResponse.merchantCode as 'cloudpayments' | 'payselection'))
+      } else {
+        // api.info({
+        //   message: 'Что-то пошло не так',
+        //   placement: 'bottomRight'
+        // })
+        throw new Error('Exepected status code to be 402')
+      }
+    } catch (e) {
+      console.error(e)
+      api.info({
+        message: 'Что-то пошло не так',
+        placement: 'bottomRight'
+      })
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handlePaymentRequest = (paymentID: string, merchantCode: 'cloudpayments' | 'payselection') => async (cryptogram: string) => {
+    try {
+      const payRequest = await fetch(apiURI + `/payments/${paymentID}/${merchantCode}/pay_with_cryptogram`, {
         method: 'POST',
         body: JSON.stringify({
           cryptogram
-        } as PayCloudpaymentsBody),
+        } as PayRyptogramCloudpaymentsBody),
         headers: { 'Content-Type': 'application/json' }
       })
-      const payResponse = await payRequest.json() as PayCloudpaymentsResponse
+      const payResponse = await payRequest.json() as PayRyptogramCloudpaymentsResponse
       const isSuccess = payRequest.status === 201
       if(isSuccess) {
         if(payResponse.redirectParams) {
@@ -58,26 +114,6 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
     }
   }
 
-  React.useEffect(() => {
-    const inter = setInterval(() => {
-      if(!checkoutRef.current) return
-      clearInterval(inter)
-      checkoutRef.current.initialize({
-        email: formikRef.current!.values.email
-      })
-    }, 10)
-    return () => {
-      clearInterval(inter)
-    }
-  }, [checkoutProps])
-
-  React.useEffect(() => {
-    if(!props.open) {
-      checkoutRef.current = undefined
-      setCheckoutProps(null)
-    }
-  }, [props.open])
-
   return (
     <Context.Provider value={contextValue}>
       {contextHolder}
@@ -91,14 +127,14 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 .matches(/^((8|\+7|7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{8,10}$/, 'Некорректный формат')
                 .required(),
               ...(!authState.loggedIn && ({
-                ...(showCheckboxes && ({
-                  checkbox1: Yup.bool()
-                    .oneOf([true], ' ')
-                    .required(' '),
-                  checkbox2: Yup.bool()
-                    .oneOf([true], ' ')
-                    .required(' ')
-                })),
+                // ...(showCheckboxes && ({
+                //   checkbox1: Yup.bool()
+                //     .oneOf([true], ' ')
+                //     .required(' '),
+                //   checkbox2: Yup.bool()
+                //     .oneOf([true], ' ')
+                //     .required(' ')
+                // })),
                 email: Yup.string()
                   .email()
                   .required(),
@@ -107,46 +143,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
           }
           validateOnChange={false}
           validateOnBlur={false}
-          onSubmit={async (values, { setSubmitting }) => {
-            try {
-              let callsMake = await fetchAPI<MakeCallResponse | PaymentRequired>('/calls/make', 'POST', {
-                callRecordId: Number(props.prank.id),
-                phone: values.phone
-              } as MakeCallBody)
-              if(callsMake._.status === 200 && 'id' in callsMake) {
-                api.info({
-                  message: 'Розыгрыш создан',
-                  placement: 'bottomRight'
-                })
-                props.onClose()
-                router.push('/history')
-              } else if(callsMake._.status === 402 && !('id' in callsMake)) {
-                const paymentResponse = await fetchAPI<CloudpaymentsPaymentResponse>(`/payments/${callsMake.paymentId}/cloudpayments`, 'GET')
-                await fetchAPI(`/payments/${callsMake.paymentId}/set-email`, 'POST', {
-                  email: values.email
-                }, { parseBody: false })
-                setCheckoutProps({
-                  paymentID: callsMake.paymentId,
-                  publicID: paymentResponse.cloudpaymentsPublicId,
-                  amount: paymentResponse.amount
-                })
-              } else {
-                api.info({
-                  message: 'Что-то пошло не так',
-                  placement: 'bottomRight'
-                })
-                throw new Error('Exepected status code to be 402')
-              }
-            } catch(e) {
-              console.error(e)
-              api.info({
-                message: 'Что-то пошло не так',
-                placement: 'bottomRight'
-              })
-            } finally {
-              setSubmitting(false)
-            }
-          }}
+          onSubmit={onSubmit}
           innerRef={formikRef as any}
         >
           {({
@@ -164,18 +161,26 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                   <h1>{props.prank.title}</h1>
                   <h3>Укажите номер телефона человека, которого хотите разыграть. {!authState.loggedIn && 'Также укажите свой e-mail для регистрации.'}</h3>
                 </div>
-                <Input
-                  type="text"
-                  name="phone"
-                  label='Номер телефона'
-                  placeholder='+7'
-                  onChange={handleChange}
-                  onEnter={() => handleSubmit()}
-                  onBlur={handleBlur}
+                <ReactInputMask
+                  mask='+79999999999'
+                  maskChar={null}
                   value={values.phone}
-                  error={errors.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                   disabled={isSubmitting}
-                />
+                >
+                  {inputProps => (
+                    <Input
+                      type="text"
+                      name="phone"
+                      label='Номер телефона'
+                      placeholder='+7'
+                      onEnter={() => handleSubmit()}
+                      error={errors.phone}
+                      {...inputProps}
+                    />
+                  )}
+                </ReactInputMask>
                 {!authState.loggedIn && <Input
                   type="email"
                   name="email"
@@ -201,7 +206,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                     <h2>1 рубль</h2>
                     <h4>Стоимость пробного звонка</h4>
                   </div>
-                  {showCheckboxes && (<>
+                  {/* {showCheckboxes && (<>
                     <Checkbox
                       name='checkbox1'
                       value={values.checkbox1}
@@ -218,7 +223,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                     >
                       {process.env.NEXT_PUBLIC_CHECKBOX2}
                     </Checkbox>
-                  </>)}
+                  </>)} */}
                   <Button type="submit" disabled={!values.email || !values.phone || isSubmitting}>
                     Оплатить
                   </Button>
@@ -227,17 +232,9 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
             </form>
           )}
         </Formik>
-        {checkoutProps && <Checkout
-          color='rgba(75, 46, 255, 1)'
-          subject={{
-            publicID: checkoutProps.publicID,
-            name: 'Оплата',
-            price: checkoutProps.amount + '₽'
-          }}
-          onRequest={handlePaymentRequest}
+        <CheckoutModal
           ref={checkoutRef}
-          wrapClassName={styles.checkoutContainer}
-        />}
+        />
       </Modal>
     </Context.Provider>
   )

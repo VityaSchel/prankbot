@@ -8,6 +8,7 @@ import { ru as ruYupLocale } from 'yup-locales'
 import Cookie from 'js-cookie'
 import { handleRestoreSession, selectAuthState } from '@/store/slices/authState'
 import { useSelector } from 'react-redux'
+import '@x5io/checkout-modal/style.css'
 
 import { setLocale as setYupLocale } from 'yup'
 import { verifyCheckboxes } from '@/store/slices/companyAdsState'
@@ -18,11 +19,11 @@ export default function App({ Component, ...rest }: AppProps) {
   const { pageProps } = props
 
   React.useEffect(() => {
-    if(Cookie.get('prankbot_session')) {
+    // if(Cookie.get('prankbot_session')) {
       store.dispatch(handleRestoreSession({ user: { _no_data: true } }))
-    } else {
-      store.dispatch(handleRestoreSession({ user: null }))
-    }
+    // } else {
+    //   store.dispatch(handleRestoreSession({ user: null }))
+    // }
   }, [])
   
   React.useEffect(() => {

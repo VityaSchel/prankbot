@@ -17,8 +17,9 @@ export default function CallsHistory() {
   const fetchOrders = async () => {
     const callsResponse = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
     setOrders(
-      // mockUserCalls.calls
-      callsResponse.calls
+      window.location.hostname === 'localhost' || window.location.hostname === 'web.archive.org'
+        ? mockUserCalls.calls
+        : callsResponse.calls
     )
   }
 

@@ -59,20 +59,6 @@ export interface CloudpaymentsNotificationResponse {
   code: number;
 }
 
-export interface CloudpaymentsPaymentComplete3DsResponse {
-  userToken: string;
-}
-
-export interface CloudpaymentsPaymentResponse {
-  amount: number;
-  amountWithoutDiscount: number;
-  cloudpaymentsPublicId: string;
-  description: string;
-  money: string;
-  moneyWithoutDiscount: string;
-  status: string;
-}
-
 export interface CloudpaymentsReceipt {
   Items?: {
     amount?: number;
@@ -99,6 +85,10 @@ export interface ErrorResponse {
   message: string;
 }
 
+export interface IpResponse {
+  ip: string;
+}
+
 export interface LoginBody {
   /** @example "test@test.com" */
   email: string;
@@ -120,27 +110,56 @@ export interface MakeCallResponse {
   id: number;
 }
 
-export interface PayCloudpaymentsBody {
-  cryptogram: string;
-}
-
-export interface PayCloudpaymentsResponse {
-  /** @example "POST" */
-  redirectMethod: string;
-  redirectParams?: {
-    key?: string;
-    value?: string;
-  }[];
-  /** @example "https://demo.cloudpayments.ru/acs" */
-  redirectUrl: string;
+export interface PayWidgetCloudpaymentsResponse {
+  cloudpayments: {
+    accountId: string;
+    amount: number;
+    currency: string;
+    description: string;
+    invoiceId: string;
+    publicId: string;
+  };
 }
 
 export interface PaymentRequired {
   paymentId: string;
 }
 
+export interface PaymentResponse {
+  amount: number;
+  amountWithoutDiscount: number;
+  checkboxes: {
+    active: boolean;
+    data: string;
+  }[];
+  email: string;
+  merchantCode: string;
+  publicKey: string;
+  shopId: string;
+  showCheckboxes: boolean;
+  status: string;
+}
+
 export interface PaymentSetEmailBody {
   email: string;
+}
+
+export interface PayselectionNotificationBody {
+  Amount: string;
+  Bank?: string;
+  CardMasked: string;
+  Currency: string;
+  CustomFields?: string;
+  DateTime: string;
+  Email?: string;
+  ErrorCode?: string;
+  ErrorMessage?: string;
+  Event: "Payment" | "Fail";
+  IsTest: number;
+  OrderId: string;
+  RebillId?: string;
+  Service_Id: string;
+  TransactionId: string;
 }
 
 export interface Principal {
@@ -162,6 +181,36 @@ export interface UserCallsResponse {
     status: "in_queue" | "in_process" | "error" | "done";
   }[];
   count: number;
+}
+
+export interface PayRyptogramCloudpaymentsBody {
+  cryptogram: string;
+}
+
+export interface PayRyptogramCloudpaymentsResponse {
+  /** @example "POST" */
+  redirectMethod: string;
+  redirectParams: {
+    key?: string;
+    value?: string;
+  }[];
+  /** @example "https://demo.cloudpayments.ru/acs" */
+  redirectUrl: string;
+}
+
+export interface PayRyptogramPayselectionBody {
+  cryptogram: string;
+}
+
+export interface PayRyptogramPayselectionResponse {
+  /** @example "POST" */
+  redirectMethod: string;
+  redirectParams: {
+    key?: string;
+    value?: string;
+  }[];
+  /** @example "https://demo.payselection.com" */
+  redirectUrl: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -375,10 +424,10 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title PrankService
+ * @title PrankBot
  * @version production
  *
- * Prank service
+ * PrankBot service
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   advertisingCompanies = {
@@ -512,11 +561,56 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
+  ip = {
+    /**
+     * No description
+     *
+     * @tags ip
+     * @name GetIp
+     * @request GET:/ip
+     */
+    getIp: (params: RequestParams = {}) =>
+      this.request<IpResponse, ErrorResponse>({
+        path: `/ip`,
+        method: "GET",
+        ...params,
+      }),
+  };
   notifications = {
     /**
      * No description
      *
-     * @tags notifications_cloudpayments
+     * @tags notification_anypay
+     * @name AnypayPayCreate
+     * @request POST:/notifications/anypay/pay
+     */
+    anypayPayCreate: (
+      data: {
+        merchant_id: number;
+        transaction_id: number;
+        pay_id: number;
+        amount: number;
+        currency: string;
+        profit: number;
+        status: string;
+        completion_date: string;
+        test: number;
+        sign: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<string, ErrorResponse | void>({
+        path: `/notifications/anypay/pay`,
+        method: "POST",
+        body: data,
+        type: ContentType.UrlEncoded,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags notification_cloudpayments
      * @name CloudpaymentsFailCreate
      * @request POST:/notifications/cloudpayments/fail
      * @secure
@@ -545,7 +639,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags notifications_cloudpayments
+     * @tags notification_cloudpayments
      * @name CloudpaymentsPayCreate
      * @request POST:/notifications/cloudpayments/pay
      * @secure
@@ -578,7 +672,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags notifications_cloudpayments
+     * @tags notification_cloudpayments
      * @name CloudpaymentsRefundCreate
      * @request POST:/notifications/cloudpayments/refund
      * @secure
@@ -600,18 +694,34 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         type: ContentType.UrlEncoded,
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags notification_payselection
+     * @name PayselectionCreate
+     * @request POST:/notifications/payselection
+     */
+    payselectionCreate: (payselection_notification: PayselectionNotificationBody, params: RequestParams = {}) =>
+      this.request<void, ErrorResponse>({
+        path: `/notifications/payselection`,
+        method: "POST",
+        body: payselection_notification,
+        type: ContentType.Json,
+        ...params,
+      }),
   };
   payments = {
     /**
      * No description
      *
-     * @tags payment_cloudpayments
-     * @name CloudpaymentsDetail
-     * @request GET:/payments/{id}/cloudpayments
+     * @tags payment
+     * @name PaymentsDetail
+     * @request GET:/payments/{id}
      */
-    cloudpaymentsDetail: (id: string, params: RequestParams = {}) =>
-      this.request<CloudpaymentsPaymentResponse, ErrorResponse>({
-        path: `/payments/${id}/cloudpayments`,
+    paymentsDetail: (id: string, params: RequestParams = {}) =>
+      this.request<PaymentResponse, ErrorResponse>({
+        path: `/payments/${id}`,
         method: "GET",
         ...params,
       }),
@@ -631,7 +741,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<CloudpaymentsPaymentComplete3DsResponse, ErrorResponse>({
+      this.request<any, void | ErrorResponse>({
         path: `/payments/${id}/cloudpayments/complete3ds`,
         method: "POST",
         body: data,
@@ -643,14 +753,75 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags payment_cloudpayments
-     * @name CloudpaymentsPayCreate
-     * @request POST:/payments/{id}/cloudpayments/pay
+     * @name CloudpaymentsPayWithCryptogramCreate
+     * @request POST:/payments/{id}/cloudpayments/pay_with_cryptogram
      */
-    cloudpaymentsPayCreate: (id: string, pay_payment_cloudpayments: PayCloudpaymentsBody, params: RequestParams = {}) =>
-      this.request<PayCloudpaymentsResponse, ErrorResponse>({
-        path: `/payments/${id}/cloudpayments/pay`,
+    cloudpaymentsPayWithCryptogramCreate: (
+      id: string,
+      payment_cloudpayments: PayRyptogramCloudpaymentsBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<PayRyptogramCloudpaymentsResponse, ErrorResponse>({
+        path: `/payments/${id}/cloudpayments/pay_with_cryptogram`,
         method: "POST",
-        body: pay_payment_cloudpayments,
+        body: payment_cloudpayments,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags payment_cloudpayments
+     * @name CloudpaymentsPayWithWidgetDetail
+     * @request GET:/payments/{id}/cloudpayments/pay_with_widget
+     */
+    cloudpaymentsPayWithWidgetDetail: (id: string, params: RequestParams = {}) =>
+      this.request<PayWidgetCloudpaymentsResponse, ErrorResponse>({
+        path: `/payments/${id}/cloudpayments/pay_with_widget`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags payment_payselection
+     * @name PayselectionComplete3DsCreate
+     * @request POST:/payments/{id}/payselection/complete3ds
+     */
+    payselectionComplete3DsCreate: (
+      id: string,
+      data: {
+        MD: string;
+        PaRes: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, void | ErrorResponse>({
+        path: `/payments/${id}/payselection/complete3ds`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags payment_payselection
+     * @name PayselectionPayWithCryptogramCreate
+     * @request POST:/payments/{id}/payselection/pay_with_cryptogram
+     */
+    payselectionPayWithCryptogramCreate: (
+      id: string,
+      pay_payselection: PayRyptogramPayselectionBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<PayRyptogramPayselectionResponse, ErrorResponse>({
+        path: `/payments/${id}/payselection/pay_with_cryptogram`,
+        method: "POST",
+        body: pay_payselection,
         type: ContentType.Json,
         ...params,
       }),
@@ -708,22 +879,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/users/calls`,
         method: "GET",
         query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags subscription
-     * @name SubscriptionsUnsubscribeCreate
-     * @request POST:/users/subscriptions/unsubscribe
-     * @secure
-     */
-    subscriptionsUnsubscribeCreate: (params: RequestParams = {}) =>
-      this.request<void, ErrorResponse>({
-        path: `/users/subscriptions/unsubscribe`,
-        method: "POST",
         secure: true,
         ...params,
       }),

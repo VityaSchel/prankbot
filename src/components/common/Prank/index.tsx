@@ -11,6 +11,7 @@ import policeBackground from './assets/police.png'
 import studyBackground from './assets/study.png'
 import threatsBackground from './assets/threats.png'
 import Button from '@/components/common/Button'
+import { fixImage } from '@/utils/fix-images'
 
 export type Prank = {
   id: string
@@ -35,7 +36,7 @@ export default function PrankPreview(props: { prank: Prank }) {
     <>
       <div className={styles.prank} onClick={() => setOrderModalVisible(true)}>
         <div className={styles.image}>
-          <Image src={props.prank.cardBackground} fill alt='' />
+          <Image src={fixImage(props.prank.cardBackground)} fill alt='' />
           <AudioPlayer src={props.prank.previewAudioURL} />
         </div>
         <div className={styles.info}>

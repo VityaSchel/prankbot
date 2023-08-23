@@ -46,13 +46,15 @@ export default function Order(props: { order: OrderData }) {
 const PrankName = (props: { children: string }) => <h2 className={styles.title}>{props.children}</h2>
 const PrankDate = (props: { date: Date }) => (
   <span className={styles.date}>Создан {
-    Intl.DateTimeFormat('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(props.date)
+    isNaN(Number(props.date)) 
+      ? '06.07.2005'
+      : Intl.DateTimeFormat('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(props.date)
   }</span>
 )
 const PrankPhone = (props: { children: string }) => <span className={styles.phone}>{props.children}</span>

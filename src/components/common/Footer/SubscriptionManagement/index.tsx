@@ -116,12 +116,14 @@ export default function SubscriptionManagemnt() {
                             disabled={isSubmitting}
                             inputProps={{ maxLength: 4 }}
                           />
-                          <Button type="submit" onClick={() => setDialogVisible(false)}>
-                            Я передумал
-                          </Button>
-                          <Button type="submit" variant='secondary' disabled={isSubmitting}>
-                            Отменить
-                          </Button>
+                          <div className={styles.buttons}>
+                            <Button type="button" onClick={() => setDialogVisible(false)}>
+                              Я передумал
+                            </Button>
+                            <Button type="submit" variant='secondary' disabled={isSubmitting}>
+                              Отменить
+                            </Button>
+                          </div>
                         </form>
                       )}
                     </Formik>

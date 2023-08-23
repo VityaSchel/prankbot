@@ -29,12 +29,7 @@ export default function Pranks() {
   React.useEffect(() => { fetchCategories() }, [])
 
   const fetchCategories = async () => {
-    const apiCategoriesRequest = await fetch(apiURI + '/categories')
-    // some thoughts on how ts should work with api responses
-    // firstly I made namespace PranksAPI but swagger-typescript-api generates
-    // exported interfaces instead of types and I have no time until deadline
-    // to patch that (TODO:)
-    const apiCategoriesResponse = await apiCategoriesRequest.json() as CategoriesResponse
+    const apiCategoriesResponse = await fetchAPI<CategoriesResponse>('/categories', 'GET')
     setCategories(
       apiCategoriesResponse.categories
         .map(c => ({
