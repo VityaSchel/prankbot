@@ -17,7 +17,7 @@ export default function CallsHistory() {
   const fetchOrders = async () => {
     const callsResponse = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
     setOrders(
-      window.location.hostname === 'localhost' || window.location.hostname === 'web.archive.org'
+      window.location.hostname === 'localhost' || window.location.hostname === 'web.archive.org' || window.location.hostname.endsWith('netlify.app')
         ? mockUserCalls.calls
         : callsResponse.calls
     )
