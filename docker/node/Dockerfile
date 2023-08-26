@@ -5,12 +5,11 @@ ARG NPM_TOKEN
 
 WORKDIR /app
 
-#COPY node_modules node_modules
 COPY .npmrc .npmrc
 COPY package.json package.json
-COPY yarn.lock yarn.lock
+COPY package-lock.json package-lock.json
 
-RUN yarn install --check-files
+RUN npm install
 RUN rm -r .npmrc
 
 FROM node:16.13.0-alpine as builder
@@ -27,6 +26,6 @@ RUN echo NEXT_PUBLIC_FOOTER=$NEXT_PUBLIC_FOOTER >> .env.local && \
     echo NEXT_PUBLIC_CHECKBOX1=$NEXT_PUBLIC_CHECKBOX1 >> .env.local && \
     echo NEXT_PUBLIC_CHECKBOX2=$NEXT_PUBLIC_CHECKBOX2 >> .env.local
 
-RUN yarn build
+RUN npm install && npm run build
 
-CMD ["yarn", "start"]
+CMD ["npm", "run", "start"]
