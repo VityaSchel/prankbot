@@ -1,0 +1,5 @@
+tap "golangci/tap"
+tap "homebrew/bundle"
+tap "homebrew/core"
+brew "go"
+brew "golangci/tap/golangci-lint"
