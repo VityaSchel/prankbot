@@ -121,6 +121,13 @@ export interface PayWidgetCloudpaymentsResponse {
   };
 }
 
+export interface PaymentMerchantResponse {
+  merchantCode: string;
+  merchantId: string;
+  publicKey: string;
+  shopId: string;
+}
+
 export interface PaymentRequired {
   paymentId: string;
 }
@@ -142,6 +149,10 @@ export interface PaymentResponse {
 
 export interface PaymentSetEmailBody {
   email: string;
+}
+
+export interface PaymentSetMerchantBody {
+  merchantId: string;
 }
 
 export interface PayselectionNotificationBody {
@@ -786,6 +797,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags payment
+     * @name MerchantDetail
+     * @request GET:/payments/{id}/merchant
+     */
+    merchantDetail: (
+      id: string,
+      query?: {
+        /** payment merchant filter */
+        "filter[cardFirstSix]"?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PaymentMerchantResponse, ErrorResponse>({
+        path: `/payments/${id}/merchant`,
+        method: "GET",
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags payment_payselection
      * @name PayselectionComplete3DsCreate
      * @request POST:/payments/{id}/payselection/complete3ds
@@ -838,6 +871,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/payments/${id}/set-email`,
         method: "POST",
         body: payment_set_email,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags payment
+     * @name SetMerchantCreate
+     * @request POST:/payments/{id}/set-merchant
+     */
+    setMerchantCreate: (id: string, payment_set_merchant: PaymentSetMerchantBody, params: RequestParams = {}) =>
+      this.request<void, ErrorResponse>({
+        path: `/payments/${id}/set-merchant`,
+        method: "POST",
+        body: payment_set_merchant,
         type: ContentType.Json,
         ...params,
       }),

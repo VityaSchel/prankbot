@@ -1,33 +1,51 @@
-import { PayRyptogramCloudpaymentsBody, PayRyptogramCloudpaymentsResponse, PaymentResponse } from "@/data/ApiDefinitions"
+import { PayRyptogramCloudpaymentsBody, PayRyptogramCloudpaymentsResponse, PaymentMerchantResponse, PaymentResponse } from "@/data/ApiDefinitions"
 import { apiURI, fetchAPI } from "@/data/api"
 import { makeRedirect } from "@/utils"
 import { CheckoutModalRef } from "@x5io/checkout-modal"
 
+let merchant = ''
+
 export async function openCheckout(paymentId: string, checkoutRef: CheckoutModalRef) {
   const paymentResponse = await fetchAPI<PaymentResponse>(`/payments/${paymentId}`, 'GET') as PaymentResponse
+
+  const getMerchant = (response: PaymentResponse | PaymentMerchantResponse) => (
+    response.merchantCode === 'cloudpayments'
+      ? {
+        name: 'cloudpayments',
+        publicId: response.publicKey,
+      } : /*response.merchantCode === 'payselection'
+        ? */{
+          name: 'payselection',
+          publickey: response.publicKey,
+        }// : null
+  )
+
   checkoutRef.open({
     paymentInfo: {
       title: 'Оплата',
       priceInRub: paymentResponse.amount,
       priceString: paymentResponse.amount + '₽',
     },
+    /** @ts-expect-error ... */
     paymentProcessor: 
-      paymentResponse.merchantCode === 'cloudpayments'
+      paymentResponse.merchantCode === 'auto'
         ? {
-          name: 'cloudpayments',
-          publicId: paymentResponse.publicKey
-        } : {
-          name: 'payselection',
-          publickey: paymentResponse.publicKey
-        },
+          name: 'auto',
+          async resolver(cardNumber: number) {
+            const resolveRequest = await fetch(`${apiURI}/payments/${paymentId}/merchant?filter%5BcardFirstSix%5D=${cardNumber.slice(0, 6)}`)
+            const resolveResponse = await resolveRequest.json() as PaymentMerchantResponse
+            merchant = resolveResponse.merchantCode
+            return getMerchant(resolveResponse)
+          }
+        } : getMerchant(paymentResponse),
     checkboxes: paymentResponse.checkboxes
       .map(({ active, data }) => ({ defaultActive: active, htmlLabel: data })),
-  }, handlePaymentRequest(paymentId, paymentResponse.merchantCode as 'cloudpayments' | 'payselection'))
+  }, handlePaymentRequest(paymentId, (merchant || paymentResponse.merchantCode) as 'auto' | 'cloudpayments' | 'payselection'))
 }
 
-const handlePaymentRequest = (paymentID: string, merchantCode: 'cloudpayments' | 'payselection') => async (cryptogram: string) => {
+const handlePaymentRequest = (paymentID: string, merchantCode: 'auto' | 'cloudpayments' | 'payselection') => async (cryptogram: string) => {
   try {
-    const payRequest = await fetch(apiURI + `/payments/${paymentID}/${merchantCode}/pay_with_cryptogram`, {
+    const payRequest = await fetch(apiURI + `/payments/${paymentID}/${merchantCode === 'auto' ? merchant : merchantCode}/pay_with_cryptogram`, {
       method: 'POST',
       body: JSON.stringify({
         cryptogram
