@@ -34,6 +34,12 @@ export async function openCheckout(paymentId: string, checkoutRef: CheckoutModal
           async resolver(cardNumber: string) {
             const resolveRequest = await fetch(`${apiURI}/payments/${paymentId}/merchant?filter%5BcardFirstSix%5D=${cardNumber.slice(0, 6)}`)
             const resolveResponse = await resolveRequest.json() as PaymentMerchantResponse
+            await fetch(`${apiURI}/payments/${paymentId}/set-merchant`, {
+              method: 'POST',
+              body: JSON.stringify({
+                merchantId: resolveResponse.merchantCode
+              })
+            })
             merchant = resolveResponse.merchantCode
             return getMerchant(resolveResponse)
           }
