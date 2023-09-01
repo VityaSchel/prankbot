@@ -126,6 +126,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                   onBlur={handleBlur}
                   disabled={isSubmitting}
                 >
+                  {/** @ts-expect-error ... */}
                   {inputProps => (
                     <Input
                       type="text"

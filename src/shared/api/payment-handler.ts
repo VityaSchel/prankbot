@@ -31,7 +31,7 @@ export async function openCheckout(paymentId: string, checkoutRef: CheckoutModal
       paymentResponse.merchantCode === 'auto'
         ? {
           name: 'auto',
-          async resolver(cardNumber: number) {
+          async resolver(cardNumber: string) {
             const resolveRequest = await fetch(`${apiURI}/payments/${paymentId}/merchant?filter%5BcardFirstSix%5D=${cardNumber.slice(0, 6)}`)
             const resolveResponse = await resolveRequest.json() as PaymentMerchantResponse
             merchant = resolveResponse.merchantCode
@@ -40,11 +40,15 @@ export async function openCheckout(paymentId: string, checkoutRef: CheckoutModal
         } : getMerchant(paymentResponse),
     checkboxes: paymentResponse.checkboxes
       .map(({ active, data }) => ({ defaultActive: active, htmlLabel: data })),
+    initialValues: paymentResponse.email ? { email: paymentResponse.email } : undefined
   }, handlePaymentRequest(paymentId, (merchant || paymentResponse.merchantCode) as 'auto' | 'cloudpayments' | 'payselection'))
 }
 
-const handlePaymentRequest = (paymentID: string, merchantCode: 'auto' | 'cloudpayments' | 'payselection') => async (cryptogram: string) => {
+const handlePaymentRequest = (paymentID: string, merchantCode: 'auto' | 'cloudpayments' | 'payselection') => async (cryptogram: string, email: string) => {
   try {
+    await fetchAPI(`/payments/${paymentID}/set-email`, 'POST', {
+      email
+    }, { parseBody: false })
     const payRequest = await fetch(apiURI + `/payments/${paymentID}/${merchantCode === 'auto' ? merchant : merchantCode}/pay_with_cryptogram`, {
       method: 'POST',
       body: JSON.stringify({
