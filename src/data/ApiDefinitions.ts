@@ -189,7 +189,7 @@ export interface UserCallsResponse {
     callRecordName: string;
     createdAt: string;
     phone: string;
-    status: "in_queue" | "in_process" | "error" | "done";
+    status: "success" | "in_process" | "in_queue" | "canceled" | "error";
   }[];
   count: number;
 }
@@ -920,7 +920,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     callsList: (
       query?: {
         /** calls filter */
-        "filter[status]"?: ("in_queue" | "in_process" | "error" | "done")[];
+        "filter[status]"?: ("success" | "in_process" | "in_queue" | "canceled" | "error")[];
       },
       params: RequestParams = {},
     ) =>

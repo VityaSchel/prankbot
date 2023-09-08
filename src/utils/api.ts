@@ -12,7 +12,8 @@ export async function getOrderDetails(userCall: UserCallsResponse['calls'][numbe
       'in_queue': 'startingCall',
       'in_process': 'calling',
       'error': 'error',
-      'done': 'callEnded'
+      'success': 'callEnded',
+      'canceled': 'canceled'
     }[userCall.status] as OrderStatus,
     recordURI: userCall.callRecord
   }

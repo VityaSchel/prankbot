@@ -16,7 +16,7 @@ export default function CallsHistory() {
 
   const fetchOrders = async () => {
     const callsResponse = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
-    const mockMode = window.location.hostname === 'localhost' || window.location.hostname === 'web.archive.org' || window.location.hostname.endsWith('netlify.app')
+    const mockMode = (window.location.hostname === 'localhost' && process.env.DEBUG_API === 'true') || window.location.hostname === 'web.archive.org' || window.location.hostname.endsWith('netlify.app')
     setOrders(
       mockMode
         ? mockUserCalls.calls
@@ -28,7 +28,7 @@ export default function CallsHistory() {
     ?.filter(call => ['in_process', 'in_queue'].includes(call.status))
 
   const doneOrders = orders
-    ?.filter(call => ['done', 'error',/*, 'couldnt_call'*/].includes(call.status))
+    ?.filter(call => ['success', 'error', 'canceled'].includes(call.status))
 
   return (
     <div className={styles.history}>

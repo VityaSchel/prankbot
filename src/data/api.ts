@@ -12,7 +12,7 @@ type FetchAPIOptions = {
 export async function fetchAPI<T>(endpoint: string, method: 'GET', body: undefined, options: FetchAPIOptions): Promise<T & { _: Response } >
 export async function fetchAPI<T>(endpoint: string, method: string, body?: { [key: string]: any }, options?: FetchAPIOptions): Promise<T & { _: Response } >
 export async function fetchAPI<T>(endpoint: string, method = 'GET', body?: { [key: string]: any }, options = { parseBody: true }): Promise<T & { _: Response } > {
-  const mockMode = window.location.hostname === 'localhost' || window.location.hostname === 'web.archive.org' || window.location.hostname.endsWith('netlify.app')
+  const mockMode = (window.location.hostname === 'localhost' && process.env.DEBUG_API === 'true') || window.location.hostname === 'web.archive.org' || window.location.hostname.endsWith('netlify.app')
   if(mockMode) { 
     const mockResult = mockFetchAPI<T>(endpoint, method, body) 
     if(mockResult !== null) return mockResult

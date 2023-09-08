@@ -15,7 +15,7 @@ export const mockUserCalls: UserCallsResponse = {
     {
       callId: 0,
       phone: '+7123456789',
-      status: 'done'
+      status: 'success'
     },
     {
       callId: 0,
@@ -31,7 +31,7 @@ export const mockUserCalls: UserCallsResponse = {
       callId: 0,
       phone: '+7123456789',
       callRecord: 'https://test.com',
-      status: 'done',
+      status: 'success',
     },
     {
       callId: 0,
@@ -46,7 +46,7 @@ export const mockUserCalls: UserCallsResponse = {
     {
       callId: 0,
       phone: '+7123456789',
-      status: 'done'
+      status: 'success'
     },
     {
       callId: 0,
@@ -62,7 +62,7 @@ export const mockUserCalls: UserCallsResponse = {
       callId: 0,
       phone: '+7123456789',
       callRecord: 'https://test.com',
-      status: 'done',
+      status: 'success',
     },
     {
       callId: 0,
@@ -77,7 +77,7 @@ export const mockUserCalls: UserCallsResponse = {
     {
       callId: 0,
       phone: '+7123456789',
-      status: 'done'
+      status: 'success'
     },
     {
       callId: 0,
@@ -93,7 +93,7 @@ export const mockUserCalls: UserCallsResponse = {
       callId: 0,
       phone: '+7123456789',
       callRecord: 'https://test.com',
-      status: 'done',
+      status: 'success',
     },
     {
       callId: 0,
@@ -108,7 +108,7 @@ export const mockUserCalls: UserCallsResponse = {
     {
       callId: 0,
       phone: '+7123456789',
-      status: 'done'
+      status: 'success'
     },
     {
       callId: 0,
@@ -124,7 +124,7 @@ export const mockUserCalls: UserCallsResponse = {
       callId: 0,
       phone: '+7123456789',
       callRecord: 'https://test.com',
-      status: 'done',
+      status: 'success',
     },
     {
       callId: 0,
@@ -139,7 +139,7 @@ export const mockUserCalls: UserCallsResponse = {
     {
       callId: 0,
       phone: '+7123456789',
-      status: 'done'
+      status: 'success'
     },
     {
       callId: 0,
@@ -155,7 +155,7 @@ export const mockUserCalls: UserCallsResponse = {
       callId: 0,
       phone: '+7123456789',
       callRecord: 'https://test.com',
-      status: 'done',
+      status: 'success',
     },
     {
       callId: 0,
@@ -170,7 +170,7 @@ export const mockUserCalls: UserCallsResponse = {
     {
       callId: 0,
       phone: '+7123456789',
-      status: 'done'
+      status: 'success'
     },
     {
       callId: 0,
@@ -186,7 +186,7 @@ export const mockUserCalls: UserCallsResponse = {
       callId: 0,
       phone: '+7123456789',
       callRecord: 'https://test.com',
-      status: 'done',
+      status: 'success',
     },
     {
       callId: 0,
@@ -201,7 +201,7 @@ export const mockUserCalls: UserCallsResponse = {
     {
       callId: 0,
       phone: '+7123456789',
-      status: 'done'
+      status: 'success'
     },
     {
       callId: 0,
@@ -217,7 +217,7 @@ export const mockUserCalls: UserCallsResponse = {
       callId: 0,
       phone: '+7123456789',
       callRecord: 'https://test.com',
-      status: 'done',
+      status: 'success',
     },
   ],
   count: 5

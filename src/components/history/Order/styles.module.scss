@@ -85,7 +85,8 @@
     }
 
     &.error,
-    &.couldntCall {
+    &.couldntCall,
+    &.canceled {
       color: #FC3A3A;
     }
 

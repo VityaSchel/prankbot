@@ -17,7 +17,7 @@ import LoadingIcon from './assets/loading.png'
 import DownloadIcon from './assets/download.svg'
 import UnavailableIcon from './assets/unavailable.svg'
 
-export type OrderStatus = 'startingCall' | 'calling' | 'callEnded' | 'error' | 'couldntCall'
+export type OrderStatus = 'startingCall' | 'calling' | 'callEnded' | 'error' | 'couldntCall' | 'canceled'
 export type OrderData = {
   title: string
   phone: string
@@ -77,6 +77,7 @@ const PrankStatus = (props: { status: OrderStatus }) => {
         'callEnded': <CallEndedIcon />,
         'error': <ErrorIcon />,
         'couldntCall': <CouldntCallIcon />,
+        'canceled': <CouldntCallIcon />
       }[props.status]}
       {{
         'startingCall': 'Начинаем звонок',
@@ -84,6 +85,7 @@ const PrankStatus = (props: { status: OrderStatus }) => {
         'callEnded': 'Звонок завершен',
         'error': 'Ошибка',
         'couldntCall': 'Недозвон',
+        'canceled': 'Отменён',
       }[props.status]}
     </span>
   )
@@ -100,7 +102,7 @@ const PrankAction = (props: { status: OrderStatus, recordURI?: string }) => {
       disabled={!props.recordURI} 
       onClick={handleAction}
       className={cx(styles.action, {
-        [styles.grayedOut]: ['startingCall', 'calling', 'error', 'couldntCall'].includes(props.status)
+        [styles.grayedOut]: ['startingCall', 'calling', 'error', 'couldntCall', 'canceled'].includes(props.status)
       })}
     >
       {{
@@ -109,6 +111,7 @@ const PrankAction = (props: { status: OrderStatus, recordURI?: string }) => {
         'callEnded': props.recordURI ? <span>Аудиозапись</span> : <span className={styles.accent}>Ожидание</span>,
         'error': <span>Недоступно</span>,
         'couldntCall': <span>Недоступно</span>,
+        'canceled': <span>Отменен</span>,
       }[props.status]}
       {['startingCall', 'calling'].includes(props.status) && (
         <div className={styles.adornmentButton}>
