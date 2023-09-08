@@ -14,11 +14,13 @@ export default function ActiveOrders() {
   const fetchActiveOrders = async () => {
     const userCalls = await fetchAPI<UserCallsResponse>('/users/calls?filter%5Bstatus%5D=in_queue&filter%5Bstatus%5D=in_process', 'GET')
     setOrders(
-      await Promise.all<OrderData[]>(
-        // userCalls.calls
-        mockUserCalls.calls
-          .map(call => getOrderDetails(call))
-      )
+      userCalls.calls ?
+        await Promise.all<OrderData[]>(
+          userCalls.calls
+          // mockUserCalls.calls
+            .map(call => getOrderDetails(call))
+        )
+        : []
     )
   }
 
