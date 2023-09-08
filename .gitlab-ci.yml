@@ -125,9 +125,9 @@ build_pay-callpro:
   variables:
     PROJECT_NAME: pay-callpro
     NEXT_PUBLIC_FOOTER: "ИП Алексеева Алина Владимировна<br></br>ИНН: 780530945488 ОГРН: 323784700256649<br></br><a href=\"https://t.me/manager_helping\">TELEGRAM</a><br></br><a href=\"https://docs.google.com/document/d/1wUCaCHZGo42OHUtUZcL2e1y80lrDDIext-Qs7N5UFZw/edit?usp=sharing\">Пользовательское соглашение</a><br></br><a href=\"https://docs.google.com/document/d/11ntwB7fqvLM1RYB1-W0y4046AkH3e8qhNb3qyWWETo8/edit?usp=sharing\">Политика обработки данных</a><br></br><a href=\"https://cdn-pranks.x5.money/subscribe-ru.pdf\">Тарифы</a>"
-#
-#deploy_production_pay-callpro:
-#  extends: .deploy_production_template
-#  variables:
-#    PROJECT_NAME: pay-callpro
-#    VIRTUAL_HOST: pay-call.pro
+
+deploy_production_pay-callpro:
+  extends: .deploy_production_template
+  variables:
+    PROJECT_NAME: pay-callpro
+    VIRTUAL_HOST: pay-call.pro
