@@ -16,8 +16,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Пранкбот</title>
-        <meta name="description" content="Пранкбот — дизайнер не дал нам мета-описание" />
+        <title>Розыгрыши</title>
+        <meta name="description" content="Разыграй друга по телефону и получи запись разговора" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

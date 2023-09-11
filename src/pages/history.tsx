@@ -21,8 +21,8 @@ export default function History() {
   return (
     <>
       <Head>
-        <title>Пранкбот — история</title>
-        <meta name="description" content="Пранкбот — дизайнер не дал нам мета-описание" />
+        <title>Розыгрыши — история</title>
+        <meta name="description" content="Разыграй друга по телефону и получи запись разговора" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

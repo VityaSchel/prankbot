@@ -40,8 +40,8 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Пранкбот — вход</title>
-        <meta name="description" content="Пранкбот — дизайнер не дал нам мета-описание" />
+        <title>Розыгрыши — вход</title>
+        <meta name="description" content="Разыграй друга по телефону и получи запись разговора" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
