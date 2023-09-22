@@ -26,7 +26,6 @@ export async function openCheckout(paymentId: string, checkoutRef: CheckoutModal
       priceInRub: paymentResponse.amount,
       priceString: paymentResponse.amount + '₽',
     },
-    /** @ts-expect-error ... */
     paymentProcessor: 
       paymentResponse.merchantCode === 'auto'
         ? {
@@ -46,7 +45,8 @@ export async function openCheckout(paymentId: string, checkoutRef: CheckoutModal
         } : getMerchant(paymentResponse),
     checkboxes: paymentResponse.checkboxes
       .map(({ active, data }) => ({ defaultActive: active, htmlLabel: data })),
-    initialValues: paymentResponse.email ? { email: paymentResponse.email } : undefined
+    initialValues: paymentResponse.email ? { email: paymentResponse.email } : undefined,
+    emailRequired: true
   }, handlePaymentRequest(paymentId, (merchant || paymentResponse.merchantCode) as 'auto' | 'cloudpayments' | 'payselection'))
 }
 
