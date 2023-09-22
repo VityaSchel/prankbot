@@ -8,7 +8,7 @@ let merchant = ''
 export async function openCheckout(paymentId: string, checkoutRef: CheckoutModalRef) {
   const paymentResponse = await fetchAPI<PaymentResponse>(`/payments/${paymentId}`, 'GET') as PaymentResponse
 
-  const getMerchant = (response: PaymentResponse | PaymentMerchantResponse) => (
+  const getMerchant = (response: PaymentResponse | PaymentMerchantResponse): { name: 'cloudpayments', publicId: string } | { name: 'payselection', publickey: string } => (
     response.merchantCode === 'cloudpayments'
       ? {
         name: 'cloudpayments',
@@ -26,6 +26,7 @@ export async function openCheckout(paymentId: string, checkoutRef: CheckoutModal
       priceInRub: paymentResponse.amount,
       priceString: paymentResponse.amount + '₽',
     },
+    /** @ts-expect-error merchant code is a const */
     paymentProcessor: 
       paymentResponse.merchantCode === 'auto'
         ? {

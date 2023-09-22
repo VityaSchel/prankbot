@@ -24,8 +24,8 @@ dependencies:
     specifier: ^1.0.2
     version: 1.0.2
   '@x5io/checkout-modal':
-    specifier: ^1.3.4
-    version: 1.3.4(@popperjs/core@2.11.8)(@types/react@18.0.28)
+    specifier: ^1.3.5
+    version: 1.3.5(@popperjs/core@2.11.8)(@types/react@18.0.28)
   '@x5io/flat-uikit':
     specifier: ^1.0.3
     version: 1.0.3(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
@@ -2268,7 +2268,7 @@ packages:
       react: '>=16.14.0'
       react-dom: '>=16.14.0'
     dependencies:
-      '@babel/runtime': 7.22.10
+      '@babel/runtime': 7.22.15
       '@popperjs/core': 2.11.8
       '@react-aria/ssr': 3.8.0(react@18.2.0)
       '@restart/hooks': 0.4.11(react@18.2.0)
@@ -2599,8 +2599,8 @@ packages:
       js-cookie: 3.0.1
     dev: false
 
-  /@x5io/checkout-modal@1.3.4(@popperjs/core@2.11.8)(@types/react@18.0.28):
-    resolution: {integrity: sha512-wMgmGfHXjpb6Qr4W+QRddN4pco622WFKe6Hs8zZuGZ/7NAReKFtYrhXGbPyEESwzaw4KBGLxg5Uf9aTqcGHAjg==}
+  /@x5io/checkout-modal@1.3.5(@popperjs/core@2.11.8)(@types/react@18.0.28):
+    resolution: {integrity: sha512-srYXYAzzGtZX6UcUduz+js4O+nHcLuu1TPugGIc0StcWVudaFRjqrwfUlsoDUOa4H2m1os/K1QPcWl0wwA04PA==}
     dependencies:
       '@emotion/react': 11.11.1(@types/react@18.0.28)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1)(@types/react@18.0.28)(react@18.2.0)
@@ -5534,7 +5534,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.10
+      '@babel/runtime': 7.22.15
       '@restart/hooks': 0.4.11(react@18.2.0)
       '@restart/ui': 1.6.6(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.0.28
@@ -6339,7 +6339,7 @@ packages:
     peerDependencies:
       react: '>=15.0.0'
     dependencies:
-      '@babel/runtime': 7.22.10
+      '@babel/runtime': 7.22.15
       '@types/react': 18.0.28
       invariant: 2.2.4
       react: 18.2.0
