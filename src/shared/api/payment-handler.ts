@@ -56,7 +56,7 @@ const handlePaymentRequest = (paymentID: string, merchantCode: 'auto' | 'cloudpa
     await fetchAPI(`/payments/${paymentID}/set-email`, 'POST', {
       email
     }, { parseBody: false })
-    const payRequest = await fetch(apiURI + `/payments/${paymentID}/${merchantCode === 'auto' ? merchant : merchantCode}/pay_with_cryptogram`, {
+    const payRequest = await fetch(apiURI + `/payments/${paymentID}/${merchantCode === 'auto' ? merchant : merchantCode}/pay_by_cryptogram`, {
       method: 'POST',
       body: JSON.stringify({
         cryptogram

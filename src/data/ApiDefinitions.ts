@@ -765,7 +765,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags payment_cloudpayments
      * @name CloudpaymentsPayWithCryptogramCreate
-     * @request POST:/payments/{id}/cloudpayments/pay_with_cryptogram
+     * @request POST:/payments/{id}/cloudpayments/pay_by_cryptogram
      */
     cloudpaymentsPayWithCryptogramCreate: (
       id: string,
@@ -773,7 +773,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<PayRyptogramCloudpaymentsResponse, ErrorResponse>({
-        path: `/payments/${id}/cloudpayments/pay_with_cryptogram`,
+        path: `/payments/${id}/cloudpayments/pay_by_cryptogram`,
         method: "POST",
         body: payment_cloudpayments,
         type: ContentType.Json,
@@ -785,11 +785,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags payment_cloudpayments
      * @name CloudpaymentsPayWithWidgetDetail
-     * @request GET:/payments/{id}/cloudpayments/pay_with_widget
+     * @request GET:/payments/{id}/cloudpayments/pay_by_widget
      */
     cloudpaymentsPayWithWidgetDetail: (id: string, params: RequestParams = {}) =>
       this.request<PayWidgetCloudpaymentsResponse, ErrorResponse>({
-        path: `/payments/${id}/cloudpayments/pay_with_widget`,
+        path: `/payments/${id}/cloudpayments/pay_by_widget`,
         method: "GET",
         ...params,
       }),
@@ -844,7 +844,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags payment_payselection
      * @name PayselectionPayWithCryptogramCreate
-     * @request POST:/payments/{id}/payselection/pay_with_cryptogram
+     * @request POST:/payments/{id}/payselection/pay_by_cryptogram
      */
     payselectionPayWithCryptogramCreate: (
       id: string,
@@ -852,7 +852,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<PayRyptogramPayselectionResponse, ErrorResponse>({
-        path: `/payments/${id}/payselection/pay_with_cryptogram`,
+        path: `/payments/${id}/payselection/pay_by_cryptogram`,
         method: "POST",
         body: pay_payselection,
         type: ContentType.Json,
