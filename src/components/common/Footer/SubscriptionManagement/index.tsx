@@ -30,10 +30,10 @@ export default function SubscriptionManagemnt() {
           ? (
             <>
               <h2 className={styles.title}>Управляйте своей подпиской</h2>
-              <div className={styles.subscriptionInfo}>
-                <span className={styles.price}>29 рублей</span>
-                <span className={styles.label}>Стоимость подписки</span>
-              </div>
+              {/*<div className={styles.subscriptionInfo}>*/}
+              {/*  <span className={styles.price}>29 рублей</span>*/}
+              {/*  <span className={styles.label}>Стоимость подписки</span>*/}
+              {/*</div>*/}
               <AntdButton type='text' onClick={() => setScreen('prompt')}>Отменить подписку</AntdButton>
             </>
           ) : (
