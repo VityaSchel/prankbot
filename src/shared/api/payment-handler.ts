@@ -22,7 +22,7 @@ export async function openCheckout(paymentId: string, checkoutRef: CheckoutModal
 
   checkoutRef.open({
     paymentInfo: {
-      title: 'Оплата',
+      title: paymentResponse.title,
       priceInRub: paymentResponse.amount,
       priceString: paymentResponse.amount + '₽',
     },

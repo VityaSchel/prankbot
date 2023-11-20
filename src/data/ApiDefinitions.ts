@@ -145,6 +145,8 @@ export interface PaymentResponse {
   shopId: string;
   showCheckboxes: boolean;
   status: string;
+
+  title: string;
 }
 
 export interface PaymentSetEmailBody {
