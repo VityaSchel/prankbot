@@ -162,7 +162,7 @@ export default function OrderPrankModal(props: { prank: Prank, open: boolean, on
                 <div className={styles.subscription}>
                   <div className={styles.price}>
                     <h2>1 рубль</h2>
-                    <h4>Стоимость пробного звонка</h4>
+                    <h4>Стоимость пробного звонка, далее согласно тарифам</h4>
                   </div>
                   {/* {showCheckboxes && (<>
                     <Checkbox
