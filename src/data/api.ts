@@ -3,7 +3,7 @@ import { store } from '@/store/store'
 import { handleLogout } from "@/store/slices/authState"
 import Cookies from 'js-cookie'
 
-export const apiURI = 'https://api.prankbot.pro'
+export const apiURI = 'https://prank-api.subscriber.one'
 
 type FetchAPIOptions = {
   parseBody: boolean
