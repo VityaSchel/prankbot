@@ -72,10 +72,10 @@ export default function SubscriptionManagemnt() {
                       validateOnChange={false}
                       validateOnBlur={false}
                       onSubmit={async (values, { setSubmitting }) => {
-                        await fetchAPI('/subscriptions/unsubscribe', 'POST', {
-                          firstNumbers: values.first6digits,
-                          lastNumbers: values.last4digits
-                        }, { parseBody: false })
+                        // await fetchAPI('/subscriptions/unsubscribe', 'POST', {
+                        //   firstNumbers: values.first6digits,
+                        //   lastNumbers: values.last4digits
+                        // }, { parseBody: false })
                         setDialogVisible(false)
                       }}
                       // innerRef={formikRef as any}

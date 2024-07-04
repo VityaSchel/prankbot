@@ -5,7 +5,7 @@ import { HYDRATE } from 'next-redux-wrapper'
 import Cookie from 'js-cookie'
 import { fetchAPI } from '@/data/api'
 import { AdvertisingCompanyResponse } from '@/data/ApiDefinitions'
-import { resetVerificationStatus, hasCheckboxes } from '@x5io/ads_parameter'
+// import { resetVerificationStatus, hasCheckboxes } from '@x5io/ads_parameter'
 
 type CompanyAdsStateSliceState = {
   value: {
@@ -24,9 +24,9 @@ export const verifyCheckboxes = createAsyncThunk(
   async (payload: undefined, thunkAPI) => {
     const ads = (new URLSearchParams(window.location.search)).get('ads')
     if(ads !== null) {
-      const r = await fetchAPI<AdvertisingCompanyResponse>('/advertising_companies/' + ads, 'GET')
-      resetVerificationStatus()
-      return hasCheckboxes(r.status === 'active')
+      // const r = await fetchAPI<AdvertisingCompanyResponse>('/advertising_companies/' + ads, 'GET')
+      // resetVerificationStatus()
+      return true//hasCheckboxes(r.status === 'active')
     } else {
       return true
     }

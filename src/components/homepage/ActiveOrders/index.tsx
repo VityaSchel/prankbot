@@ -16,8 +16,8 @@ export default function ActiveOrders() {
     setOrders(
       userCalls.calls ?
         await Promise.all<OrderData[]>(
-          userCalls.calls
-          // mockUserCalls.calls
+          // userCalls.calls
+          mockUserCalls.calls
             .map(call => getOrderDetails(call))
         )
         : []

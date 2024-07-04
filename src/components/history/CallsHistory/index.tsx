@@ -15,12 +15,13 @@ export default function CallsHistory() {
   React.useEffect(() => { fetchOrders() }, [])
 
   const fetchOrders = async () => {
-    const callsResponse = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
-    const mockMode = (window.location.hostname === 'localhost' && process.env.DEBUG_API === 'true') || window.location.hostname === 'web.archive.org' || window.location.hostname.endsWith('netlify.app')
+    // const callsResponse = await fetchAPI<UserCallsResponse>('/users/calls', 'GET')
+    // const mockMode = (window.location.hostname === 'localhost' && process.env.DEBUG_API === 'true') || window.location.hostname === 'web.archive.org' || window.location.hostname.endsWith('netlify.app')
     setOrders(
-      mockMode
-        ? mockUserCalls.calls
-        : callsResponse.calls
+      // mockMode
+        // ? mockUserCalls.calls
+        // : callsResponse.calls
+      mockUserCalls.calls
     )
   }
 
